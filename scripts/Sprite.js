@@ -2,8 +2,8 @@ var mozart = require('mozart');
 
 var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(options) {
-		__(this).frameIndex = 0,
-		__(this).tickCount = 0,
+		__(this).frameIndex = 0;
+		__(this).tickCount = 0;
 		__(this).ticksPerFrame = options.ticksPerFrame || 0;
 		__(this).numberOfFrames = options.numberOfFrames || 1;
 		__(this).context = options.context;
@@ -16,15 +16,14 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).x = options.x - options.destwidth / 2;
 		__(this).y = options.y - options.destheight / 2;
 		__(this).hidden = options.hidden || true;
-		elements.push(this); // remove this later
 	};
 
 	__private.render = function () {
 			// universal frame index?? probably not
 		var px = 0, py = 0;
 		if(__(this).container){
-			px = __(this).container.getX();
-			py = __(this).container.getY();
+			px = __(this).container.getK().x;
+			py = __(this).container.getK().y;
 		}
 		__(this).context.drawImage(
 		__(this).image,
@@ -37,6 +36,7 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).destwidth,
 		__(this).destheight);
 	};
+
 	__private.update = function () {
 		if(__(this).numberOfFrames == 1){return;}
 			__(this).tickCount += 1;
@@ -53,7 +53,7 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.redraw = function(){
 		__(this).update();
 		__(this).render();
-	}
+	};
 
 	prototype.getParentX = function(){
 		console.log(__(this).container.getX());
@@ -62,11 +62,4 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).container = a;
 	};
 });
-
-//sc = new SpriteContainer(3);
-
-//sc.addSprites(sp);
-//sc.setX(5);
-//console.log(sc.getX());
-//sp.getParentX();
 
