@@ -7,6 +7,7 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).fixed = options.fixed || false;
 		__(this).agent = options.agent || false;
 		__(this).sprites = [];
+		__(this).privateKey = Math.random().toString(36).substring(2);
 	};
 	prototype.getX = function(){ return __(this).x; };
 	prototype.getY = function(){ return __(this).y; };
