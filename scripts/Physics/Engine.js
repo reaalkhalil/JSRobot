@@ -27,7 +27,7 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		//delete objects if toBeDeleted
 		for(var i in __(this).world){
 			var obj = __(this).world[i];
-			if(!obj.isFixed()){
+			if(!obj.isFixed()){ // should this condition be here?
 				obj.update();
 			}
 		}
