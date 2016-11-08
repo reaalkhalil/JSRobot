@@ -9,7 +9,7 @@ var Robot = Body.subclass(function(prototype, _, _protected, __, __private) {
 	};
 
 	prototype.getOpponentProperties = function(){
-		return {x: __(this).opponent.getX()};
+		return __(this).opponent.getK();
 	};
 
 	prototype.setOpponent = function(op){
@@ -36,12 +36,13 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 
 	prototype.step = function(){
 		//console.log(this);
-		var _x = this.getX();
+		// this.update(); this doesnt work woohoo
+		var _x = this.getK().x;
 		var _op = this.getOpponentProperties();
 		var towardopponent = (_op.x - _x) / Math.abs(_op.x - _x);
 
 		if(Math.abs(_op.x - _x) > 200){
-			__(this).move(this,towardopponent*5,0);
+			__(this).move(this,towardopponent*2,0);
 			//_protected.super.super.move.call(this,towardopponent*5,0);
 			//console.log(this.getEnergy());
 		}else{
