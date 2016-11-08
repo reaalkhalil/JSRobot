@@ -1,7 +1,5 @@
 var mozart = require('mozart');
 
-gravitatingObjects = [];
-
 var Engine = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function() {
 		__(this).world = [];
@@ -16,6 +14,20 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 
 	prototype.getTime = function(){
 		return parseInt(__(this).timestep);
+	};
+
+	prototype.worldData = function(bodyPubl){
+		// specify object to this function to remove it from the results
+		var data = [];
+		for(var i in __(this).world){
+			var worldobject = __(this).world[i];
+			if(bodyPubl == worldobject){continue;}
+			var dataobject = {};
+			dataobject.k = __(this).world[i].getK();
+			dataobject.type = __(this).world[i].getType();
+			data.push(dataobject);
+		}
+		return data;
 	};
 
 	__private.update = function(){
