@@ -21,13 +21,6 @@ var totalResources = 3;
 var numResourcesLoaded = 0;
 var fps = 30;
 
-function resourceLoaded() {
-	numResourcesLoaded += 1;
-	if(numResourcesLoaded === totalResources) {
-		setInterval(redrawall, 1000 / fps);
-	}
-}
-
 var robot1 = new RobotOne({x:200,y:300});
 robot1.addSprite(new Sprite({
 	'context': context,
@@ -76,6 +69,12 @@ engine.add(robot1);
 engine.add(robot2);
 engine.add(coin);
 
+function resourceLoaded() {
+	numResourcesLoaded += 1;
+	if(numResourcesLoaded === totalResources) {
+		engine.start();
+	}
+}
 
 function redrawall(){
 	robot1.step();
