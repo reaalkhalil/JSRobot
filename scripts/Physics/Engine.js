@@ -14,15 +14,21 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).update();
 	};
 
+	prototype.getTime = function(){
+		return parseInt(__(this).timestep);
+	};
+
 	__private.update = function(){
 		//needs to change
-		robot1.step();
-		robot2.step();
+		// this calls bodies' update function, that then sends an instance of the body to
+		// the behaviour object which acts on it, if it's an agent, a robot behaviour calls its step fn.
+		// the step fn. then calls protected functions that move robots with constraints imposed.
+		// There is then no need for a public move fn. in a body. behaviours are sent the entire body. 
+		//delete objects if toBeDeleted
 		for(var i in __(this).world){
 			var obj = __(this).world[i];
-			if(!obj.fixed()){
-				obj.vy += 2;
-				obj.fall();
+			if(!obj.isFixed()){
+				obj.update();
 			}
 		}
 		__(this).render();
@@ -34,8 +40,8 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		context.webkitImageSmoothingEnabled = false;
 		context.msImageSmoothingEnabled = false;
 		context.imageSmoothingEnabled = false;
-		for(var j in elements){
-			elements[j].redraw();
+		for(var i in __(this).world){
+			__(this).world[i].render();
 		}
 	};
 
@@ -47,7 +53,8 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		setInterval(tickerf,1000/fps);
 	};
 
-	// this should be private...
+	// this should be private... it's okay if someone makes a new object, as long as it's not
+		// added to the engine it cant do anything really
 	prototype.add = function(sprite){
 		__(this).world.push(sprite);
 	};
