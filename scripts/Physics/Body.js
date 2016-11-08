@@ -7,9 +7,11 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).k = {t: 0, x: opts.x || 0, y: opts.y || 0, vx: opts.vx || 0, vy: opts.vy || 0, ax: opts.ax || 0, ay: opts.ay || 0};
 		__(this).oldk = {t: 0, x: opts.x || 0, y: opts.y || 0, vx: opts.vx || 0, vy: opts.vy || 0, ax: opts.ax || 0, ay: opts.ay || 0};
 		__(this).mass = opts.mass || 0;
-		// I dont think this is necessary anymore __(this).privateKey = Math.random().toString(36).substring(2);
+		__(this).behaviors = opts.behaviors || [];
+		__(this).type = opts.type || [];
 	};
 	prototype.getK = function(){ return JSON.parse(JSON.stringify(__(this).k)); };
+	prototype.getType = function(){ return __(this).type; };
 	prototype.isFixed = function(){ return __(this).fixed; };
 	prototype.toBeDestroyed = function(){ return __(this).toBeDestroyed;};
 
@@ -33,22 +35,23 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		if(this.getK().t + 1 != engine.getTime()){return;}
 		__(this).k.t += 1; // check if this is a good place to do this
 		// make this into a behaviour?: nahhh
+		// call behaviors!
+		gravitate.act(__(this), this);
+		collide.act(__(this), this);
+		// this works but needs the behaviours need to be in body's array
 		if(__(this).agent){
 			this.step();
 		}
-		//none of this should be here anymore
-		__(this).k.vy += 2;
-		if(__(this).k.y < 400 - __(this).k.vy){
-			__(this).k.y += __(this).k.vy;
-		}else{
-			__(this).k.y = 400;
-			__(this).k.vy=-__(this).k.vy/2;
-		}
-		if(Math.abs(__(this).k.vy)<=0.001){
-			__(this).k.vy=0;
-		}
-		// this has to stay, down here though?
+
+		var dt = 1;
+
 		__(this).oldk = JSON.parse(JSON.stringify(__(this).k));
+		__(this).k.vx = __(this).k.vx + __(this).k.ax * dt;
+		__(this).k.vy = __(this).k.vy + __(this).k.ay * dt;
+		__(this).k.x = __(this).k.x + ( __(this).oldk.vx + __(this).k.vx ) * dt / 2;
+		__(this).k.y = __(this).k.y + ( __(this).oldk.vy + __(this).k.vy ) * dt / 2;
+		__(this).k.ax = 0;
+		__(this).k.ay = 0;
 	};
 });
 
