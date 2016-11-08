@@ -1,7 +1,5 @@
 var Robot = Body.subclass(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(options) {
-		//__(this).x = options.x;
-		//__(this).y = options.y;
 		__(this).health = 100;
 		__(this).energy = 100;
 		__(this).coins = 0;
@@ -19,6 +17,7 @@ var Robot = Body.subclass(function(prototype, _, _protected, __, __private) {
 	_protected.move = function(dx,dy){
 		__(this).energy -= Math.abs(dx^2 + dy^2)/10;
 		//maybe make body call a function here to reduce enrgy if agent == true and remove this move function
+		// nahhh, use behaviors and next action private member
 		_protected.super.move.call(this,dx,dy);
 			//doesnt work
 	};
