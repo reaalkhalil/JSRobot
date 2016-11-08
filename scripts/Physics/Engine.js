@@ -18,7 +18,6 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		//needs to change
 		robot1.step();
 		robot2.step();
-		//needs to change
 		for(var i in __(this).world){
 			var obj = __(this).world[i];
 			if(!obj.fixed()){
