@@ -3,7 +3,6 @@
 var canvas = document.getElementById("canvasID");
 var context = canvas.getContext("2d");
 var images = {};
-var elements = [];
 
 loadImage("robot1");
 loadImage("robot2");
@@ -21,7 +20,7 @@ var totalResources = 3;
 var numResourcesLoaded = 0;
 var fps = 30;
 
-var robot1 = new RobotOne({x:200,y:300});
+var robot1 = new RobotOne({x:200,y:300,agent:true});
 robot1.addSprite(new Sprite({
 	'context': context,
 	x: 0,
@@ -33,7 +32,7 @@ robot1.addSprite(new Sprite({
 	image: images.robot1
 }));
 
-var robot2 = new RobotOne({x:500,y:300});
+var robot2 = new RobotOne({x:500,y:300,agent:true});
 robot2.addSprite(new Sprite({
 	'context': context,
 	x: 0,
@@ -75,22 +74,6 @@ function resourceLoaded() {
 		engine.start();
 	}
 }
-
-function redrawall(){
-	robot1.step();
-	robot2.step();
-	engine.step();
-
-	canvas.width = canvas.width; // clears the canvas
-	context.mozImageSmoothingEnabled = false;
-	context.webkitImageSmoothingEnabled = false;
-	context.msImageSmoothingEnabled = false;
-	context.imageSmoothingEnabled = false;
-	for(var i in elements){
-		elements[i].redraw();
-	}
-}
-
 
 
 
