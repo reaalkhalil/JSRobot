@@ -6,7 +6,7 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).toBeDestroyed = false;
 		__(this).k = {t: 0, x: opts.x || 0, y: opts.y || 0, vx: opts.vx || 0, vy: opts.vy || 0, ax: opts.ax || 0, ay: opts.ay || 0};
 		__(this).oldk = {t: 0, x: opts.x || 0, y: opts.y || 0, vx: opts.vx || 0, vy: opts.vy || 0, ax: opts.ax || 0, ay: opts.ay || 0};
-		__(this).mass = opts.mass || 0;
+		__(this).mass = opts.mass || 1;
 		__(this).behaviors = opts.behaviors || [];
 		__(this).type = opts.type || [];
 	};
