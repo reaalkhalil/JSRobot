@@ -24,6 +24,8 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 			if(bodyPubl == worldobject){continue;}
 			var dataobject = {};
 			dataobject.k = __(this).world[i].getK();
+			dataobject.box = __(this).world[i].getBox();
+			dataobject.mass = __(this).world[i].getMass();
 			dataobject.type = __(this).world[i].getType();
 			data.push(dataobject);
 		}

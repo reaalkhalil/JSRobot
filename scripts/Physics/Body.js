@@ -12,8 +12,22 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 	};
 	prototype.getK = function(){ return JSON.parse(JSON.stringify(__(this).k)); };
 	prototype.getType = function(){ return __(this).type; };
+	prototype.getMass = function(){ return __(this).mass; };
 	prototype.isFixed = function(){ return __(this).fixed; };
 	prototype.toBeDestroyed = function(){ return __(this).toBeDestroyed;};
+
+	prototype.getBox = function(){
+		var box = [0,0,0,0]; // top right bottom left
+		for(var i in __(this).sprites){
+			var info = __(this).sprites[i].getInfo();
+			if(!info.v){continue;}// if sprite is invisible dont count it in
+			box[0] = Math.max(box[0], info.y + info.h/2);
+			box[1] = Math.max(box[1], info.x + info.w/2);
+			box[2] = Math.max(box[2], -info.y + info.h/2);
+			box[3] = Math.max(box[3], -info.x + info.w/2);
+		}
+		return box;
+	};
 
 	prototype.render = function(){
 		for(var i in __(this).sprites){

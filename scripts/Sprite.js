@@ -15,7 +15,17 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).loop = options.loop;
 		__(this).x = options.x - options.destwidth / 2;
 		__(this).y = options.y - options.destheight / 2;
-		__(this).hidden = options.hidden || true;
+		__(this).visible = options.visible || true;
+	};
+
+	prototype.getInfo = function(){
+		var info = {};
+		info.x = __(this).x;
+		info.y = __(this).y;
+		info.w = __(this).destwidth;
+		info.h = __(this).destheight;
+		info.v = __(this).visible;
+		return info;
 	};
 
 	__private.render = function () {
@@ -58,6 +68,7 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.getParentX = function(){
 		console.log(__(this).container.getX());
 	};
+	// this should change:
 	prototype.setParent = function(a){
 		__(this).container = a;
 	};
