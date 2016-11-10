@@ -42,8 +42,8 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 	};
 	_protected.move = function(dx,dy){
 		//console.log(_(this).move.caller);
-		__(this).k.x += dx;
-		__(this).k.y += dy;
+		__(this).k.ax += dx;
+		__(this).k.ay += dy;
 	};
 	prototype.update = function(){
 		if(this.getK().t + 1 != engine.getTime()){return;}
@@ -52,6 +52,7 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		// call behaviors!
 		gravitate.act(__(this), this);
 		collide.act(__(this), this);
+		keyboardcontrol.act(__(this), this);
 		// this works but needs the behaviours need to be in body's array
 		if(__(this).agent){
 			this.step();

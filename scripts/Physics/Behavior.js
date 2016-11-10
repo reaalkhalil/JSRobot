@@ -63,6 +63,7 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 		var k1 = col[0].k;
 		var k2 = col[1].k;
 		// more efficient to move this overlap section into the engine one collision pair finder.
+		// broad collision detection elimination first
 		var box1 = [-col[0].b[0]+k1.y, col[0].b[1]+k1.x, col[0].b[2]+k1.y, -col[0].b[3]+k1.x];
 		var box2 = [-col[1].b[0]+k2.y, col[1].b[1]+k2.x, col[1].b[2]+k2.y, -col[1].b[3]+k2.x];
 		var overlap = [0,0];
@@ -82,15 +83,55 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 				overlap[0] = box1[1] - box2[3];
 			}
 		}
+
+		if(Math.abs(overlap[0]) < Math.abs(overlap[1]) && overlap[0] !== 0){overlap[1] = 0;}
+		if(Math.abs(overlap[1]) < Math.abs(overlap[0]) && overlap[1] !== 0){overlap[0] = 0;}
+
 		if(col[1].m != -1){
 			bodyPriv.k.x -= overlap[0] * col[0].m / (col[0].m + col[1].m);
 			bodyPriv.k.y -= overlap[1] * col[0].m / (col[0].m + col[1].m);
 		}else{
-			bodyPriv.k.x -= (overlap[0] - 0.5);
-			bodyPriv.k.y -= (overlap[1] - 0.5);
+			bodyPriv.k.x -= (overlap[0]*0.999);
+			bodyPriv.k.y -= (overlap[1]*0.999);
 		}
+
+		bodyPriv.k.x = Math.ceil(bodyPriv.k.x*10)/10;
+		bodyPriv.k.y = Math.ceil(bodyPriv.k.y*10)/10;
 		///////////////////////////////// relative velocities
-		bodyPriv.k.vx  = bodyPriv.k.vx / -2 ;
-		bodyPriv.k.vy  = bodyPriv.k.vy / -2 ;
+		var relvx = k1.vx - k2.vx;
+		var relvy = k1.vy - k2.vy;
+		nx = 1;
+		ny = 1;
+		if(overlap[0] === 0){nx = -2;}
+		if(overlap[1] === 1){ny = -2;}
+
+		//bodyPriv.k.vx  = nx * bodyPriv.k.vx / -2;
+		//bodyPriv.k.vy  = ny * bodyPriv.k.vy / -2;
+		bodyPriv.k.vx  = nx * relvx / -2;
+		bodyPriv.k.vy  = ny * relvy / -2;
+		if(Math.abs(bodyPriv.k.vx)<=0.01){bodyPriv.k.vx=0;}
+		if(Math.abs(bodyPriv.k.vy)<=0.01){bodyPriv.k.vy=0;}
 	}
+});
+
+
+var arrowkeys = [false,false,false,false];
+document.onkeydown = function myFunction() {
+	if(event.keyCode<=40 && event.keyCode>=37){
+		arrowkeys[event.keyCode-37] = true;
+	}
+};
+document.onkeyup = function myFunction() {
+	if(event.keyCode<=40 && event.keyCode>=37){
+		arrowkeys[event.keyCode-37] = false;
+	}
+};
+
+
+var keyboardcontrol = new Behavior(function(bodyPriv, bodyPubl){
+	if(bodyPriv.fixed || bodyPriv.type != "robotc"){return;}
+	if(arrowkeys[0]){ bodyPriv.k.ax += -1; }
+	if(arrowkeys[1]){ bodyPriv.k.ay += -3; }
+	if(arrowkeys[2]){ bodyPriv.k.ax += 1; }
+	if(arrowkeys[3]){ bodyPriv.k.ay += 1; }
 });

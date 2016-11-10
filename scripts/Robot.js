@@ -41,7 +41,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		var towardopponent = (_op.x - _x) / Math.abs(_op.x - _x);
 
 		if(Math.abs(_op.x - _x) > 200){
-			__(this).move(this,towardopponent*2,0);
+			__(this).move(this,towardopponent,0);
 			//_protected.super.super.move.call(this,towardopponent*5,0);
 			//console.log(this.getEnergy());
 		}else{
