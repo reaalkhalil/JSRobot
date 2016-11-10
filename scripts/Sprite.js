@@ -13,8 +13,8 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).height = options.height;
 		__(this).image = options.image;
 		__(this).loop = options.loop;
-		__(this).x = options.x - options.destwidth / 2;
-		__(this).y = options.y - options.destheight / 2;
+		__(this).x = options.x;
+		__(this).y = options.y;
 		__(this).visible = options.visible || true;
 	};
 
@@ -41,8 +41,8 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		0,
 		__(this).width / __(this).numberOfFrames,
 		__(this).height,
-		__(this).x + px,
-		__(this).y + py,
+		__(this).x + px - __(this).destwidth/2,
+		__(this).y + py - __(this).destheight/2,
 		__(this).destwidth,
 		__(this).destheight);
 	};

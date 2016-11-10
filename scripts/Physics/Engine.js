@@ -33,6 +33,7 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 	};
 
 	__private.update = function(){
+		collide.find(__(this), this);
 		//needs to change
 		// this calls bodies' update function, that then sends an instance of the body to
 		// the behaviour object which acts on it, if it's an agent, a robot behaviour calls its step fn.
