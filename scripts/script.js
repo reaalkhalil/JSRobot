@@ -10,6 +10,7 @@ loadImage("coin");
 loadImage("wall1");
 loadImage("wall2");
 loadImage("wall3");
+loadImage("battery");
 
 function loadImage(name) {
 	images[name] = new Image();
@@ -102,7 +103,8 @@ wall2.addSprite(new Sprite({
 	height: 50,
 	destwidth: 40,
 	destheight: 40,
-	image: images.wall1, r: -Math.PI/2
+	image: images.wall1,
+	r: -Math.PI/2
 }));
 
 engine = new Engine();
