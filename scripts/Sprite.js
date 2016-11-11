@@ -15,6 +15,7 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).loop = options.loop;
 		__(this).x = options.x;
 		__(this).y = options.y;
+		__(this).r = options.r || 0;
 		__(this).visible = options.visible || true;
 	};
 
@@ -35,6 +36,13 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 			px = __(this).container.getK().x;
 			py = __(this).container.getK().y;
 		}
+		if(__(this).r!==0){
+			__(this).context.save(); 
+			__(this).context.translate(__(this).x + px, __(this).y + py); 
+			__(this).context.rotate(__(this).r);
+			px = -__(this).x ;
+			py = -__(this).y ;
+		}
 		__(this).context.drawImage(
 		__(this).image,
 		__(this).frameIndex * __(this).width / __(this).numberOfFrames,
@@ -45,6 +53,7 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).y + py - __(this).destheight/2,
 		__(this).destwidth,
 		__(this).destheight);
+		if(__(this).r!==0){__(this).context.restore();}
 	};
 
 	__private.update = function () {

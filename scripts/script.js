@@ -102,7 +102,7 @@ wall2.addSprite(new Sprite({
 	height: 50,
 	destwidth: 40,
 	destheight: 40,
-	image: images.wall1
+	image: images.wall1, r: -Math.PI/2
 }));
 
 engine = new Engine();
