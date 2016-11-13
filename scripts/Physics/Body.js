@@ -17,6 +17,7 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.toBeDestroyed = function(){ return __(this).toBeDestroyed;};
 
 	prototype.getBox = function(){
+		var k = __(this).k;
 		var box = [0,0,0,0]; // top right bottom left
 		for(var i in __(this).sprites){
 			var info = __(this).sprites[i].getInfo();
@@ -26,7 +27,7 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 			box[2] = Math.max(box[2], -info.y + info.h/2);
 			box[3] = Math.max(box[3], -info.x + info.w/2);
 		}
-		return box;
+		return [k.y - box[0], k.x + box[1], k.y + box[2], k.x - box[3]];
 	};
 
 	prototype.render = function(){
@@ -49,7 +50,6 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		if(this.getK().t + 1 != engine.getTime()){return;}
 		__(this).k.t += 1; // check if this is a good place to do this
 		// make this into a behaviour?: nahhh
-		// call behaviors!
 		gravitate.act(__(this), this);
 		collide.act(__(this), this);
 		keyboardcontrol.act(__(this), this);
