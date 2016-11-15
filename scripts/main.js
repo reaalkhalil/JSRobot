@@ -6,6 +6,7 @@ define(function (require) {
 	var Body = require('Physics/Body');
 	var Robot = require('Robot');
 	var Sprite = require('Sprite');
+	var Effects = require('Effects');
 	var script = require('script');
 });
 
