@@ -40,6 +40,13 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		// the step fn. then calls protected functions that move robots with constraints imposed.
 		// There is then no need for a public move fn. in a body. behaviours are sent the entire body. 
 		//delete objects if toBeDeleted
+		for(var j in __(this).world){
+			var o = __(this).world[j];
+			if(o.toBeDestroyed()){
+				__(this).world.splice(j,1);
+				continue;
+			}
+		}
 		for(var i in __(this).world){
 			var obj = __(this).world[i];
 			if(!obj.isFixed()){ // should this condition be here?
