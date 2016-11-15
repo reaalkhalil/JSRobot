@@ -13,12 +13,17 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).height = options.height;
 		__(this).image = options.image;
 		__(this).loop = options.loop;
+		__(this).name = options.name || "";
 		__(this).x = options.x;
 		__(this).y = options.y;
 		__(this).r = options.r || 0;
-		__(this).visible = options.visible || true;
+		if(options.visible === false){__(this).visible = false;}else{__(this).visible = true;}
 	};
 
+	prototype.setPos = function(x,y){
+		__(this).x = x;
+		__(this).y = y;
+	};
 	prototype.getInfo = function(){
 		var info = {};
 		info.x = __(this).x;
@@ -26,11 +31,12 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		info.w = __(this).destwidth;
 		info.h = __(this).destheight;
 		info.v = __(this).visible;
+		info.n = __(this).name;
 		return info;
 	};
 
 	__private.render = function () {
-			// universal frame index?? probably not
+		if(!__(this).visible){return;}
 		var px = 0, py = 0;
 		if(__(this).container){
 			px = __(this).container.getK().x;
@@ -56,7 +62,17 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		if(__(this).r!==0){__(this).context.restore();}
 	};
 
+	prototype.hide = function () {
+		__(this).visible = false;
+	};
+	prototype.play = function () {
+		__(this).frameIndex = 0;
+		__(this).visible = true;
+		__(this).loop = false;
+			console.log(__(this).visible);
+	};
 	__private.update = function () {
+		if(!__(this).visible){return;}
 		if(__(this).numberOfFrames == 1){return;}
 			__(this).tickCount += 1;
 		if (__(this).tickCount > __(this).ticksPerFrame) {
