@@ -11,6 +11,8 @@ loadImage("wall1");
 loadImage("wall2");
 loadImage("wall3");
 loadImage("battery");
+loadImage("coinpop");
+loadImage("batterypop");
 
 function loadImage(name) {
 	images[name] = new Image();
@@ -67,9 +69,9 @@ battery.addSprite(new Sprite({
 	ticksPerFrame: 4
 }));
 
-coin = new Body({x:100,y:100, type: "coin"}); 
-coin.addSprite(new Sprite({
+var coinSpriteOptions = {
 	'context': context,
+	name: "coin",
 	x: 0,
 	y: 0,
 	width: 120,
@@ -80,7 +82,15 @@ coin.addSprite(new Sprite({
 	numberOfFrames: 6,
 	loop: true,
 	ticksPerFrame: 4
-}));
+};
+coin1 = new Body({x:300,y:100, type: "coin"}); 
+coin1.addSprite(new Sprite(coinSpriteOptions));
+
+coin2 = new Body({x:500,y:100, type: "coin"}); 
+coin2.addSprite(new Sprite(coinSpriteOptions));
+
+coin = new Body({x:100,y:100, type: "coin"}); 
+coin.addSprite(new Sprite(coinSpriteOptions));
 
 wall = new Body({x: 40, y: 500, fixed: true, type: "wall1", mass: -1}); 
 wall.addSprite(new Sprite({
@@ -128,7 +138,43 @@ engine.add(wall2);
 engine.add(robot1);
 engine.add(robot2);
 engine.add(coin);
+engine.add(coin1);
+engine.add(coin2);
 engine.add(battery);
+
+
+effects.addEffect("coinpop",new Sprite({
+	'context': context,
+	name: "coinpop",
+	x: 0,
+	y: 0,
+	width: 36,
+	height: 14,
+	destwidth: 18,
+	destheight: 28,
+	image: images.coinpop,
+	numberOfFrames: 4,
+	visible: false,
+	ticksPerFrame: 2
+}));
+
+effects.addEffect("batterypop",new Sprite({
+	'context': context,
+	name: "batterypop",
+	x: 0,
+	y: 0,
+	width: 36,
+	height: 14,
+	destwidth: 18,
+	destheight: 28,
+	image: images.batterypop,
+	numberOfFrames: 4,
+	visible: false,
+	ticksPerFrame: 2
+}));
+
+
+engine.add(effects);
 
 function resourceLoaded() {
 	numResourcesLoaded += 1;
@@ -136,8 +182,6 @@ function resourceLoaded() {
 		engine.start();
 	}
 }
-
-
 
 
 
