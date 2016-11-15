@@ -1,0 +1,137 @@
+body{
+	font-family: Helvetica;
+	color: #e8e8e8;
+}
+.noselect {
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+#codearea{
+	background: rgb(20,24,32);
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+#buttonbar{
+	background: rgb(40,44,52);
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+#buttonbar li{
+	display: inline-block;
+	font-size: 0px;
+}
+#buttonbar li a{
+	display: inline-block;
+	width: 100px;
+	text-align: center;
+	height: 35px;
+	line-height: 35px;
+	font-family: Helvetica;
+	cursor: pointer;
+	color: #e8e8e8;
+	font-size: 14px;
+}
+#buttonbar li a:hover{
+	background: rgb(60,64,72);
+}
+#buttonbar li a.selected{
+	background: #646e82;
+	color: black;
+}
+#buttonbar li#minmax{
+	float: right;
+}
+#buttonbar li#minmax a{
+	width: 40px;
+	font-weight: bold;
+}
+
+
+#code, #command{
+	outline: none;
+	border-radius: 5px;
+	background: rgb(40,44,52);
+	color: #e8e8e8;
+	padding: 10px;
+	font-family: menlo, monaco;
+	border: 2px solid #444;
+	transition: border 0.5s;
+	tab-size: 4;
+}
+#code{
+	overflow: scroll;
+	width: calc(100% - 20px);
+	margin: 10px;
+	resize: none;
+    overflow-y: visible;
+}
+
+#codeDiv{
+}
+#commandDiv{
+		display: none;
+}
+#command{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: calc(100% - 20px);
+	padding-left: 25px;
+}
+#commandDiv::before{
+	content: '>';
+	color: #e8e8e8;
+	font-family: menlo, monaco;
+	position: relative;
+	top: 2px;
+	width: 10px;
+	left: 20px;
+	display: inline-block;
+	color: white;
+	-webkit-transform:scale(0.75, 1.0);
+	-moz-transform:scale(0.75, 1.0);
+	-ms-transform:scale(0.75, 1.0);
+	-o-transform:scale(0.75, 1.0);
+	transform:scale(0.75,1.0);
+}
+
+#code:focus, #command:focus{
+	border: 2px solid #0cf;
+}
+
+#code::-moz-selection, #command::-moz-selection{
+	background: #bbb;
+}
+#code::selection, #command::selection{
+	background: #bbb;
+}
+
+#submitCode{
+	transition: background 0.3s, border 0.3s, color 0.3s;
+	display: block;
+	background: rgb(40,44,52);
+	width: 100px;
+	text-align: center;
+	height: 35px;
+	line-height: 35px;
+	font-family: Helvetica;
+	cursor: pointer;
+	color: #e8e8e8;
+	font-size: 14px;
+	margin: 10px;
+	margin-top: 0px;
+	float: right;
+}
+#submitCode:hover{
+	background: rgb(60,64,72);
+}
+#submitCode:active{
+	background: #0cf;
+	color: black;
+}
