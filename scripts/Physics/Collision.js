@@ -68,10 +68,6 @@ var Collision = Behavior.subclass(function(prototype, _, _protected, __, __priva
 				if(Math.abs(k2.y - k1.y) > Math.abs(k2.vy - k1.vy) + b2[2] - b2[0] + b1[2] - b1[0]){
 					continue;
 				}
-				if(t1 == "robotc" && t2 == "wall1" || t2 == "robotc" && t1 == "wall1"){
-					console.log("oC", overlapC);
-					console.log("oP", overlapP);
-				}
 				// NARROW PHASE:
 				var overlap = [0,0];
 				var overlapC = this.getOverlap(b1, b2);
@@ -136,6 +132,29 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 					obj1: pairs[i].obj2,
 					obj2: pairs[i].obj1};
 		}else{
+			continue;
+		}
+
+		if(bodyPubl.isAgent() && col.obj2.t == "battery"){
+			if(isNaN(bodyPriv.properties.energy)){
+				bodyPriv.properties.energy = 0;
+			}
+			bodyPriv.properties.energy += 1;
+			continue;
+		}else if(bodyPriv.type == "battery" && ( col.obj2.t == "robot" ||  col.obj2.t == "robotc")){
+			effects.play("batterypop",{x:bodyPriv.k.x, y:bodyPriv.k.y});
+			bodyPriv.toBeDestroyed = true;
+			continue;
+		}
+		if(bodyPubl.isAgent() && col.obj2.t == "coin"){
+			if(isNaN(bodyPriv.properties.coins)){
+				bodyPriv.properties.coins = 0;
+			}
+			bodyPriv.properties.coins += 1;
+			continue;
+		}else if(bodyPriv.type == "coin" && ( col.obj2.t == "robot" ||  col.obj2.t == "robotc")){
+			effects.play("coinpop",{x:bodyPriv.k.x, y:bodyPriv.k.y});
+			bodyPriv.toBeDestroyed = true;
 			continue;
 		}
 		var k1 = col.obj1.k;
