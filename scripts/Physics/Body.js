@@ -9,11 +9,13 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).mass = opts.mass || 1;
 		__(this).behaviors = opts.behaviors || [];
 		__(this).type = opts.type || [];
+		__(this).properties = {};
 	};
 	prototype.getK = function(){ return JSON.parse(JSON.stringify(__(this).k)); };
 	prototype.getType = function(){ return __(this).type; };
 	prototype.getMass = function(){ return __(this).mass; };
 	prototype.isFixed = function(){ return __(this).fixed; };
+	prototype.isAgent = function(){ return __(this).agent; };
 	prototype.toBeDestroyed = function(){ return __(this).toBeDestroyed;};
 
 	prototype.getBox = function(){
@@ -35,9 +37,23 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 			__(this).sprites[i].redraw();
 		}
 	};
-
+	__private.hideSprite = function(name){
+		for(var i in __(this).sprites){
+			if(__(this).sprites[i].getInfo().n == name){
+				__(this).sprites[i].hide();
+			}
+		}
+	};
+	__private.animateSprite = function(name){
+		for(var i in __(this).sprites){
+			if(__(this).sprites[i].getInfo().n == name){
+				__(this).sprites[i].play();
+			}
+		}
+	};
 	prototype.addSprite = function(sprite){
 	//should be private possibly defined in constructor
+	// should be an object and be able to animate
 		__(this).sprites.push(sprite);
 		sprite.setParent(this);
 	};
@@ -54,7 +70,7 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		collide.act(__(this), this);
 		keyboardcontrol.act(__(this), this);
 		// this works but needs the behaviours need to be in body's array
-		if(__(this).agent){
+		if(__(this).agent && this.getK().t % 10 === 0){
 			this.step();
 		}
 
