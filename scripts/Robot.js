@@ -1,8 +1,5 @@
 var Robot = Body.subclass(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(options) {
-		__(this).health = 100;
-		__(this).energy = 100;
-		__(this).coins = 0;
 		prototype.super.init.call(this, options);
 	};
 
@@ -29,8 +26,13 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		prototype.super.init.call(this, options);
 	};
 	
-	__private.move = function(that,dx,dy){
-		_protected.super.move.call(that,dx,dy);
+	prototype.move = function(that,dx,dy){
+		_protected.super.move.call(this,dx,dy);
+	};
+	prototype.command = function(string){
+		console.log(string);
+		var stringFn = new Function(string);
+		stringFn.call(this);
 	};
 
 	prototype.step = function(){
@@ -41,7 +43,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		var towardopponent = (_op.x - _x) / Math.abs(_op.x - _x);
 
 		if(Math.abs(_op.x - _x) > 200){
-			__(this).move(this,towardopponent,0);
+			this.move(this,towardopponent*2,0);
 			//_protected.super.super.move.call(this,towardopponent*5,0);
 			//console.log(this.getEnergy());
 		}else{
