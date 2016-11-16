@@ -4,12 +4,15 @@ var canvas = document.getElementById("canvasID");
 var context = canvas.getContext("2d");
 var images = {};
 
+var Game = {};
+
 loadImage("robot1");
 loadImage("robot2");
 loadImage("coin");
 loadImage("wall1");
 loadImage("wall2");
 loadImage("wall3");
+loadImage("wall9");
 loadImage("battery");
 loadImage("coinpop");
 loadImage("batterypop");
@@ -54,7 +57,7 @@ robot1.setOpponent(robot2);
 robot2.setOpponent(robot1);
 
 
-battery = new Body({x:200,y:100, type: "battery"}); 
+battery = new Body({x:250,y:100, type: "battery"}); 
 battery.addSprite(new Sprite({
 	'context': context,
 	x: 0,
@@ -86,13 +89,13 @@ var coinSpriteOptions = {
 coin1 = new Body({x:300,y:100, type: "coin"}); 
 coin1.addSprite(new Sprite(coinSpriteOptions));
 
-coin2 = new Body({x:500,y:100, type: "coin"}); 
+coin2 = new Body({x:390,y:100, type: "coin"}); 
 coin2.addSprite(new Sprite(coinSpriteOptions));
 
 coin = new Body({x:100,y:100, type: "coin"}); 
 coin.addSprite(new Sprite(coinSpriteOptions));
 
-wall = new Body({x: 40, y: 500, fixed: true, type: "wall1", mass: -1}); 
+wall = new Body({x: 40, y: 500, fixed: true, type: "wall", mass: -1}); 
 wall.addSprite(new Sprite({
 	'context': context,
 	x: 0,
@@ -119,7 +122,7 @@ wall.addSprite(new Sprite({ 'context': context, x: 520, y: 0, width: 50, height:
 wall.addSprite(new Sprite({ 'context': context, x: 560, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall3 }));
 wall.addSprite(new Sprite({ 'context': context, x: 600, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall1 }));
 
-wall2 = new Body({x: 400, y: 461, fixed: true, type: "wall2", mass: -1}); 
+wall2 = new Body({x: 400, y: 461, fixed: true, type: "wall", mass: -1}); 
 wall2.addSprite(new Sprite({
 	'context': context,
 	x: 0,
@@ -128,7 +131,7 @@ wall2.addSprite(new Sprite({
 	height: 50,
 	destwidth: 40,
 	destheight: 40,
-	image: images.wall1,
+	image: images.wall9,
 	r: -Math.PI/2
 }));
 
