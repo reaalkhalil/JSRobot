@@ -166,8 +166,8 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 
 		if(col.obj2.m != -1){
 			var mratio = col.obj1.m / (col.obj1.m + col.obj2.m);
-			bodyPriv.k.x -= overlap[0] * mratio;
-			bodyPriv.k.y -= overlap[1] * mratio;
+			bodyPriv.k.x -= overlap[0] * mratio * 0.4;
+			bodyPriv.k.y -= overlap[1] * mratio * 0.4;
 			nx = -1;
 			ny = -1;
 			if(overlap[0] === 0){nx = 1;}
@@ -175,8 +175,8 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			bodyPriv.k.vx  = nx * relvx * mratio;
 			bodyPriv.k.vy  = ny * relvy * mratio;
 		}else{
-			bodyPriv.k.x -= (overlap[0]);
-			bodyPriv.k.y -= (overlap[1]);
+			bodyPriv.k.x -= (overlap[0]*0.4);
+			bodyPriv.k.y -= (overlap[1]*0.4);
 			nx = -0.5;
 			ny = -0.5;
 			if(overlap[0] === 0){nx = 0.9;}
@@ -184,11 +184,14 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			bodyPriv.k.vx  = nx * relvx;
 			bodyPriv.k.vy  = ny * relvy;
 		}
+		if(Math.abs(col.obj2.b[0] - col.obj1.b[2]) < 3){
+			bodyPriv.onGround = true;
+		}
 
-		bodyPriv.k.x = Math.ceil(bodyPriv.k.x*10)/10;
-		bodyPriv.k.y = Math.ceil(bodyPriv.k.y*10)/10;
-		if(Math.abs(bodyPriv.k.vx)<=0.5){bodyPriv.k.vx=0;}
-		if(Math.abs(bodyPriv.k.vy)<=0.5){bodyPriv.k.vy=0;}
+		//bodyPriv.k.x = Math.ceil(bodyPriv.k.x*10)/10;
+		//bodyPriv.k.y = Math.ceil(bodyPriv.k.y*10)/10;
+		if(Math.abs(bodyPriv.k.vx)<=0.2){bodyPriv.k.vx=0;}
+		if(Math.abs(bodyPriv.k.vy)<=0.2){bodyPriv.k.vy=0;}
 	}
 });
 
