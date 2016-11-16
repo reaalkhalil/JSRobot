@@ -26,16 +26,22 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		prototype.super.init.call(this, options);
 	};
 	
-	prototype.move = function(that,dx,dy){
+	prototype.jump = function(){
+		if(this.onGround()&&Math.abs(this.getK().vy)<1){
+			_protected.super.move.call(this,0,-15);
+		}
+	};
+	prototype.move = function(dx,dy){
 		_protected.super.move.call(this,dx,dy);
 	};
+
 	prototype.command = function(string){
-		console.log(string);
 		var stringFn = new Function(string);
 		stringFn.call(this);
 	};
 
-	prototype.step = function(){
+	prototype.step = function(robot){
+		/*
 		//console.log(this);
 		// this.update(); this doesnt work woohoo
 		var _x = this.getK().x;
@@ -43,11 +49,12 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		var towardopponent = (_op.x - _x) / Math.abs(_op.x - _x);
 
 		if(Math.abs(_op.x - _x) > 200){
-			this.move(this,towardopponent*2,0);
+			this.move(towardopponent*2,0);
 			//_protected.super.super.move.call(this,towardopponent*5,0);
 			//console.log(this.getEnergy());
 		}else{
 		}
+		*/
 	};
 });
 		
