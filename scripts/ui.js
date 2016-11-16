@@ -7,17 +7,14 @@ var buttonbar = document.getElementById("buttonbar");
 var commandBtn = document.getElementById("commandBtn");
 var codeBtn = document.getElementById("codeBtn");
 var minmaxBtn = document.getElementById("minmax");
+var lineheight = document.getElementById("lineheight");
 
-function requireFromString(src, filename) {
-  var Module = module.constructor;
-  var m = new Module();
-  m._compile(src, filename);
-  return m.exports;
-}
-
-submit.onclick = function(){
-	codeString = code.value+"\nloop();";
+function applyScript(){
+	codeString = code.value+"\nloop(this);";
 	robot1.step = new Function(codeString);
+}
+submit.onclick = function(){
+	applyScript();
 };
 
 command.onkeydown = function(e) {
@@ -35,6 +32,20 @@ code.onkeydown = function(e) {
         e.preventDefault();
     }
 };
+code.onkeyup = function(e) {
+	var linenumberstext = "";
+	var lines = code.value.split('\n');
+	var count = (code.value.match(/\n/g) || []).length;
+	for(var i = 1; i <= 1+count; i++){
+		breaks = Math.ceil((lines[i-1].length*6.61538)/(code.clientWidth- 36.28));
+		if(lines[i-1].length === 0){breaks = 1;}
+		linenumberstext = linenumberstext + i;
+		for(var j = 1; j <= breaks; j++){
+			linenumberstext = linenumberstext + "<br>";
+		}
+	}
+	linenumbers.innerHTML = linenumberstext + "<br>";
+};
 
 function openCommandDiv(){
 	codeDiv.style.display = "none";
@@ -50,6 +61,18 @@ function openCodeDiv(){
 	codeBtn.className = "selected";
 	minmaxBtn.innerHTML = "<a>_</a>";
 }
+function minimize(){
+	codeDiv.style.display = "none";
+	commandDiv.style.display = "none";
+	minmaxBtn.innerHTML = "<a>&#11027;</a>";
+}
+function maximize(){
+	if(commandBtn.className == "selected"){
+		openCommandDiv();
+	}else{
+		openCodeDiv();
+	}
+}
 
 commandBtn.onclick = function(){
 	openCommandDiv();
@@ -59,15 +82,9 @@ codeBtn.onclick = function(){
 };
 minmaxBtn.onclick = function(){
 	if(codeDiv.style.display == "none" && commandDiv.style.display == "none"){
-		if(commandBtn.className == "selected"){
-			openCommandDiv();
-		}else{
-			openCodeDiv();
-		}
+		maximize();
 	}else{
-		codeDiv.style.display = "none";
-		commandDiv.style.display = "none";
-		minmaxBtn.innerHTML = "<a>&#11027;</a>";
+		minimize();
 	}
 };
 
@@ -90,6 +107,34 @@ onmousemove = function(e){
 		var newheight = height + dragy - e.clientY;
 		if(newheight < 63){newheight = 63;}
 		code.style.height = newheight;
+		linenumbers.style.height = newheight - 14;
 		dragy = e.clientY;
 	}
 };
+
+linenumbers.style.height = Number(code.style.height.replace("px","")) - 14;
+
+code.onscroll = function(){
+	linenumbers.scrollTop=code.scrollTop;
+};
+
+
+// line number wrap thing
+
+
+onkeydown = function(e) {
+    if(event.metaKey) {
+    	if(e.keyCode == 13) {
+			applyScript();
+		}else if(e.keyCode == 37) {
+			openCodeDiv();
+		}else if(e.keyCode == 38) {
+			maximize();
+		}else if(e.keyCode == 39) {
+			openCommandDiv();
+		}else if(e.keyCode == 40) {
+			minimize();
+		}
+	}
+};
+
