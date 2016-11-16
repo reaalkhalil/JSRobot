@@ -32,7 +32,25 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		return data;
 	};
 
+	__private.exportWorld = function(){
+		var coins = [];
+		var batteries = [];
+		for(var j in __(this).world){
+			var o = __(this).world[j];
+			var k = o.getK();
+			if(o.getType() == "coin"){
+				coins.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay});
+			}
+			if(o.getType() == "battery"){
+				batteries.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay});
+			}
+		}
+		Game.coins = coins;
+		Game.batteries = batteries;
+	};
+
 	__private.update = function(){
+		__(this).exportWorld();
 		collide.find(__(this), this);
 		//needs to change
 		// this calls bodies' update function, that then sends an instance of the body to
