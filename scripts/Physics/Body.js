@@ -10,12 +10,14 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).behaviors = opts.behaviors || [];
 		__(this).type = opts.type || [];
 		__(this).properties = {};
+		__(this).onGround = false;
 	};
 	prototype.getK = function(){ return JSON.parse(JSON.stringify(__(this).k)); };
 	prototype.getType = function(){ return __(this).type; };
 	prototype.getMass = function(){ return __(this).mass; };
 	prototype.isFixed = function(){ return __(this).fixed; };
 	prototype.isAgent = function(){ return __(this).agent; };
+	prototype.onGround = function(){ return __(this).onGround; };
 	prototype.toBeDestroyed = function(){ return __(this).toBeDestroyed;};
 
 	prototype.getBox = function(){
@@ -66,12 +68,13 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		if(this.getK().t + 1 != engine.getTime()){return;}
 		__(this).k.t += 1; // check if this is a good place to do this
 		// make this into a behaviour?: nahhh
+		__(this).onGround = false;
 		gravitate.act(__(this), this);
 		collide.act(__(this), this);
-		keyboardcontrol.act(__(this), this);
+		//keyboardcontrol.act(__(this), this);
 		// this works but needs the behaviours need to be in body's array
 		if(__(this).agent && this.getK().t % 10 === 0){
-			this.step();
+			this.step(this);
 		}
 
 		var dt = 1;
