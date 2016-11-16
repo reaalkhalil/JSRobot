@@ -1,5 +1,5 @@
 body{
-	font-family: Helvetica;
+	font-family: Roboto, Helvetica;
 	color: #e8e8e8;
 }
 .noselect {
@@ -28,6 +28,7 @@ body{
 	font-size: 0px;
 }
 #buttonbar li a{
+	transition: background 0.3s, color 0.3s;
 	display: inline-block;
 	width: 100px;
 	text-align: center;
@@ -43,7 +44,7 @@ body{
 }
 #buttonbar li a.selected{
 	background: #646e82;
-	color: black;
+	color: rgb(20,24,32);
 }
 #buttonbar li#minmax{
 	float: right;
@@ -56,14 +57,15 @@ body{
 
 #code, #command{
 	outline: none;
-	border-radius: 5px;
 	background: rgb(40,44,52);
-	color: #e8e8e8;
+	color: #999;
 	padding: 10px;
 	font-family: menlo, monaco;
-	border: 2px solid #444;
-	transition: border 0.5s;
+	border: 2px solid #434a57;
+	border-radius: 5px;
+	transition: border 0.3s, color 0.3s;
 	tab-size: 4;
+	font-size: 11px;
 }
 #code{
 	overflow: scroll;
@@ -71,9 +73,21 @@ body{
 	margin: 10px;
 	resize: none;
     overflow-y: visible;
+	padding-left: 25px;
+	position: relative;
 }
-
 #codeDiv{
+}
+#linenumbers{
+	font-family: menlo, monaco;
+	color: #999;
+	position: absolute;
+	font-size: 11px;
+	margin-top: 12px;
+	padding-top: 10px;
+	margin-left: 20px;
+	z-index: 1000;
+	overflow: hidden;
 }
 #commandDiv{
 		display: none;
@@ -102,7 +116,8 @@ body{
 }
 
 #code:focus, #command:focus{
-	border: 2px solid #0cf;
+	border: 2px solid rgb(82,139,255);
+	color: #e8e8e8;
 }
 
 #code::-moz-selection, #command::-moz-selection{
@@ -113,6 +128,8 @@ body{
 }
 
 #submitCode{
+	border: 2px solid #434a57;
+	border-radius: 5px;
 	transition: background 0.3s, border 0.3s, color 0.3s;
 	display: block;
 	background: rgb(40,44,52);
@@ -132,6 +149,5 @@ body{
 	background: rgb(60,64,72);
 }
 #submitCode:active{
-	background: #0cf;
-	color: black;
+	border: 2px solid rgb(82,139,255);
 }
