@@ -5,6 +5,7 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).world = [];
 		__(this).timestep = 0;
 		__(this).started = false;
+		__(this).properties = {x:0, y:0, width: 800, height: 500};
 	};
 
 	__private.ticker = function(){
@@ -51,13 +52,6 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 
 	__private.update = function(){
 		__(this).exportWorld();
-		collide.find(__(this), this);
-		//needs to change
-		// this calls bodies' update function, that then sends an instance of the body to
-		// the behaviour object which acts on it, if it's an agent, a robot behaviour calls its step fn.
-		// the step fn. then calls protected functions that move robots with constraints imposed.
-		// There is then no need for a public move fn. in a body. behaviours are sent the entire body. 
-		//delete objects if toBeDeleted
 		for(var j in __(this).world){
 			var o = __(this).world[j];
 			if(o.toBeDestroyed()){
@@ -65,6 +59,7 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 				continue;
 			}
 		}
+		collide.find(__(this), this);
 		for(var i in __(this).world){
 			var obj = __(this).world[i];
 			if(!obj.isFixed()){ // should this condition be here?
@@ -75,13 +70,24 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 	};
 	
 	__private.render = function(){
-		canvas.width = canvas.width; // clears the canvas
+		var p = __(this).properties;
+		canvas.width = p.width;
+		canvas.height = p.height;
 		context.mozImageSmoothingEnabled = false;
 		context.webkitImageSmoothingEnabled = false;
 		context.msImageSmoothingEnabled = false;
 		context.imageSmoothingEnabled = false;
 		for(var i in __(this).world){
-			__(this).world[i].render();
+			var o = __(this).world[i];
+			var b = o.getBox();
+			var k = o.getK();
+			// reject objects too far from screen
+			if(o.getType() == "effects" || !(k.y < -(b[2] - b[0]) + p.y ||
+			k.y > p.height + (b[2] - b[0]) + p.y ||
+			k.x < -(b[1] - b[3]) + p.x ||
+			k.x > p.width + (b[1] - b[3]) + p.x)){
+				o.render(p.x, p.y);
+			}
 		}
 	};
 
@@ -97,6 +103,8 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		// added to the engine it cant do anything really
 	prototype.add = function(sprite){
 		__(this).world.push(sprite);
+		if(sprite.getType() == "effects"){return;}
+		sprite.setEngine(__(this), this);
 	};
 
 });
