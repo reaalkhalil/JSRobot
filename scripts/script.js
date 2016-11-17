@@ -18,6 +18,7 @@ loadImage("battery");
 loadImage("bullet");
 loadImage("coinpop");
 loadImage("batterypop");
+loadImage("bulletpop");
 
 function loadImage(name) {
 	images[name] = new Image();
@@ -56,7 +57,7 @@ robot1.addSprite(new Sprite({
 	visible: false
 }));
 
-var robot2 = new RobotOne({x:500,y:300,agent:false, type: "robot", properties: {energy: 100, coins: 0, health: 100}});
+var robot2 = new RobotOne({x:400,y:300,agent:false, type: "robot", properties: {energy: 100, coins: 0, health: 100}});
 robot2.addSprite(new Sprite({
 	'context': context,
 	x: 0,
@@ -160,6 +161,21 @@ engine.add(coin1);
 engine.add(coin2);
 engine.add(battery);
 
+
+effects.addEffect("bulletpop",new Sprite({
+	'context': context,
+	name: "bulletpop",
+	x: 0,
+	y: 0,
+	width: 36,
+	height: 9,
+	destwidth: 20,
+	destheight: 20,
+	image: images.bulletpop,
+	numberOfFrames: 4,
+	visible: false,
+	ticksPerFrame: 1
+}));
 
 effects.addEffect("coinpop",new Sprite({
 	'context': context,
