@@ -6,6 +6,8 @@ var commandDiv = document.getElementById("commandDiv");
 var buttonbar = document.getElementById("buttonbar");
 var commandBtn = document.getElementById("commandBtn");
 var codeBtn = document.getElementById("codeBtn");
+var propertiesBtn = document.getElementById("propertiesBtn");
+var propertiesDiv = document.getElementById("propertiesDiv");
 var minmaxBtn = document.getElementById("minmax");
 var lineheight = document.getElementById("lineheight");
 
@@ -35,9 +37,10 @@ code.onkeydown = function(e) {
 code.onkeyup = function(e) {
 	var linenumberstext = "";
 	var lines = code.value.split('\n');
+		//tabs to 4 spaces;
 	var count = (code.value.match(/\n/g) || []).length;
 	for(var i = 1; i <= 1+count; i++){
-		breaks = Math.ceil((lines[i-1].length*6.61538)/(code.clientWidth- 36.28));
+		breaks = Math.ceil((lines[i-1].length*6.622533333)/(code.clientWidth- 39));
 		if(lines[i-1].length === 0){breaks = 1;}
 		linenumberstext = linenumberstext + i;
 		for(var j = 1; j <= breaks; j++){
@@ -48,17 +51,30 @@ code.onkeyup = function(e) {
 };
 
 function openCommandDiv(){
-	codeDiv.style.display = "none";
 	commandDiv.style.display = "block";
+	propertiesDiv.style.display = "none";
+	codeDiv.style.display = "none";
 	codeBtn.className = "";
+	propertiesBtn.className = "";
 	commandBtn.className = "selected";
 	minmaxBtn.innerHTML = "<a>_</a>";
 }
 function openCodeDiv(){
 	codeDiv.style.display = "block";
+	propertiesDiv.style.display = "none";
 	commandDiv.style.display = "none";
 	commandBtn.className = "";
+	propertiesBtn.className = "";
 	codeBtn.className = "selected";
+	minmaxBtn.innerHTML = "<a>_</a>";
+}
+function openPropertiesDiv(){
+	propertiesDiv.style.display = "block";
+	commandDiv.style.display = "none";
+	codeDiv.style.display = "none";
+	commandBtn.className = "";
+	codeBtn.className = "";
+	propertiesBtn.className = "selected";
 	minmaxBtn.innerHTML = "<a>_</a>";
 }
 function minimize(){
@@ -69,11 +85,16 @@ function minimize(){
 function maximize(){
 	if(commandBtn.className == "selected"){
 		openCommandDiv();
-	}else{
+	}else if(codeBtn.className == "selected"){
 		openCodeDiv();
+	}else{
+		openPropertiesDiv();
 	}
 }
 
+propertiesBtn.onclick = function(){
+	openPropertiesDiv();
+};
 commandBtn.onclick = function(){
 	openCommandDiv();
 };
@@ -81,7 +102,7 @@ codeBtn.onclick = function(){
 	openCodeDiv();
 };
 minmaxBtn.onclick = function(){
-	if(codeDiv.style.display == "none" && commandDiv.style.display == "none"){
+	if(codeDiv.style.display == "none" && commandDiv.style.display == "none" && propertiesDiv.style.display == "none"){
 		maximize();
 	}else{
 		minimize();
@@ -119,19 +140,28 @@ code.onscroll = function(){
 };
 
 
-// line number wrap thing
-
-
 onkeydown = function(e) {
     if(event.metaKey) {
     	if(e.keyCode == 13) {
 			applyScript();
 		}else if(e.keyCode == 37) {
-			openCodeDiv();
+			if(propertiesDiv.style.display == "block"){
+				openCommandDiv();
+			}else if(commandDiv.style.display == "block"){
+				openCodeDiv();
+			}else if(codeDiv.style.display == "block"){
+				openPropertiesDiv();
+			}
 		}else if(e.keyCode == 38) {
 			maximize();
 		}else if(e.keyCode == 39) {
-			openCommandDiv();
+			if(propertiesDiv.style.display == "block"){
+				openCodeDiv();
+			}else if(commandDiv.style.display == "block"){
+				openPropertiesDiv();
+			}else if(codeDiv.style.display == "block"){
+				openCommandDiv();
+			}
 		}else if(e.keyCode == 40) {
 			minimize();
 		}
