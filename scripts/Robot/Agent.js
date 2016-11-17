@@ -33,7 +33,6 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 			//bodyPriv.engine.priv.world.push(bullet);
 		}
 	}
-	console.log(bodyPriv.properties.energy, bodyPriv.properties.coins);
 	bodyPriv.properties.nextMove = null;
 	propertiesDiv.innerHTML = "Energy: " + bodyPriv.properties.energy +
 							"<br>Coins: " + bodyPriv.properties.coins +

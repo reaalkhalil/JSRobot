@@ -13,6 +13,8 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).onGround = false;
 		__(this).engine = null;
 		__(this).lifetime = opts.lifetime || -1;
+		// try to cache box here:
+		__(this).box = null;
 	};
 	prototype.getK = function(){ return JSON.parse(JSON.stringify(__(this).k)); };
 	prototype.getType = function(){ return __(this).type; };
@@ -40,6 +42,12 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 			box[3] = Math.max(box[3], -info.x + info.w/2);
 		}
 		return [k.y - box[0], k.x + box[1], k.y + box[2], k.x - box[3]];
+	};
+	prototype.getDimensions = function(){
+		var box = this.getBox();
+		var width = box[1] - box[3];
+		var height = box[2] - box[0];
+		return {w: width, h: height};
 	};
 
 	prototype.render = function(x,y){

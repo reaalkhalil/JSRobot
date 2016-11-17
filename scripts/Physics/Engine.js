@@ -36,6 +36,7 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 	__private.exportWorld = function(){
 		var coins = [];
 		var batteries = [];
+		var walls = [];
 		for(var j in __(this).world){
 			var o = __(this).world[j];
 			var k = o.getK();
@@ -45,9 +46,15 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 			if(o.getType() == "battery"){
 				batteries.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay});
 			}
+			if(o.getType() == "wall"){
+				var w = o.getDimensions().w;
+				var h = o.getDimensions().h;
+				walls.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay, w: w, h: h});
+			}
 		}
 		Game.coins = coins;
 		Game.batteries = batteries;
+		Game.walls = walls;
 	};
 
 	__private.update = function(){
