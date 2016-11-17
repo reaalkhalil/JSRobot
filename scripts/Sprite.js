@@ -35,13 +35,14 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		return info;
 	};
 
-	__private.render = function () {
+	__private.render = function (x,y) {
 		if(!__(this).visible){return;}
-		var px = 0, py = 0;
+		var px = -x, py = -y;
 		if(__(this).container){
-			px = __(this).container.getK().x;
-			py = __(this).container.getK().y;
+			px = __(this).container.getK().x - x;
+			py = __(this).container.getK().y - y;
 		}
+
 		if(__(this).r!==0){
 			__(this).context.save(); 
 			__(this).context.translate(__(this).x + px, __(this).y + py); 
@@ -62,6 +63,9 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		if(__(this).r!==0){__(this).context.restore();}
 	};
 
+	prototype.show = function () {
+		__(this).visible = true;
+	};
 	prototype.hide = function () {
 		__(this).visible = false;
 	};
@@ -69,7 +73,6 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).frameIndex = 0;
 		__(this).visible = true;
 		__(this).loop = false;
-			console.log(__(this).visible);
 	};
 	__private.update = function () {
 		if(!__(this).visible){return;}
@@ -85,14 +88,11 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		}
 	};
 
-	prototype.redraw = function(){
+	prototype.redraw = function(x,y){
 		__(this).update();
-		__(this).render();
+		__(this).render(x,y);
 	};
 
-	prototype.getParentX = function(){
-		console.log(__(this).container.getX());
-	};
 	// this should change:
 	prototype.setParent = function(a){
 		__(this).container = a;
