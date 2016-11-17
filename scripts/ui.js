@@ -12,6 +12,8 @@ var minmaxBtn = document.getElementById("minmax");
 var lineheight = document.getElementById("lineheight");
 
 function applyScript(){
+	code.classList.add('execute');
+	setTimeout(function(){code.classList.remove('execute');}, 80);
 	codeString = code.value+"\nloop(this);";
 	robot1.step = new Function(codeString);
 }
@@ -19,9 +21,25 @@ submit.onclick = function(){
 	applyScript();
 };
 
+var commandLog = [];
+var commandIndex = 0;
+
 command.onkeydown = function(e) {
     if(e.keyCode === 13) {
 		robot1.command(command.value);
+		commandLog.push(command.value);
+		commandIndex = 0;
+		command.classList.add('execute');
+		setTimeout(function(){command.classList.remove('execute');}, 80);
+		e.preventDefault();
+	}else if(e.keyCode === 38 && commandLog.length -1 > commandIndex) {
+		commandIndex++;
+		command.value = commandLog[commandLog.length - 1 - commandIndex];
+		e.preventDefault();
+	}else if(e.keyCode === 40 && commandIndex > 0) {
+		commandIndex--;
+		command.value = commandLog[commandLog.length - 1 - commandIndex];
+		e.preventDefault();
 	}
 };
 code.onkeydown = function(e) {
@@ -58,6 +76,8 @@ function openCommandDiv(){
 	propertiesBtn.className = "";
 	commandBtn.className = "selected";
 	minmaxBtn.innerHTML = "<a>_</a>";
+	buttonbar.classList.remove("minimized");
+	command.focus();
 }
 function openCodeDiv(){
 	codeDiv.style.display = "block";
@@ -67,6 +87,8 @@ function openCodeDiv(){
 	propertiesBtn.className = "";
 	codeBtn.className = "selected";
 	minmaxBtn.innerHTML = "<a>_</a>";
+	buttonbar.classList.remove("minimized");
+	code.focus();
 }
 function openPropertiesDiv(){
 	propertiesDiv.style.display = "block";
@@ -76,13 +98,17 @@ function openPropertiesDiv(){
 	codeBtn.className = "";
 	propertiesBtn.className = "selected";
 	minmaxBtn.innerHTML = "<a>_</a>";
+	buttonbar.classList.remove("minimized");
 }
 function minimize(){
+	buttonbar.classList.add("minimized");
 	codeDiv.style.display = "none";
+	propertiesDiv.style.display = "none";
 	commandDiv.style.display = "none";
 	minmaxBtn.innerHTML = "<a>&#11027;</a>";
 }
 function maximize(){
+	buttonbar.classList.remove("minimized");
 	if(commandBtn.className == "selected"){
 		openCommandDiv();
 	}else if(codeBtn.className == "selected"){
@@ -145,21 +171,21 @@ onkeydown = function(e) {
     	if(e.keyCode == 13) {
 			applyScript();
 		}else if(e.keyCode == 37) {
-			if(propertiesDiv.style.display == "block"){
+			if(propertiesBtn.classList.contains("selected")){
 				openCommandDiv();
-			}else if(commandDiv.style.display == "block"){
+			}else if(commandBtn.classList.contains("selected")){
 				openCodeDiv();
-			}else if(codeDiv.style.display == "block"){
+			}else if(codeBtn.classList.contains("selected")){
 				openPropertiesDiv();
 			}
 		}else if(e.keyCode == 38) {
 			maximize();
 		}else if(e.keyCode == 39) {
-			if(propertiesDiv.style.display == "block"){
+			if(propertiesBtn.classList.contains("selected")){
 				openCodeDiv();
-			}else if(commandDiv.style.display == "block"){
+			}else if(commandBtn.classList.contains("selected")){
 				openPropertiesDiv();
-			}else if(codeDiv.style.display == "block"){
+			}else if(codeBtn.classList.contains("selected")){
 				openCommandDiv();
 			}
 		}else if(e.keyCode == 40) {
