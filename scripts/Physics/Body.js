@@ -12,6 +12,7 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).properties = opts.properties || {};
 		__(this).onGround = false;
 		__(this).engine = null;
+		__(this).lifetime = opts.lifetime || -1;
 	};
 	prototype.getK = function(){ return JSON.parse(JSON.stringify(__(this).k)); };
 	prototype.getType = function(){ return __(this).type; };
@@ -81,6 +82,12 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.update = function(){
 		if(this.getK().t + 1 != engine.getTime()){return;}
 		__(this).k.t += 1; // check if this is a good place to do this
+		if(__(this).lifetime != -1){
+			__(this).lifetime--;
+			if(__(this).lifetime === 0){
+				__(this).toBeDestroyed = true;
+			}
+		}
 		// make this into a behaviour?: nahhh
 		__(this).onGround = false;
 		gravitate.act(__(this), this);
