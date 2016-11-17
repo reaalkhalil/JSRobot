@@ -7,17 +7,12 @@ var Robot = Body.subclass(function(prototype, _, _protected, __, __private) {
 		return __(this).opponent.getK();
 	};
 
+	// nope:
 	prototype.setOpponent = function(op){
 		__(this).opponent = op;
 	};
-	prototype.getEnergy = function(){ return __(this).energy; };
-	_protected.move = function(dx,dy){
-		__(this).energy -= Math.abs(dx^2 + dy^2)/10;
-		//maybe make body call a function here to reduce enrgy if agent == true and remove this move function
-		// nahhh, use behaviors and next action private member
-		_protected.super.move.call(this,dx,dy);
-			//doesnt work
-	};
+	//prototype.getEnergy = function(){ return __(this).energy; };
+	// ^ will need to call super properties energy
 });
 
 
@@ -26,36 +21,28 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		prototype.super.init.call(this, options);
 	};
 	
-	prototype.jump = function(){
+	prototype.gun = function(){
 		if(this.onGround()&&Math.abs(this.getK().vy)<1){
-			_protected.super.move.call(this,0,-15);
+			_protected.super.super.setNextMove.call(this,"gun");
 		}
 	};
-	prototype.move = function(dx,dy){
-		_protected.super.move.call(this,dx,dy);
+	prototype.jump = function(){
+		if(this.onGround()&&Math.abs(this.getK().vy)<1){
+			_protected.super.super.setNextMove.call(this,"jump");
+		}
+	};
+	prototype.move = function(dx){
+		if(dx != Number(dx)){return;}
+		_protected.super.super.setNextMove.call(this,"move:"+dx);
 	};
 
 	prototype.command = function(string){
-		var stringFn = new Function(string);
+		var stringFn = new Function("var robot = this;"+string);
 		stringFn.call(this);
 	};
 
-	prototype.step = function(robot){
-		/*
-		//console.log(this);
-		// this.update(); this doesnt work woohoo
-		var _x = this.getK().x;
-		var _op = this.getOpponentProperties();
-		var towardopponent = (_op.x - _x) / Math.abs(_op.x - _x);
+	prototype.step = function(robot){};
 
-		if(Math.abs(_op.x - _x) > 200){
-			this.move(towardopponent*2,0);
-			//_protected.super.super.move.call(this,towardopponent*5,0);
-			//console.log(this.getEnergy());
-		}else{
-		}
-		*/
-	};
 });
 		
 
