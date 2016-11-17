@@ -4,13 +4,14 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).agent = opts.agent || false;
 		__(this).sprites = [];
 		__(this).toBeDestroyed = false;
-		__(this).k = {t: 0, x: opts.x || 0, y: opts.y || 0, vx: opts.vx || 0, vy: opts.vy || 0, ax: opts.ax || 0, ay: opts.ay || 0};
+		__(this).k = {t: opts.t || 0, x: opts.x || 0, y: opts.y || 0, vx: opts.vx || 0, vy: opts.vy || 0, ax: opts.ax || 0, ay: opts.ay || 0};
 		__(this).oldk = {t: 0, x: opts.x || 0, y: opts.y || 0, vx: opts.vx || 0, vy: opts.vy || 0, ax: opts.ax || 0, ay: opts.ay || 0};
 		__(this).mass = opts.mass || 1;
 		__(this).behaviors = opts.behaviors || [];
 		__(this).type = opts.type || [];
-		__(this).properties = {};
+		__(this).properties = opts.properties || {};
 		__(this).onGround = false;
+		__(this).engine = null;
 	};
 	prototype.getK = function(){ return JSON.parse(JSON.stringify(__(this).k)); };
 	prototype.getType = function(){ return __(this).type; };
@@ -19,6 +20,12 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.isAgent = function(){ return __(this).agent; };
 	prototype.onGround = function(){ return __(this).onGround; };
 	prototype.toBeDestroyed = function(){ return __(this).toBeDestroyed;};
+
+	prototype.setEngine = function(priv, publ){
+		if(__(this).engine === null){
+			__(this).engine = {priv: priv, publ: publ};
+		}
+	};
 
 	prototype.getBox = function(){
 		var k = __(this).k;
@@ -34,11 +41,19 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		return [k.y - box[0], k.x + box[1], k.y + box[2], k.x - box[3]];
 	};
 
-	prototype.render = function(){
+	prototype.render = function(x,y){
 		for(var i in __(this).sprites){
-			__(this).sprites[i].redraw();
+			__(this).sprites[i].redraw(x,y);
 		}
 	};
+	__private.getSprite = function(name){
+		for(var i in __(this).sprites){
+			if(__(this).sprites[i].getInfo().n == name){
+				return __(this).sprites[i];
+			}
+		}
+	};
+		/*
 	__private.hideSprite = function(name){
 		for(var i in __(this).sprites){
 			if(__(this).sprites[i].getInfo().n == name){
@@ -53,16 +68,15 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 			}
 		}
 	};
+		*/
 	prototype.addSprite = function(sprite){
 	//should be private possibly defined in constructor
 	// should be an object and be able to animate
 		__(this).sprites.push(sprite);
 		sprite.setParent(this);
 	};
-	_protected.move = function(dx,dy){
-		//console.log(_(this).move.caller);
-		__(this).k.ax += dx;
-		__(this).k.ay += dy;
+	_protected.setNextMove = function(move){
+		__(this).properties.nextMove = move;
 	};
 	prototype.update = function(){
 		if(this.getK().t + 1 != engine.getTime()){return;}
@@ -75,6 +89,7 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		// this works but needs the behaviours need to be in body's array
 		if(__(this).agent && this.getK().t % 10 === 0){
 			this.step(this);
+			agent.act(__(this), this);
 		}
 
 		var dt = 1;
