@@ -139,7 +139,7 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			if(isNaN(bodyPriv.properties.energy)){
 				bodyPriv.properties.energy = 0;
 			}
-			bodyPriv.properties.energy += 1;
+			bodyPriv.properties.energy = 100;
 			continue;
 		}else if(bodyPriv.type == "battery" && ( col.obj2.t == "robot" ||  col.obj2.t == "robotc")){
 			effects.play("batterypop",{x:bodyPriv.k.x, y:bodyPriv.k.y});
@@ -153,7 +153,7 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			bodyPriv.properties.coins += 1;
 			continue;
 		}else if(bodyPriv.type == "coin" && ( col.obj2.t == "robot" ||  col.obj2.t == "robotc")){
-			effects.play("coinpop",{x:bodyPriv.k.x, y:bodyPriv.k.y});
+			effects.play("coinpop",{x: bodyPriv.k.x, y: bodyPriv.k.y});
 			bodyPriv.toBeDestroyed = true;
 			continue;
 		}
