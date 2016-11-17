@@ -157,6 +157,12 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			bodyPriv.toBeDestroyed = true;
 			continue;
 		}
+		if(bodyPriv.type == "bullet"){
+			effects.play("bulletpop",{x: bodyPriv.k.x+10, y: bodyPriv.k.y});
+			bodyPriv.toBeDestroyed = true;
+			continue;
+		}
+
 		var k1 = col.obj1.k;
 		var k2 = col.obj2.k;
 		var overlap = col.overlap;
