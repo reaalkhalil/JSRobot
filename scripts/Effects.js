@@ -19,9 +19,9 @@ var Effects = mozart(function(prototype, _, _protected, __, __private) {
 		}
 		__(this).effects[name].play();
 	};
-	prototype.render = function(){
+	prototype.render = function(x,y){
 		for(var i in __(this).effects){
-			__(this).effects[i].redraw();
+			__(this).effects[i].redraw(x,y);
 		}
 	};
 	prototype.addEffect = function(name, sprite){
