@@ -7,6 +7,7 @@ var images = {};
 var Game = {};
 
 loadImage("robot1");
+loadImage("robot1gun");
 loadImage("robot2");
 loadImage("coin");
 loadImage("wall1");
@@ -14,6 +15,7 @@ loadImage("wall2");
 loadImage("wall3");
 loadImage("wall9");
 loadImage("battery");
+loadImage("bullet");
 loadImage("coinpop");
 loadImage("batterypop");
 
@@ -25,12 +27,13 @@ function loadImage(name) {
 	images[name].src = "images/" + name + ".png";
 }
 
-var totalResources = 6;
+var totalResources = 12;
 var numResourcesLoaded = 0;
 var fps = 30;
 
-var robot1 = new RobotOne({x:200,y:300,agent:true, type: "robotc"});
+var robot1 = new RobotOne({x:200,y:300,agent:true, type: "robotc", properties: {energy: 100, coins: 0, health: 100}});
 robot1.addSprite(new Sprite({
+	name: "robot",
 	'context': context,
 	x: 0,
 	y: 0,
@@ -40,8 +43,20 @@ robot1.addSprite(new Sprite({
 	destheight: 41,
 	image: images.robot1
 }));
+robot1.addSprite(new Sprite({
+	name: "gun",
+	'context': context,
+	x: 5,
+	y: 0,
+	width: 105,
+	height: 108,
+	destwidth: 40,
+	destheight: 41,
+	image: images.robot1gun,
+	visible: false
+}));
 
-var robot2 = new RobotOne({x:500,y:300,agent:true, type: "robot"});
+var robot2 = new RobotOne({x:500,y:300,agent:false, type: "robot", properties: {energy: 100, coins: 0, health: 100}});
 robot2.addSprite(new Sprite({
 	'context': context,
 	x: 0,
@@ -187,9 +202,27 @@ function resourceLoaded() {
 }
 
 
+/*
+ function loadJSON(path, callback) {
 
+    var xobj = new XMLHttpRequest();
+        xobj.overrideMimeType("application/json");
+    xobj.open('GET', path, true); // Replace 'my_data' with the path to your file
+    xobj.onreadystatechange = function () {
+          if (xobj.readyState == 4 && xobj.status == "200") {
+            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+            callback(xobj.responseText);
+          }
+    };
+    xobj.send(null);  
+ }
 
+ loadJSON("data/level.js", function(response) {
+  // Parse JSON string into object
+    var actual_JSON = JSON.parse(response);
+ });
 
+*/
 /*
  * EXTENDING... (MIXINS)
 var circleFns = {
