@@ -5,7 +5,7 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
     </head>
 
-	<body style="background:black;">
+	<body style="background:black;" class="noselect">
 
 		<canvas id="canvasID" width="800" height="500"></canvas>
 
@@ -14,7 +14,8 @@
 		<div id="codearea">
 				<ul id="buttonbar" class="noselect">
 						<li><a id="codeBtn" class="selected">Script</a>						
-						</li><li><a id="commandBtn">Command</a></li><li id="minmax">
+						</li><li><a id="commandBtn">Command</a></li><li id="properties">
+						</li><li><a id="propertiesBtn">Properties</a></li><li id="minmax">
 						<a>_</a></li>
 				</ul>
 	<div id="codeDiv">
@@ -24,7 +25,8 @@
 }</textarea>
 		<a id="submitCode" class="noselect">Apply</a>
 	</div>
-		<div id="commandDiv"><input id="command" value="this.move(-5,0);"></div>
+		<div id="commandDiv"><input id="command" value="robot.move(-5);"></div>
+		<div id="propertiesDiv"></div>
 	</div>
 
 	<script src="scripts/ui.js"></script>
