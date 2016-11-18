@@ -1,7 +1,7 @@
 var mozart = require('mozart');
 
 var Builder = mozart(function(prototype, _, _protected, __, __private) {
-	prototype.init = function(engine) {
+	prototype.init = function() {
 		__(this).imageFiles =	["robot1", "robot1gun", "robot2", "coin", "wall1", "wall2", "wall3",
 			   					"wall4", "wall5", "wall6", "wall7", "wall8", "wall9", "wall10", "battery",
 			   					"coinpop", "batterypop", "bullet", "bulletpop"];
@@ -40,17 +40,17 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 	};
 
 	prototype.load = function(data){
-		__(this).loadImages(data);
+		__(this).loadImages();
 		__(this).build(data);
 	};
 
-	__private.loadImages = function(data){
+	__private.loadImages = function(){
 		var total = __(this).imageFiles.length;
 		var loaded = 0;
-		var thiss = __(this);
+		var that = __(this);
 		var callback = function(){
 			loaded++;
-			thiss.imageLoaded(loaded,total,data);
+			that.imageLoaded(loaded,total);
 		};
 
 		for(var img in __(this).imageFiles){
@@ -61,7 +61,7 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 		}
 	};
 
-	__private.imageLoaded = function(loaded,total,data){
+	__private.imageLoaded = function(loaded,total){
 		if(loaded == total){__(this).engine.priv.startP();}
 	};
 
@@ -72,7 +72,10 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 		}
 		var spriteOpts = JSON.parse(JSON.stringify(__(this).sprites[name]));
 		objOpts.sprites = [];
-		for(var i in spriteOpts){
+		if(!newSpriteOpts){newSpriteOpts = [];}
+		spriteNum = Math.max(spriteOpts.length, newSpriteOpts.length);
+		for(var i = 0; i < spriteNum; i++){
+			if(i >= spriteOpts.length){spriteOpts.push(JSON.parse(JSON.stringify(spriteOpts[0])));}
 			spriteOpts[i].context = context;
 			if(newSpriteOpts && i < newSpriteOpts.length){
 				for(var q in newSpriteOpts[i]){
@@ -87,10 +90,10 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 
 	__private.build = function(data){
 		var result = [];
-		data = importeddata.elements;
 		var walls = __(this).wallParser(data.walls);
 		for(var w in walls){
-			var wall = new Body(__(this).prepareObject("wall", {x: walls[w].x, y: walls[w].y}, [{image: walls[w].image}]));
+			//var wall = new Body(__(this).prepareObject("wall", {x: walls[w].x, y: walls[w].y}, [{x: 0, y: 0, image: walls[w].image}]));
+			var wall = new Body(__(this).prepareObject("wall", {x: walls[w].x, y: walls[w].y}, walls[w].sprites));
 			__(this).engine.priv.addP(wall);
 		}
 		for(var c in data.coins){
@@ -110,14 +113,44 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 		var wallChars = ["#", "-", "="];
 		var wallNames = ["wall10", "wall1", "wall4"];
 		for(var i in walls.data){
+			var start = 0;
+			var spritesHolder = [];
+			walls.data[i]+=" ";
 			for(var j in walls.data[i]){
 				var wallChar = walls.data[i].charAt(j);
-				if(wallChar != " "){
+				var prevChar = walls.data[i].charAt(j-1);
+				if(wallChar != " " && wallChar !== ""){
+					if(prevChar == " " || prevChar === ""){start = j;}
 					wallImage = wallNames[wallChars.indexOf(wallChar)];
-					result.push({x: walls.origin[0] + j * 40, y: walls.origin[1] + i * 40, image: wallImage});
+					console.log(start);
+					spritesHolder.push({x: 40*(j-start), y: 0, image: wallImage});
+				}else if((wallChar == " " || wallChar === "") && prevChar != " " && prevChar !== ""){
+					result.push({x: walls.origin[0] + start * 40,
+						   y: walls.origin[1] + i * 40,
+						   	sprites: spritesHolder});
+					console.log(spritesHolder);
+					spritesHolder = [];
 				}
 			}
 		}
 		return result;
 	};
+	/*__private.wallParser = function(walls){
+		var result = [];
+		var wallChars = ["#", "-", "="];
+		var wallNames = ["wall10", "wall1", "wall4"];
+		for(var i in walls.data){
+			var start = 0;
+			for(var j in walls.data[i]){
+				var wallChar = walls.data[i].charAt(j);
+				if(wallChar != " "){
+					wallImage = wallNames[wallChars.indexOf(wallChar)];
+					result.push({x: walls.origin[0] + j * 40,
+						   y: walls.origin[1] + i * 40,
+						   	image: wallImage});
+				}
+			}
+		}
+		return result;
+	};*/
 });

@@ -1,5 +1,6 @@
 define(function (require) {
 	var mozart = require('mozart');
+	var levelData = require('../data/level');
 	var Behavior = require('Physics/Behavior');
 	var Collision = require('Physics/Collision');
 	var Builder = require('Builder');

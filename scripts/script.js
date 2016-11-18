@@ -6,28 +6,6 @@ var images = {};
 
 var Game = {};
 
-var importeddata = {
-		"elements": {
-				"player": {"x": 50, "y": 0},
-				"coins": [{x: 300, y: 80}, {x: 400,y: 100}, {x: 450,y: 100}],
-				"batteries": [{x: 350, y: 200}, {x: 450, y: 150}],
-				"walls": {"origin": [0,0],
-						"data":["                    ",
-								"                    ",
-								"                    ",
-								"                    ",
-								"                    ",
-								"                    ",
-								"                    ",
-								"                    ",
-								"           #        ",
-								"----------- --------"
-						]
-				}
-		}
-
-};
-
 loadImage("robot2");
 loadImage("bullet");
 loadImage("coinpop");
@@ -46,7 +24,7 @@ var totalResources = 17;
 var numResourcesLoaded = 0;
 var fps = 30;
 
-var robot2 = new RobotOne({x:400,y:300,agent:false, type: "robot", properties: {energy: 100, coins: 0, health: 100}});
+var robot2 = new RobotOne({x:370,y:300,agent:false, type: "robot", properties: {energy: 100, coins: 0, health: 100}});
 robot2.addSprite(new Sprite({
 	'context': context,
 	x: 0,
@@ -63,9 +41,6 @@ robot2.addSprite(new Sprite({
 //robot2.setOpponent(robot1);
 
 engine = new Engine();
-//engine.add(wall);
-//engine.add(wall2);
-//engine.add(robot1);
 engine.add(robot2);
 
 

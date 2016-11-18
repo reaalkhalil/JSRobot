@@ -5,8 +5,10 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 	if(bodyPriv.properties.nextMove){
 		var options = bodyPriv.properties.nextMove.split(':');
 		if(options[0] == "jump"){
-			bodyPriv.k.ay = -15;
-			bodyPriv.properties.energy -= 1;
+			if(bodyPubl.onGround()){
+				bodyPriv.k.ay = -15;
+				bodyPriv.properties.energy -= 1;
+			}
 		}else if(options[0] == "move"){
 			var amount = Number(options[1]);
 			if(Math.abs(amount) > 20){amount = 20 * Math.sign(amount);}
@@ -32,13 +34,13 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 		}
 	}
 	bodyPriv.properties.nextMove = null;
-	if(newcode){
+	if(newcommand){
+		bodyPubl.command(newcommand);
+		newcommand = "";
+	}else if(newcode){
 		codeString = code.value+"\nloop(this);";
 		bodyPubl.step = new Function(codeString);
 		newcode = false;
-	}else if(newcommand){
-		bodyPubl.command(newcommand);
-		newcommand = "";
 	}
 	propertiesDiv.innerHTML = "Energy: " + bodyPriv.properties.energy +
 							"<br>Coins: " + bodyPriv.properties.coins +

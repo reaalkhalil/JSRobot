@@ -176,9 +176,9 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 		var relvx = k1.vx - k2.vx;
 		var relvy = k1.vy - k2.vy;
 
-		if(Math.abs(col.obj2.b[0] - col.obj1.b[2]) < 3){
+		if(Math.abs(col.obj2.b[0] - col.obj1.b[2]) < 5){
 			bodyPriv.onGround = true;
-			overlap[1] *= 0.6;
+			overlap[1] *= 0.4;
 			overlap[0] = 0;
 		}
 

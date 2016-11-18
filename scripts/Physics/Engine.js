@@ -129,10 +129,10 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		sprite.setEngine(__(this), this);
 	};
 
-	__private.build = function(data){
+	__private.build = function(){
 		var builder = new Builder();
 		builder.setEngine(__(this), this);
-		builder.load("");
+		builder.load(levelData);
 	};
 
 });
