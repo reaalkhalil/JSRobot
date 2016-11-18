@@ -11,12 +11,15 @@ var propertiesDiv = document.getElementById("propertiesDiv");
 var minmaxBtn = document.getElementById("minmax");
 var lineheight = document.getElementById("lineheight");
 
+var newcode = false;
+var newcommand = "";
+
 function applyScript(){
 	code.classList.add('execute');
 	setTimeout(function(){code.classList.remove('execute');}, 80);
-	codeString = code.value+"\nloop(this);";
-	robot1.step = new Function(codeString);
+	newcode = true;
 }
+
 submit.onclick = function(){
 	applyScript();
 };
@@ -26,7 +29,7 @@ var commandIndex = 0;
 
 command.onkeydown = function(e) {
     if(e.keyCode === 13) {
-		robot1.command(command.value);
+		newcommand = command.value;
 		commandLog.push(command.value);
 		commandIndex = 0;
 		command.classList.add('execute');

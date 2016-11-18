@@ -2,6 +2,7 @@ define(function (require) {
 	var mozart = require('mozart');
 	var Behavior = require('Physics/Behavior');
 	var Collision = require('Physics/Collision');
+	var Builder = require('Builder');
 	var Engine = require('Physics/Engine');
 	var Body = require('Physics/Body');
 	var Robot = require('Robot/Robot');

@@ -73,10 +73,16 @@ var Collision = Behavior.subclass(function(prototype, _, _protected, __, __priva
 				var overlapC = this.getOverlap(b1, b2);
 				var overlapP = this.getPredictiveOverlap(b1, b1a, b2, b2a);
 
+					//stops glitching at the edges of platforms
+					// on ground code at the end works better actually
+				//if(overlapC[0] === 0 && Math.abs(overlapC[1]) < 50 && Math.abs(overlapP[0]) > 0 && overlapP[1] === 0 && (t1 == "wall" || t2 == "wall")){
+					//overlapP[0] = 0;
+					////overlapP[1] = 1;
+				//}
+
 				if((overlapP[0] === 0 || overlapP[1] === 0) && overlapC[0] === false && overlapC[1] === false){
 					continue;
 				}
-
 
 				if(overlapP[0] === 0 && overlapP[1] === 0){
 					if((k1.x < k2.x && b1[1] > b2[3]) || (k1.x >= k2.x && b1[3] < b2[1])){
@@ -101,7 +107,6 @@ var Collision = Behavior.subclass(function(prototype, _, _protected, __, __priva
 				if(overlapC[0] === false && overlapP[0] === false || overlapC[1] === 0 && overlapP[1] === 0){
 					//continue;
 				}
-
 					
 				__(this).pairs.push({
 					overlap: overlap,
@@ -142,6 +147,7 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			bodyPriv.properties.energy = 100;
 			continue;
 		}else if(bodyPriv.type == "battery" && ( col.obj2.t == "robot" ||  col.obj2.t == "robotc")){
+			// objects have private engine object, use that to play effects, effects can be a private member in engine
 			effects.play("batterypop",{x:bodyPriv.k.x, y:bodyPriv.k.y});
 			bodyPriv.toBeDestroyed = true;
 			continue;
@@ -170,10 +176,16 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 		var relvx = k1.vx - k2.vx;
 		var relvy = k1.vy - k2.vy;
 
+		if(Math.abs(col.obj2.b[0] - col.obj1.b[2]) < 3){
+			bodyPriv.onGround = true;
+			overlap[1] *= 0.6;
+			overlap[0] = 0;
+		}
+
 		if(col.obj2.m != -1){
 			var mratio = col.obj1.m / (col.obj1.m + col.obj2.m);
-			bodyPriv.k.x -= overlap[0] * mratio * 0.4;
-			bodyPriv.k.y -= overlap[1] * mratio * 0.4;
+			bodyPriv.k.x -= overlap[0] * mratio;
+			bodyPriv.k.y -= overlap[1] * mratio;
 			nx = -1;
 			ny = -1;
 			if(overlap[0] === 0){nx = 1;}
@@ -181,17 +193,14 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			bodyPriv.k.vx  = nx * relvx * mratio;
 			bodyPriv.k.vy  = ny * relvy * mratio;
 		}else{
-			bodyPriv.k.x -= (overlap[0]*0.4);
-			bodyPriv.k.y -= (overlap[1]*0.4);
+			bodyPriv.k.x -= (overlap[0]);
+			bodyPriv.k.y -= (overlap[1]);
 			nx = -0.5;
 			ny = -0.5;
 			if(overlap[0] === 0){nx = 0.9;}
 			if(overlap[1] === 0){ny = 0.9;}
 			bodyPriv.k.vx  = nx * relvx;
 			bodyPriv.k.vy  = ny * relvy;
-		}
-		if(Math.abs(col.obj2.b[0] - col.obj1.b[2]) < 3){
-			bodyPriv.onGround = true;
 		}
 
 		//bodyPriv.k.x = Math.ceil(bodyPriv.k.x*10)/10;

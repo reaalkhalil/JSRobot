@@ -6,15 +6,29 @@ var images = {};
 
 var Game = {};
 
-loadImage("robot1");
-loadImage("robot1gun");
+var importeddata = {
+		"elements": {
+				"player": {"x": 50, "y": 0},
+				"coins": [{x: 300, y: 80}, {x: 400,y: 100}, {x: 450,y: 100}],
+				"batteries": [{x: 350, y: 200}, {x: 450, y: 150}],
+				"walls": {"origin": [0,0],
+						"data":["                    ",
+								"                    ",
+								"                    ",
+								"                    ",
+								"                    ",
+								"                    ",
+								"                    ",
+								"                    ",
+								"           #        ",
+								"----------- --------"
+						]
+				}
+		}
+
+};
+
 loadImage("robot2");
-loadImage("coin");
-loadImage("wall1");
-loadImage("wall2");
-loadImage("wall3");
-loadImage("wall9");
-loadImage("battery");
 loadImage("bullet");
 loadImage("coinpop");
 loadImage("batterypop");
@@ -28,34 +42,9 @@ function loadImage(name) {
 	images[name].src = "images/" + name + ".png";
 }
 
-var totalResources = 12;
+var totalResources = 17;
 var numResourcesLoaded = 0;
 var fps = 30;
-
-var robot1 = new RobotOne({x:200,y:300,agent:true, type: "robotc", properties: {energy: 100, coins: 0, health: 100}});
-robot1.addSprite(new Sprite({
-	name: "robot",
-	'context': context,
-	x: 0,
-	y: 0,
-	width: 79,
-	height: 108,
-	destwidth: 30,
-	destheight: 41,
-	image: images.robot1
-}));
-robot1.addSprite(new Sprite({
-	name: "gun",
-	'context': context,
-	x: 5,
-	y: 0,
-	width: 105,
-	height: 108,
-	destwidth: 40,
-	destheight: 41,
-	image: images.robot1gun,
-	visible: false
-}));
 
 var robot2 = new RobotOne({x:400,y:300,agent:false, type: "robot", properties: {energy: 100, coins: 0, health: 100}});
 robot2.addSprite(new Sprite({
@@ -69,97 +58,15 @@ robot2.addSprite(new Sprite({
 	image: images.robot2
 }));
 
-robot1.setOpponent(robot2);
-robot2.setOpponent(robot1);
-
-
-battery = new Body({x:250,y:100, type: "battery"}); 
-battery.addSprite(new Sprite({
-	'context': context,
-	x: 0,
-	y: 0,
-	width: 96,
-	height: 24,
-	destwidth: 16,
-	destheight: 24,
-	image: images.battery,
-	numberOfFrames: 6,
-	loop: true,
-	ticksPerFrame: 4
-}));
-
-var coinSpriteOptions = {
-	'context': context,
-	name: "coin",
-	x: 0,
-	y: 0,
-	width: 120,
-	height: 20,
-	destwidth: 20,
-	destheight: 20,
-	image: images.coin,
-	numberOfFrames: 6,
-	loop: true,
-	ticksPerFrame: 4
-};
-coin1 = new Body({x:300,y:100, type: "coin"}); 
-coin1.addSprite(new Sprite(coinSpriteOptions));
-
-coin2 = new Body({x:390,y:100, type: "coin"}); 
-coin2.addSprite(new Sprite(coinSpriteOptions));
-
-coin = new Body({x:100,y:100, type: "coin"}); 
-coin.addSprite(new Sprite(coinSpriteOptions));
-
-wall = new Body({x: 40, y: 500, fixed: true, type: "wall", mass: -1}); 
-wall.addSprite(new Sprite({
-	'context': context,
-	x: 0,
-	y: 0,
-	width: 50,
-	height: 50,
-	destwidth: 40,
-	destheight: 40,
-	image: images.wall1
-}));
-wall.addSprite(new Sprite({ 'context': context, x: 40, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall2 }));
-wall.addSprite(new Sprite({ 'context': context, x: 80, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall3 }));
-wall.addSprite(new Sprite({ 'context': context, x: 120, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall1 }));
-wall.addSprite(new Sprite({ 'context': context, x: 160, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall2 }));
-wall.addSprite(new Sprite({ 'context': context, x: 200, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall3 }));
-wall.addSprite(new Sprite({ 'context': context, x: 240, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall1 }));
-wall.addSprite(new Sprite({ 'context': context, x: 280, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall2 }));
-wall.addSprite(new Sprite({ 'context': context, x: 320, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall3 }));
-wall.addSprite(new Sprite({ 'context': context, x: 360, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall1 }));
-wall.addSprite(new Sprite({ 'context': context, x: 400, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall2 }));
-wall.addSprite(new Sprite({ 'context': context, x: 440, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall3 }));
-wall.addSprite(new Sprite({ 'context': context, x: 480, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall1 }));
-wall.addSprite(new Sprite({ 'context': context, x: 520, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall2 }));
-wall.addSprite(new Sprite({ 'context': context, x: 560, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall3 }));
-wall.addSprite(new Sprite({ 'context': context, x: 600, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: images.wall1 }));
-
-wall2 = new Body({x: 400, y: 461, fixed: true, type: "wall", mass: -1}); 
-wall2.addSprite(new Sprite({
-	'context': context,
-	x: 0,
-	y: 0,
-	width: 50,
-	height: 50,
-	destwidth: 40,
-	destheight: 40,
-	image: images.wall9,
-	r: -Math.PI/2
-}));
+//STILL MAKES WALLS ONE PIECE
+//robot1.setOpponent(robot2);
+//robot2.setOpponent(robot1);
 
 engine = new Engine();
-engine.add(wall);
-engine.add(wall2);
-engine.add(robot1);
+//engine.add(wall);
+//engine.add(wall2);
+//engine.add(robot1);
 engine.add(robot2);
-engine.add(coin);
-engine.add(coin1);
-engine.add(coin2);
-engine.add(battery);
 
 
 effects.addEffect("bulletpop",new Sprite({
@@ -213,7 +120,7 @@ engine.add(effects);
 function resourceLoaded() {
 	numResourcesLoaded += 1;
 	if(numResourcesLoaded === totalResources) {
-		engine.start();
+		//engine.start();
 	}
 }
 
@@ -270,3 +177,4 @@ var RoundButton = function(radius, label) {
  
 extend(RoundButton.prototype, circleFns);
 */
+

@@ -6,6 +6,7 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).timestep = 0;
 		__(this).started = false;
 		__(this).properties = {x:0, y:0, width: 800, height: 500};
+		__(this).build();
 	};
 
 	__private.ticker = function(){
@@ -98,20 +99,40 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		}
 	};
 
-	prototype.start = function(){
+	__private.startP = function(){
 		if(__(this).started === true){return;}
 		var that = __(this);
-		__(this).started = false;
+		__(this).started = true;
 		var tickerf = function(){that.ticker();};
 		setInterval(tickerf,1000/fps);
 	};
+	/*
+	prototype.start = function(){
+		if(__(this).started === true){return;}
+		var that = __(this);
+		__(this).started = true;
+		var tickerf = function(){that.ticker();};
+		setInterval(tickerf,1000/fps);
+	};*/
 
-	// this should be private... it's okay if someone makes a new object, as long as it's not
-		// added to the engine it cant do anything really
+
+		///////////////////remove:
 	prototype.add = function(sprite){
 		__(this).world.push(sprite);
 		if(sprite.getType() == "effects"){return;}
 		sprite.setEngine(__(this), this);
+	}; //////////////////////////////
+	
+	__private.addP = function(sprite){
+		__(this).world.push(sprite);
+		if(sprite.getType() == "effects"){return;}
+		sprite.setEngine(__(this), this);
+	};
+
+	__private.build = function(data){
+		var builder = new Builder();
+		builder.setEngine(__(this), this);
+		builder.load("");
 	};
 
 });

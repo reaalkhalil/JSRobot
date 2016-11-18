@@ -2,22 +2,26 @@ var mozart = require('mozart');
 
 var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(options) {
-		__(this).frameIndex = 0;
 		__(this).tickCount = 0;
 		__(this).ticksPerFrame = options.ticksPerFrame || 0;
 		__(this).numberOfFrames = options.numberOfFrames || 1;
+		__(this).loop = options.loop || false;
+		__(this).frameIndex = __(this).loop?Math.round(Math.random()*__(this).numberOfFrames):0;
 		__(this).context = options.context;
 		__(this).destwidth = options.destwidth;
 		__(this).destheight = options.destheight;
 		__(this).width = options.width;
 		__(this).height = options.height;
 		__(this).image = options.image;
-		__(this).loop = options.loop;
 		__(this).name = options.name || "";
 		__(this).x = options.x;
 		__(this).y = options.y;
 		__(this).r = options.r || 0;
 		if(options.visible === false){__(this).visible = false;}else{__(this).visible = true;}
+	};
+
+	prototype.hasContainer = function(){
+		if(__(this).container){return true;}else{return false;}
 	};
 
 	prototype.setPos = function(x,y){

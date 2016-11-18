@@ -4,7 +4,6 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 	if(!bodyPubl.isAgent()){return;}
 	if(bodyPriv.properties.nextMove){
 		var options = bodyPriv.properties.nextMove.split(':');
-			console.log(options[0]);
 		if(options[0] == "jump"){
 			bodyPriv.k.ay = -15;
 			bodyPriv.properties.energy -= 1;
@@ -29,11 +28,18 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 				image: images.bullet
 			}));
 
-			engine.add(bullet);
-			//bodyPriv.engine.priv.world.push(bullet);
+			bodyPriv.engine.priv.world.push(bullet);
 		}
 	}
 	bodyPriv.properties.nextMove = null;
+	if(newcode){
+		codeString = code.value+"\nloop(this);";
+		bodyPubl.step = new Function(codeString);
+		newcode = false;
+	}else if(newcommand){
+		bodyPubl.command(newcommand);
+		newcommand = "";
+	}
 	propertiesDiv.innerHTML = "Energy: " + bodyPriv.properties.energy +
 							"<br>Coins: " + bodyPriv.properties.coins +
 							"<br>Health: " + bodyPriv.properties.health;

@@ -2,7 +2,7 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(opts) {
 		__(this).fixed = opts.fixed || false;
 		__(this).agent = opts.agent || false;
-		__(this).sprites = [];
+		__(this).sprites = opts.sprites || [];
 		__(this).toBeDestroyed = false;
 		__(this).k = {t: opts.t || 0, x: opts.x || 0, y: opts.y || 0, vx: opts.vx || 0, vy: opts.vy || 0, ax: opts.ax || 0, ay: opts.ay || 0};
 		__(this).oldk = {t: 0, x: opts.x || 0, y: opts.y || 0, vx: opts.vx || 0, vy: opts.vy || 0, ax: opts.ax || 0, ay: opts.ay || 0};
@@ -15,6 +15,12 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).lifetime = opts.lifetime || -1;
 		// try to cache box here:
 		__(this).box = null;
+		for(var i=0; i < __(this).sprites.length; i++){
+			if(!__(this).sprites[i].hasContainer()){
+			//console.log(__(this).sprites[i].getInfo());
+				__(this).sprites[i].setParent(this);
+			}
+		}
 	};
 	prototype.getK = function(){ return JSON.parse(JSON.stringify(__(this).k)); };
 	prototype.getType = function(){ return __(this).type; };
@@ -84,9 +90,11 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).sprites.push(sprite);
 		sprite.setParent(this);
 	};
+
 	_protected.setNextMove = function(move){
 		__(this).properties.nextMove = move;
 	};
+
 	prototype.update = function(){
 		if(this.getK().t + 1 != engine.getTime()){return;}
 		__(this).k.t += 1; // check if this is a good place to do this

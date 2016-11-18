@@ -104,6 +104,8 @@ body{
 }
 #command.execute, #code.execute{
 	transition: background 0.1s;
+	color: white;
+	border: 2px solid rgb(82,139,255);
   background: rgb(82,139,255);
 }
 #commandDiv::before{
@@ -162,10 +164,11 @@ body{
 }
 #submitCode:hover{
 	background: #646e82;
-	color: rgb(20,24,32);
+	border: 2px solid #646e82;
+	color: white;
 }
 #submitCode:active{
 	background: rgb(82,139,255);
-	color: rgb(20,24,32);
 	border: 2px solid rgb(82,139,255);
+	color: white;
 }
