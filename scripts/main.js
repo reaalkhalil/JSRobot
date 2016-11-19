@@ -1,17 +1,32 @@
-define(function (require) {
-	var mozart = require('mozart');
-	var levelData = require('../data/level');
-	var Behavior = require('Physics/Behavior');
-	var Collision = require('Physics/Collision');
-	var Builder = require('Builder');
-	var Engine = require('Physics/Engine');
-	var Body = require('Physics/Body');
-	var Robot = require('Robot/Robot');
-	var Sprite = require('Sprite');
-	var Effects = require('Effects');
-	var script = require('script');
-	var Agent = require('Robot/Agent');
+
+var canvas = document.getElementById("canvasID");
+var context = canvas.getContext("2d");
+var fps = 30;
+var Game = {};
+
+requirejs.config({
+    baseUrl: 'scripts',
 });
 
-// require isn't set up properly
-// http://requirejs.org/docs/whyamd.html
+requirejs(['mozart',
+	   	'../data/level',
+	   	'Behavior',
+	   	'Collision',
+	   	'Builder',
+	   	'Engine',
+	   	'Body',
+	   	'Robot',
+	   	'Sprite',
+	   	'Effects',
+	   	'Agent'],
+function   (mozart, levelData, Behavior, Collision, builder, Engine, Body, robot, Sprite, Effects, Agent) {
+
+	//agent = Agent;
+	//Robot = robot.Robot;
+	//RobotOne = robot.RobotOne;
+	collide = Collision; // use as a static method
+	effects = new Effects();
+	engine = new Engine();
+	//engine.add(effects);
+
+});

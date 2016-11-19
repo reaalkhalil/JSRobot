@@ -1,3 +1,4 @@
+define(['mozart', 'Body'], function (mozart, Body) {
 var Robot = Body.subclass(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(options) {
 		prototype.super.init.call(this, options);
@@ -100,3 +101,5 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 });
 
 */
+return {'Robot': Robot, 'RobotOne': RobotOne};
+});

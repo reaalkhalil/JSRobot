@@ -1,4 +1,4 @@
-var mozart = require('mozart');
+define(['mozart'], function (mozart) {
 
 var Effects = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function() {
@@ -30,5 +30,5 @@ var Effects = mozart(function(prototype, _, _protected, __, __private) {
 	};
 });
 
-
-var effects = new Effects();
+return Effects;
+});

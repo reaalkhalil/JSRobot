@@ -1,4 +1,4 @@
-var mozart = require('mozart');
+define(["mozart"],function (mozart) {
 
 var Behavior = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(action) {
@@ -15,6 +15,8 @@ var gravitate = new Behavior(function(bodyPriv, bodyPubl){
 	}
 });
 
+return {B: Behavior, g: gravitate};
+});
 /*
 var arrowkeys = [false,false,false,false];
 document.onkeydown = function myFunction() {

@@ -1,4 +1,4 @@
-var mozart = require('mozart');
+define(["mozart", 'Builder'],function (mozart, Builder) {
 
 var Engine = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function() {
@@ -99,31 +99,15 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		}
 	};
 
-	__private.startP = function(){
+	__private.start = function(){
 		if(__(this).started === true){return;}
 		var that = __(this);
 		__(this).started = true;
 		var tickerf = function(){that.ticker();};
 		setInterval(tickerf,1000/fps);
 	};
-	/*
-	prototype.start = function(){
-		if(__(this).started === true){return;}
-		var that = __(this);
-		__(this).started = true;
-		var tickerf = function(){that.ticker();};
-		setInterval(tickerf,1000/fps);
-	};*/
 
-
-		///////////////////remove:
-	prototype.add = function(sprite){
-		__(this).world.push(sprite);
-		if(sprite.getType() == "effects"){return;}
-		sprite.setEngine(__(this), this);
-	}; //////////////////////////////
-	
-	__private.addP = function(sprite){
+	__private.add = function(sprite){
 		__(this).world.push(sprite);
 		if(sprite.getType() == "effects"){return;}
 		sprite.setEngine(__(this), this);
@@ -131,8 +115,12 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 
 	__private.build = function(){
 		var builder = new Builder();
+		__(this).builder = builder;
 		builder.setEngine(__(this), this);
 		builder.load(levelData);
 	};
 
+});
+
+return Engine;
 });

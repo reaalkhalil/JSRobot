@@ -170,7 +170,7 @@ code.onscroll = function(){
 
 
 onkeydown = function(e) {
-    if(event.metaKey) {
+    if(e.metaKey) {
     	if(e.keyCode == 13) {
 			applyScript();
 		}else if(e.keyCode == 37) {

@@ -1,5 +1,4 @@
-var mozart = require('mozart');
-
+define(['mozart'], function (mozart) {
 var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(options) {
 		__(this).tickCount = 0;
@@ -103,3 +102,5 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 	};
 });
 
+return Sprite;
+});

@@ -1,3 +1,5 @@
+define(['mozart', 'Behavior', 'Collision', 'Agent'], function (mozart, behavior, collide, agent) {
+gravitate = behavior.g;
 var Body = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(opts) {
 		__(this).fixed = opts.fixed || false;
@@ -127,3 +129,5 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 	};
 });
 
+return Body;
+});

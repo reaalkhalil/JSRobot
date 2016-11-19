@@ -1,5 +1,5 @@
-var mozart = require('mozart');
-
+define(['mozart', 'Behavior', 'Builder', 'Body'], function (mozart, behavior, Builder, Body) {
+Behavior = behavior.B;
 var agent = new Behavior(function(bodyPriv, bodyPubl){
 	if(!bodyPubl.isAgent()){return;}
 	if(bodyPriv.properties.nextMove){
@@ -18,19 +18,9 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 			bodyPriv.getSprite("gun").show();
 			bodyPriv.getSprite("robot").hide();
 			bodyPriv.k.ax -= 0.1;
-			var bullet = new Body({x: bodyPriv.k.x+35, y:bodyPriv.k.y, vx: 10, type: "bullet", mass: -1, t: engine.getTime(), lifetime: 100});
-			bullet.addSprite(new Sprite({
-				'context': context,
-				x: 0,
-				y: 0,
-				width: 14,
-				height: 10,
-				destwidth: 14,
-				destheight: 10,
-				image: images.bullet
-			}));
-
-			bodyPriv.engine.priv.world.push(bullet);
+			// do this using Builder:
+			builder = bodyPriv.engine.priv.builder;
+			builder.addToEngine(bodyPriv.engine.priv, "bullet", {x: bodyPriv.k.x+35, y:bodyPriv.k.y, t: engine.getTime()});
 		}
 	}
 	bodyPriv.properties.nextMove = null;
@@ -46,4 +36,6 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 							"<br>Coins: " + bodyPriv.properties.coins +
 							"<br>Health: " + bodyPriv.properties.health;
 
+});
+return agent;
 });
