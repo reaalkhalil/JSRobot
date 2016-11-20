@@ -1,5 +1,6 @@
 define(['mozart', 'Behavior', 'Collision', 'Agent'], function (mozart, behavior, collide, agent) {
 gravitate = behavior.g;
+keyboardcontrol = behavior.k;
 var Body = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(opts) {
 		__(this).fixed = opts.fixed || false;
@@ -93,6 +94,10 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		sprite.setParent(this);
 	};
 
+	_protected.getProperties = function(move){
+		return JSON.parse(JSON.stringify(__(this).properties));
+	};
+
 	_protected.setNextMove = function(move){
 		__(this).properties.nextMove = move;
 	};
@@ -110,7 +115,7 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).onGround = false;
 		gravitate.act(__(this), this);
 		collide.act(__(this), this);
-		//keyboardcontrol.act(__(this), this);
+		////////////keyboardcontrol.act(__(this), this);
 		// this works but needs the behaviours need to be in body's array
 		if(__(this).agent && this.getK().t % 10 === 0){
 			this.step(this);
