@@ -18,42 +18,38 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		return parseInt(__(this).timestep);
 	};
 
-	prototype.worldData = function(bodyPubl){
-		// specify object to this function to remove it from the results
-		var data = [];
-		for(var i in __(this).world){
-			var worldobject = __(this).world[i];
-			if(bodyPubl == worldobject){continue;}
-			var dataobject = {};
-			dataobject.k = __(this).world[i].getK();
-			dataobject.box = __(this).world[i].getBox();
-			dataobject.mass = __(this).world[i].getMass();
-			dataobject.type = __(this).world[i].getType();
-			data.push(dataobject);
-		}
-		return data;
-	};
-
 	__private.exportWorld = function(){
 		var coins = [];
 		var batteries = [];
 		var walls = [];
+		var sparkstrips = [];
+		var flag = [];
 		for(var j in __(this).world){
 			var o = __(this).world[j];
 			var k = o.getK();
-			if(o.getType() == "coin"){
+			var t = o.getType();
+			if(t=="effects"){continue;}
+			var w = o.getDimensions().w;
+			var h = o.getDimensions().h;
+			if(t == "coin"){
 				coins.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay});
 			}
-			if(o.getType() == "battery"){
-				batteries.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay});
+			if(t == "flag"){
+				flag.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay});
 			}
-			if(o.getType() == "wall"){
-				var w = o.getDimensions().w;
-				var h = o.getDimensions().h;
+			if(t == "battery"){
+				batteries.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay, w: w, h: h});
+			}
+			if(t == "wall"){
 				walls.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay, w: w, h: h});
 			}
+			if(t == "sparkstrip"){
+				sparkstrips.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay, w: w, h: h});
+			}
 		}
+		Game.flag = flag;
 		Game.coins = coins;
+		Game.sparkstrips = sparkstrips;
 		Game.batteries = batteries;
 		Game.walls = walls;
 	};
@@ -62,6 +58,15 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).exportWorld();
 		for(var j in __(this).world){
 			var o = __(this).world[j];
+			if(o.getType() == "player"){
+				var r = o.getK();
+				var e = __(this).properties;
+				if(r.x - e.x < 200){
+					e.x = r.x - 400;
+				}else if(r.x - e.x > e.width - 200){
+					e.x = r.x + 400 - e.width;
+				}
+			}
 			if(o.toBeDestroyed()){
 				__(this).world.splice(j,1);
 				continue;
