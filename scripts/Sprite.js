@@ -16,6 +16,8 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).x = options.x;
 		__(this).y = options.y;
 		__(this).r = options.r || 0;
+		__(this).fh = options.fh || false;
+		__(this).fv = options.fv || false;
 		if(options.visible === false){__(this).visible = false;}else{__(this).visible = true;}
 	};
 
@@ -35,6 +37,9 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		info.h = __(this).destheight;
 		info.v = __(this).visible;
 		info.n = __(this).name;
+		info.r = __(this).r;
+		info.fh = __(this).fh;
+		info.fv = __(this).fv;
 		return info;
 	};
 
@@ -46,10 +51,18 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 			py = __(this).container.getK().y - y;
 		}
 
-		if(__(this).r!==0){
+		if(__(this).r!==0 || __(this).fv || __(this).fh){
 			__(this).context.save(); 
 			__(this).context.translate(__(this).x + px, __(this).y + py); 
-			__(this).context.rotate(__(this).r);
+			if(__(this).r!==0){
+				__(this).context.rotate(__(this).r);
+			}
+			if(__(this).fh){
+				__(this).context.scale(-1, 1);
+			}
+			if(__(this).fv){
+				__(this).context.scale(1, -1);
+			}
 			px = -__(this).x ;
 			py = -__(this).y ;
 		}
@@ -63,9 +76,15 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).y + py - __(this).destheight/2,
 		__(this).destwidth,
 		__(this).destheight);
-		if(__(this).r!==0){__(this).context.restore();}
+		if(__(this).r!==0 || __(this).fv || __(this).fh){__(this).context.restore();}
 	};
 
+	prototype.flipv = function () {
+		__(this).fv = !__(this).fv;
+	};
+	prototype.fliph = function () {
+		__(this).fh = !__(this).fh;
+	};
 	prototype.show = function () {
 		__(this).visible = true;
 	};
