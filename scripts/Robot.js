@@ -22,6 +22,19 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		prototype.super.init.call(this, options);
 	};
 	
+	prototype.info = function(){
+		var p = _protected.super.super.getProperties.call(this);
+		var k =  prototype.super.super.getK.call(this);
+		k.energy = p.energy; k.health = p.health; k.coins = p.coins; k.nextMove = p.nextMove;
+		return k;
+	};
+
+	prototype.wait = function(){
+		_protected.super.super.setNextMove.call(this,null);
+	};
+	prototype.turn = function(){
+		_protected.super.super.setNextMove.call(this,"turn");
+	};
 	prototype.gun = function(){
 		_protected.super.super.setNextMove.call(this,"gun");
 	};
