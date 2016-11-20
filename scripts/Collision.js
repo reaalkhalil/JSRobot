@@ -148,7 +148,7 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			}
 			bodyPriv.properties.energy = 100;
 			continue;
-		}else if(bodyPriv.type == "battery" && ( col.obj2.t == "robot" ||  col.obj2.t == "robotc")){
+		}else if(bodyPriv.type == "battery" && col.obj2.t == "player"){
 			// objects have private engine object, use that to play effects, effects can be a private member in engine
 			effects.play("batterypop",{x:bodyPriv.k.x, y:bodyPriv.k.y});
 			bodyPriv.toBeDestroyed = true;
@@ -160,10 +160,23 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			}
 			bodyPriv.properties.coins += 1;
 			continue;
-		}else if(bodyPriv.type == "coin" && ( col.obj2.t == "robot" ||  col.obj2.t == "robotc")){
+		}else if(bodyPriv.type == "coin" && col.obj2.t == "player"){
 			effects.play("coinpop",{x: bodyPriv.k.x, y: bodyPriv.k.y});
 			bodyPriv.toBeDestroyed = true;
 			continue;
+		}
+		if(bodyPubl.isAgent() && col.obj2.t == "flag"){
+			if(isNaN(bodyPriv.properties.win)){
+				bodyPriv.properties.win = true;
+			}
+			continue;
+		}
+		if(bodyPubl.isAgent() && col.obj2.t == "sparkstrip"){
+			if(isNaN(bodyPriv.properties.health)){
+				bodyPriv.properties.health = 100;
+			}
+			bodyPriv.properties.health -= 20;
+			effects.play("spark",{x: bodyPriv.k.x, y: bodyPriv.k.y});
 		}
 		if(bodyPriv.type == "bullet"){
 			effects.play("bulletpop",{x: bodyPriv.k.x+10, y: bodyPriv.k.y});
@@ -180,7 +193,7 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 
 		if(Math.abs(col.obj2.b[0] - col.obj1.b[2]) < 7){
 			bodyPriv.onGround = true;
-			overlap[1] *= 0.8;
+			overlap[1] *= 0.7;
 			overlap[0] = 0;
 		}else{
 			overlap[1] += 0.25;
