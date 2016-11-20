@@ -55,11 +55,16 @@ code.onkeydown = function(e) {
         e.preventDefault();
     }
 };
-code.onkeyup = function(e) {
+function doCodeLines(){
 	var linenumberstext = "";
 	var lines = code.value.split('\n');
 		//tabs to 4 spaces;
 	var count = (code.value.match(/\n/g) || []).length;
+	if(count>=99){
+		code.style.paddingLeft = "32px";
+	}else{
+		code.style.paddingLeft = "25px";
+	}
 	for(var i = 1; i <= 1+count; i++){
 		breaks = Math.ceil((lines[i-1].length*6.622533333)/(code.clientWidth- 39));
 		if(lines[i-1].length === 0){breaks = 1;}
@@ -69,6 +74,10 @@ code.onkeyup = function(e) {
 		}
 	}
 	linenumbers.innerHTML = linenumberstext + "<br>";
+}
+doCodeLines();
+code.onkeyup = function(e) {
+	doCodeLines();
 };
 
 function openCommandDiv(){
