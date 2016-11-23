@@ -63,7 +63,7 @@ body{
 	background: rgb(40,44,52);
 	color: #999;
 	padding: 10px;
-	font-family: menlo, monaco;
+	font-family: "Roboto Mono", menlo, monaco;
 	border: 2px solid #434a57;
 	border-radius: 5px;
 	transition: border 0.3s, color 0.3s, background 0.2s;
@@ -71,7 +71,7 @@ body{
 	font-size: 11px;
 }
 #code{
-	overflow: scroll;
+	overflow: auto;
 	width: calc(100% - 20px);
 	margin: 10px;
 	resize: none;
@@ -83,7 +83,7 @@ body{
 	display: block;
 }
 #linenumbers{
-	font-family: menlo, monaco;
+	font-family: "Roboto Mono", menlo, monaco;
 	color: #999;
 	position: absolute;
 	font-size: 11px;
@@ -111,7 +111,7 @@ body{
 #commandDiv::before{
 	content: '>';
 	color: #e8e8e8;
-	font-family: menlo, monaco;
+	font-family: "Roboto Mono", menlo, monaco;
 	position: relative;
 	top: 2px;
 	width: 10px;
@@ -140,7 +140,7 @@ body{
 #propertiesDiv{
 	display: none;
 	padding: 30px;
-	font-family: menlo, monaco;
+	font-family: "Roboto Mono", menlo, monaco;
 	font-size: 11px;
 }
 #submitCode{
