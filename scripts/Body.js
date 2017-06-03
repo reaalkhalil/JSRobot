@@ -118,7 +118,13 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		////////////keyboardcontrol.act(__(this), this);
 		// this works but needs the behaviours need to be in body's array
 		if(__(this).agent && this.getK().t % 10 === 0){
-			this.step(this);
+			try {
+				this.step(this);
+			}
+			catch(err) {
+				this.step = function(){};
+				console.error(err.name + " " + err.message);
+			}
 			agent.act(__(this), this);
 		}
 

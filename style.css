@@ -71,11 +71,10 @@ body{
 	font-size: 11px;
 }
 #code{
-	overflow: auto;
+	overflow-y: scroll;
 	width: calc(100% - 20px);
 	margin: 10px;
 	resize: none;
-    overflow-y: visible;
 	padding-left: 25px;
 	position: relative;
 }

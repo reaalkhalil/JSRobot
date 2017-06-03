@@ -39,11 +39,13 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 		}
 	}
 	bodyPriv.properties.nextMove = null;
-	if(newcommand){
-		bodyPubl.command(newcommand);
+	var hideGlobals = "var window=undefined;var engine=undefined;var effects=undefined;var collide=undefined;var context=undefined;";
+	if(typeof newcommand !== 'undefined' && newcommand !== ""){
+		bodyPubl.command(hideGlobals + newcommand);
 		newcommand = "";
-	}else if(newcode){
-		codeString = code.value+"\nloop(this);";
+	}
+	if(typeof newcode !== 'undefined' && newcode){
+		codeString = hideGlobals + code.value+"loop(this);";
 		bodyPubl.step = new Function(codeString);
 		newcode = false;
 	}

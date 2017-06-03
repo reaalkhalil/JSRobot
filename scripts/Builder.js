@@ -190,8 +190,38 @@ effects.addEffect("spark",new Sprite({
 
 	__private.wallParser = function(walls){
 		var result = [];
-		var wallChars = ["#", "-", "="];
-		var wallNames = ["wall10", "wall1", "wall4"];
+		var wallTypes = [
+			{
+				char: "#",
+			 	images: ["wall10"],
+		 		r: 0
+			},{
+				char: "-",
+			 	images: ["wall1", "wall2", "wall3"],
+		 		r: 0
+			},{
+				char: "=",
+			 	images: ["wall4"],
+		 		r: 0
+			},{
+				char: "|",
+			 	images: ["wall1", "wall2", "wall3"],
+		 		r: 1/2
+			},{
+				char: "/",
+			 	images: ["wall1", "wall2", "wall3"],
+		 		r: 3/2
+			},{
+				char: ".",
+			 	images: ["wall5"],
+		 		r: 1/2
+			},{
+				char: ",",
+			 	images: ["wall5"],
+		 		r: 0
+			}
+		]
+
 		for(var i in walls.data){
 			var start = 0;
 			var spritesHolder = [];
@@ -201,8 +231,14 @@ effects.addEffect("spark",new Sprite({
 				var prevChar = walls.data[i].charAt(j-1);
 				if(wallChar != " " && wallChar !== ""){
 					if(prevChar == " " || prevChar === ""){start = j;}
-					wallImage = wallNames[wallChars.indexOf(wallChar)];
-					spritesHolder.push({x: 40*(j-start), y: 0, image: wallImage});
+					wallType = wallTypes.filter(function(a) {
+						if(a.char == wallChar){
+							return a;
+						}
+					})[0];
+					var wallImage = wallType.images[Math.floor(Math.random() * wallType.images.length)];
+					var wallRotation = Math.PI * wallType.r
+					spritesHolder.push({x: 40*(j-start), y: 0, image: wallImage, r: wallRotation});
 				}else if((wallChar == " " || wallChar === "") && prevChar != " " && prevChar !== ""){
 					result.push({x: walls.origin[0] + start * 40,
 						   y: walls.origin[1] + i * 40,

@@ -21,7 +21,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 	prototype.init = function(options) {
 		prototype.super.init.call(this, options);
 	};
-	
+
 	prototype.info = function(){
 		var p = _protected.super.super.getProperties.call(this);
 		var k =  prototype.super.super.getK.call(this);
@@ -50,13 +50,18 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 
 	prototype.command = function(string){
 		var stringFn = new Function("var robot = this;"+string);
-		stringFn.call(this);
+		try {
+			stringFn.call(this);
+		}
+		catch(err) {
+			console.error(err.name + " " + err.message);
+		}
 	};
 
 	prototype.step = function(robot){};
 
 });
-		
+
 
 
 
