@@ -55,11 +55,14 @@ var Collision = Behavior.subclass(function(prototype, _, _protected, __, __priva
 		var world = enginePriv.world;
 		for(var i = 0; i < world.length; i++){
 			var obj1 = world[i];
+			if(["wall"].indexOf(obj1.getType()) != -1){continue;}
 			var k1 = obj1.getK(), b1 = obj1.getBox(), m1 = obj1.getMass(), t1 = obj1.getType();
 			var b1a = [b1[0] + k1.vy, b1[1] + k1.vx, b1[2] + k1.vy, b1[3] + k1.vx];
 
-			for(var j = i + 1; j < world.length; j++){
+			for(var j =  0; j < world.length; j++){
+				if(i == j){continue}
 				var obj2 = world[j];
+				if(["player"].indexOf(obj2.getType()) != -1){continue;}
 				var k2 = obj2.getK(), b2 = obj2.getBox(), m2 = obj2.getMass(), t2 = obj2.getType();
 				var b2a = [b2[0] + k2.vy, b2[1] + k2.vx, b2[2] + k2.vy, b2[3] + k2.vx];
 
@@ -100,7 +103,7 @@ var Collision = Behavior.subclass(function(prototype, _, _protected, __, __priva
 							if(Math.abs(overlap[0]) < Math.abs(overlap[1]) && overlap[0] !== 0){overlap[1] = 0;}
 							if(Math.abs(overlap[1]) < Math.abs(overlap[0]) && overlap[1] !== 0){overlap[0] = 0;}
 				}
-					
+
 				if(overlapC[0] === 0 && overlapP[0] === 0 && overlapC[1] !== 0 && overlapP[1] !== 0  ||
 					overlapC[1] === 0 && overlapP[1] === 0 && overlapC[0] !== 0 && overlapP[0] !== 0){
 					continue;
@@ -109,7 +112,7 @@ var Collision = Behavior.subclass(function(prototype, _, _protected, __, __priva
 				if(overlapC[0] === false && overlapP[0] === false || overlapC[1] === 0 && overlapP[1] === 0){
 					//continue;
 				}
-					
+
 				__(this).pairs.push({
 					overlap: overlap,
 					obj1: {obj: obj1, k: k1, b: b1, m: m1, t: t1},
@@ -168,6 +171,7 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 		if(bodyPubl.isAgent() && col.obj2.t == "flag"){
 			if(isNaN(bodyPriv.properties.win)){
 				bodyPriv.properties.win = true;
+				nextlevel.style.display = "block";
 			}
 			continue;
 		}
