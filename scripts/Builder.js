@@ -101,7 +101,7 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 		var result = [];
 		var walls = __(this).wallParser(data.walls);
 		for(var w in walls){
-			var wall = new Body(__(this).prepareObject("wall", {x: walls[w].x, y: walls[w].y}, walls[w].sprites));
+			var wall = new Body(__(this).prepareObject("wall", {x: walls[w].x, y: walls[w].y, fixed: true}, walls[w].sprites));
 			__(this).engine.priv.add(wall);
 		}
 		for(var c in data.coins){
@@ -200,9 +200,25 @@ effects.addEffect("spark",new Sprite({
 			 	images: ["wall1", "wall2", "wall3"],
 		 		r: 0
 			},{
-				char: "=",
+				char: "_",
+			 	images: ["wall1", "wall2", "wall3"],
+		 		r: 1
+			},{
+				char: ">",
 			 	images: ["wall4"],
 		 		r: 0
+			},{
+				char: "<",
+			 	images: ["wall4"],
+		 		r: 1
+			},{
+				char: "^",
+			 	images: ["wall4"],
+		 		r: 1/2
+			},{
+				char: "v",
+			 	images: ["wall4"],
+		 		r: 3/2
 			},{
 				char: "|",
 			 	images: ["wall1", "wall2", "wall3"],
@@ -215,6 +231,14 @@ effects.addEffect("spark",new Sprite({
 				char: ".",
 			 	images: ["wall5"],
 		 		r: 1/2
+			},{
+				char: "'",
+			 	images: ["wall5"],
+		 		r: 3/2
+			},{
+				char: "`",
+			 	images: ["wall5"],
+		 		r: 1
 			},{
 				char: ",",
 			 	images: ["wall5"],
