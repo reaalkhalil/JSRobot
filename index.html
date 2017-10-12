@@ -3,7 +3,7 @@
     <head>
 		<title>JSRobot</title>
 		<script data-main="scripts/main" src="scripts/require.js"></script>
-		<link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,700|Roboto:300,400,700" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="style.css">
 
 
@@ -29,42 +29,86 @@
 
 	<body style="background:black;" class="noselect">
 
-		<canvas id="canvasID" width="800" height="500"></canvas>
+    <div id="menu">
+      <img class="robotbig" src="images/robotbig.png">
+      <div id="speechbubble">beep boop</div>
+      <a class="menubutton prevlevel-menubutton" id="prevlevel">&larr;</a>
+      <a class="menubutton level-menubutton" id="level">Level 1</a>
+      <a class="menubutton start-menubutton" id="start">Start</a>
+
+    </div>
 
 
+    <div id="play">
+      <a class="menubutton exit-menubutton" id="backtomenu">&larr;</a>
+      <a class="menubutton restartlevel-menubutton" id="restartlevel">&#10226;</a>
+      <a class="menubutton nextlevel-menubutton" id="nextlevel"> Next Level&nbsp; &rarr;</a>
+
+		<canvas id="canvasID" width="400" height="500"></canvas>
 
 		<div id="codearea">
 				<ul id="buttonbar" class="noselect">
-						<li><a id="codeBtn" class="selected">Script</a>						
-						</li><li><a id="commandBtn">Command</a></li><li id="properties">
+						<li><a id="instructionsBtn" class="selected">Instructions</a>
+						</li><li><a id="codeBtn">Script</a>
+						</li><li><a id="commandBtn">Command</a>
 						</li><li><a id="propertiesBtn">Properties</a></li><li id="minmax">
 						<a>_</a></li>
 				</ul>
-	<div id="codeDiv" style="display: block;">
+	<div id="codeDiv" style="display: none;">
 			<div id="linenumbers" class="noselect">1<br>2<br>3</div>
 			<textarea id="code" style="height: 100px;">
+function init(robot){
+	// your code here
+}
+
+function loop(robot){
+	// your code here
+}
+</textarea>
+		<a id="submitCode" class="noselect">Apply</a>
+	</div>
+		<div id="commandDiv"><input id="command" value="robot.move(10);"></div>
+		<div id="instructionsDiv" class="allowselect" style="display: block; height: 200px"></div>
+		<div id="propertiesDiv"></div>
+	</div>
+
+
+  </div>
+
+
+	<script src="scripts/ui.js"></script>
+    </body>
+
+</html>
+
+
+<!--
+
+
 /*****************************
 		INTRODUCTION:
 ******************************/
 /*	Use this tab to write commands for the robot to
-	execute in a loop, the game runs at 30fps and the
+	execute in a loop, the game runs at 30fps and your
 	robot runs at 3fps. The commands you can send your
-	robot are listed in the next section. For each loop
-	you can only send your robot one command, with the
-	exception of robot.info() gives you info about	your
-	robot, and doesn't count to your one command.
+	robot are listed in the next section. In each
+	iteration of your loop you can only send your robot
+	one command, with the exception of robot.info()
+	gives you info about	your robot, and doesn't count
+	to your one command.
 
-	Use the Command tab to send the robot one-time commands,
-	this is useful for debugging and initialising custom
-	variables on your robot. You can give them any acceptable
-	JavaScript variable name and value such as:
-	robot.color = "blue",
-	robot.nearest_coin = {x: 5, y: 10}
+	Use the Command tab to send the robot one-liner commands,
+	this helps you figure out the level. You can also give the
+	robot custom properties, initialise them in the Command tab
+	and you will be able to access the variables in the Script tab.
+	Initialise the properties, as you would in JS:
+	robot.color = "blue";
+	robot.nearest_coin = {x: 5, y: 10};
 
 	The Properties tab shows you some basic info about your
-	robot, this is particularly useful if your watching it
-	move and jump and do things, and want to keep track of
-	it's health, energy, etc. at crucial points in the level.
+	robot, this is useful if you're watching it solve the level
+	and want to keep track of it's health, energy, etc. to perfect
+	your robot's loop script.
 
 	You can use console.log() to debug as well.
 
@@ -76,23 +120,23 @@
 /*****************************
 	KEYBOARD SHORTCUTS:
 ******************************/
-/*	CTRL + RIGHT:	Switches to the tab on the right of the current one
-	CTRL + LEFT:	Switches to the tab on the left of the current one
-	CTRL + DOWN:	Minimizes the bottom bar
-	CTRL + UP: 		Maximizes the bottom bar
-	CTRL + ENTER:	In Script Mode this applies the script to your robot
-	ENTER:			In command mode, this sends your command to the robot
+/*	CTRL (or CMD) + RIGHT:	Switches to the tab on the right of the current one
+	CTRL (or CMD) + LEFT:	Switches to the tab on the left of the current one
+	CTRL (or CMD) + DOWN:	Minimizes the bottom bar
+	CTRL (or CMD) + UP: 	Maximizes the bottom bar
+	CTRL (or CMD) + ENTER:	In Script Mode this applies the script to your robot
+	ENTER:					In command mode, this sends your command to the robot
 */
 
 /*****************************
 	ALLOWED ROBOT FUNCTIONS:
 ******************************/
-	// robot.info();	returns x, y, vx, vy, ax, ay, time
-	// robot.move(v);	where v = [-20,20]
-	// robot.jump();
-	// robot.turn();
-	// robot.wait();	does nothing for this iteration
-	// robot.gun();
+	// robot.info()		returns robot's position, velocity, acceleration and time
+	// robot.move(v)	where v = [-20,20]
+	// robot.jump()
+	// robot.turn()
+	// robot.wait()		does nothing for this iteration of the loop
+	// robot.gun()
 
 /*****************************
 	GET GAME DATA FROM:
@@ -117,7 +161,7 @@
 /*	To have the robot run predefined step-by-step commands,
 	run in the Command Tab:
 	"robot.instructions = [1,2,3,2,1,4]; robot.phase = 0;"
-	
+
 	Then type in the Script Tab:
 
 var loop = function(robot){
@@ -145,18 +189,43 @@ var loop = function(robot){
 //	Your code should always be inside the following loop,
 //	otherwise it will not run:
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var loop = function(robot){
-	// your code here
+	pos = {x: robot.info().x, y: robot.info().y};
+	coins = Game.coins;
+	coins = coins.sort(function(a,b){
+		adist = Math.pow(pos.x - a.x, 2) + Math.pow(pos.y - a.y, 2);
+		bdist = Math.pow(pos.x - b.x, 2) + Math.pow(pos.y - b.y, 2);
+		if(adist <= bdist){
+			return -1;
+		}
+		return 1;
+	})
+	if(coins.length == 0){
+	//	coins[0] = Game.flag;
+	}
+	var direction = 40*Math.atan((coins[0].x - pos.x)/100) / Math.PI;
+	robot.move(direction);
+	if(robot.iter > 10){robot.jump();}
+
+	robot.iter++;
 }
 
-</textarea>
-		<a id="submitCode" class="noselect">Apply</a>
-	</div>
-		<div id="commandDiv"><input id="command" value="robot.move(-5);"></div>
-		<div id="propertiesDiv"></div>
-	</div>
 
-	<script src="scripts/ui.js"></script>
-    </body>
-
-</html>
+-->
