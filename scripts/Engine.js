@@ -5,7 +5,7 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).world = [];
 		__(this).timestep = 0;
 		__(this).started = false;
-		__(this).properties = {x:0, y:0, width: 800, height: 500};
+		__(this).properties = {x:0, y:0, width: 900, height: 500};
 		__(this).build();
 	};
 
@@ -62,9 +62,14 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 				var r = o.getK();
 				var e = __(this).properties;
 				if(r.x - e.x < 200){
-					e.x = r.x - 400;
+					e.x = r.x - 200;
 				}else if(r.x - e.x > e.width - 200){
-					e.x = r.x + 400 - e.width;
+					e.x = r.x + 200 - e.width;
+				}
+				if(r.y - e.y < 100){
+					e.y = r.y - 100;
+				}else if(r.y - e.y > e.height - 100){
+					e.y = r.y + 100 - e.height;
 				}
 			}
 			if(o.toBeDestroyed()){
@@ -81,9 +86,11 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		}
 		__(this).render();
 	};
-	
+
 	__private.render = function(){
 		var p = __(this).properties;
+		p.width = Math.max(450, window.innerWidth - 20);
+		p.height = Math.max(300, window.innerHeight - codearea.clientHeight);
 		canvas.width = p.width;
 		canvas.height = p.height;
 		context.mozImageSmoothingEnabled = false;
@@ -122,7 +129,7 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 		var builder = new Builder();
 		__(this).builder = builder;
 		builder.setEngine(__(this), this);
-		builder.load(levelData);
+		builder.load(currentLevel);
 	};
 
 });
