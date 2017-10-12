@@ -40,13 +40,15 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 	}
 	bodyPriv.properties.nextMove = null;
 	var hideGlobals = "var window=undefined;var engine=undefined;var effects=undefined;var collide=undefined;var context=undefined;";
+	var scriptTail = "if(typeof(loop) == 'undefined'){loop = function(){}}; if(typeof(init) == 'undefined'){init = function(){}}; return {init: init, loop: loop};";
 	if(typeof newcommand !== 'undefined' && newcommand !== ""){
 		bodyPubl.command(hideGlobals + newcommand);
 		newcommand = "";
 	}
 	if(typeof newcode !== 'undefined' && newcode){
-		codeString = hideGlobals + code.value+"loop(this);";
-		bodyPubl.step = new Function(codeString);
+		var g = Function(hideGlobals + code.value + scriptTail);
+		g().init(bodyPubl)
+		bodyPubl.step = g().loop
 		newcode = false;
 	}
 	propertiesDiv.innerHTML = "Energy: " + Math.round(bodyPriv.properties.energy) +
