@@ -1,3 +1,72 @@
+var menu = document.getElementById("menu");
+var play = document.getElementById("play");
+var speechbubble = document.getElementById("speechbubble");
+
+var prevlevelButton = document.getElementById("prevlevel");
+var levelButton = document.getElementById("level");
+var startButton = document.getElementById("start");
+
+var level = 1;
+
+lines = ['Beep boop!', '01101000 01101001', 'Have a spare charger?', 'DESTROY. DESTROY.', 'Resistance is futile.', 'Sleep is for humans..', 'We\'re stealing your jobs LOOL']
+speechbubble.innerHTML = lines[Math.floor(Math.random() * (lines.length))];
+
+var maxLevels = 1;
+var levels;
+requirejs.config({
+    baseUrl: 'scripts',
+});
+requirejs(['mozart', '../data/levels'],
+  function (mozart, levelData) {
+		levels = (new levelData()).levels
+    maxLevels = levels.length;
+
+	var gameStarted = false;
+	if(location.hash.length > 0){
+		if(!isNaN(location.hash.slice(1))){
+			level = Number(location.hash.slice(1));
+			if(level <= maxLevels){
+				startGame(level);
+				gameStarted = true;
+			}
+		}
+	}
+	if(!gameStarted){
+		menu.style.display = "block";
+	}
+});
+
+prevlevelButton.onclick = function(){
+	level = Math.max(1, level - 1);
+	levelButton.innerHTML = "Level " + level;
+};
+
+levelButton.onclick = function(){
+	level = Math.min(maxLevels, level + 1);
+	levelButton.innerHTML = "Level " + level;
+};
+
+function startGame(level){
+	menu.style.display = "none";
+	play.style.display = "inherit";
+	doCodeLines();
+	openInstructionsDiv();
+	startLevel(level)
+	instructionsDiv.innerHTML = levels[level-1].instructions;
+}
+startButton.onclick = function(){
+	startGame(level)
+	location.hash = level;
+};
+
+
+
+
+
+
+var backtomenu = document.getElementById("backtomenu");
+var nextlevel = document.getElementById("nextlevel");
+var restartlevel = document.getElementById("restartlevel");
 var submit = document.getElementById("submitCode");
 var code = document.getElementById("code");
 var codeDiv = document.getElementById("codeDiv");
@@ -8,11 +77,29 @@ var commandBtn = document.getElementById("commandBtn");
 var codeBtn = document.getElementById("codeBtn");
 var propertiesBtn = document.getElementById("propertiesBtn");
 var propertiesDiv = document.getElementById("propertiesDiv");
+var instructionsBtn = document.getElementById("instructionsBtn");
+var instructionsDiv = document.getElementById("instructionsDiv");
 var minmaxBtn = document.getElementById("minmax");
 var lineheight = document.getElementById("lineheight");
+var linenumbers = document.getElementById("linenumbers");
 
 var newcode = false;
 var newcommand = "";
+
+backtomenu.onclick = function(){
+	location.hash = "";
+	location.reload();
+}
+
+nextlevel.onclick = function(){
+	level = Math.min(maxLevels, level + 1);
+	location.hash = level;
+	location.reload();
+}
+
+restartlevel.onclick = function(){
+	location.reload();
+}
 
 function applyScript(){
 	code.classList.add('execute');
@@ -75,15 +162,29 @@ function doCodeLines(){
 	}
 	linenumbers.innerHTML = linenumberstext + "<br>";
 }
-doCodeLines();
 code.onkeyup = function(e) {
 	doCodeLines();
 };
+
+function openInstructionsDiv(){
+	propertiesDiv.style.display = "none";
+	commandDiv.style.display = "none";
+	codeDiv.style.display = "none";
+	instructionsDiv.style.display = "block";
+	instructionsBtn.className = "selected";
+	commandBtn.className = "";
+	codeBtn.className = "";
+	propertiesBtn.className = "";
+	minmaxBtn.innerHTML = "<a>_</a>";
+	buttonbar.classList.remove("minimized");
+}
 
 function openCommandDiv(){
 	commandDiv.style.display = "block";
 	propertiesDiv.style.display = "none";
 	codeDiv.style.display = "none";
+	instructionsDiv.style.display = "none";
+	instructionsBtn.className = "";
 	codeBtn.className = "";
 	propertiesBtn.className = "";
 	commandBtn.className = "selected";
@@ -95,17 +196,22 @@ function openCodeDiv(){
 	codeDiv.style.display = "block";
 	propertiesDiv.style.display = "none";
 	commandDiv.style.display = "none";
+	instructionsDiv.style.display = "none";
+	instructionsBtn.className = "";
 	commandBtn.className = "";
 	propertiesBtn.className = "";
 	codeBtn.className = "selected";
 	minmaxBtn.innerHTML = "<a>_</a>";
 	buttonbar.classList.remove("minimized");
+	doCodeLines();
 	code.focus();
 }
 function openPropertiesDiv(){
 	propertiesDiv.style.display = "block";
 	commandDiv.style.display = "none";
 	codeDiv.style.display = "none";
+	instructionsDiv.style.display = "none";
+	instructionsBtn.className = "";
 	commandBtn.className = "";
 	codeBtn.className = "";
 	propertiesBtn.className = "selected";
@@ -116,6 +222,7 @@ function minimize(){
 	buttonbar.classList.add("minimized");
 	codeDiv.style.display = "none";
 	propertiesDiv.style.display = "none";
+	instructionsDiv.style.display = "none";
 	commandDiv.style.display = "none";
 	minmaxBtn.innerHTML = "<a>&#11027;</a>";
 }
@@ -125,11 +232,16 @@ function maximize(){
 		openCommandDiv();
 	}else if(codeBtn.className == "selected"){
 		openCodeDiv();
+	}else if(instructionsBtn.className == "selected"){
+		openInstructionsDiv();
 	}else{
 		openPropertiesDiv();
 	}
 }
 
+instructionsBtn.onclick = function(){
+	openInstructionsDiv();
+};
 propertiesBtn.onclick = function(){
 	openPropertiesDiv();
 };
@@ -140,36 +252,45 @@ codeBtn.onclick = function(){
 	openCodeDiv();
 };
 minmaxBtn.onclick = function(){
-	if(codeDiv.style.display == "none" && commandDiv.style.display == "none" && propertiesDiv.style.display == "none"){
+	if(codeDiv.style.display == "none" && commandDiv.style.display == "none" && propertiesDiv.style.display == "none" && instructionsDiv.style.display == "none"){
 		maximize();
 	}else{
 		minimize();
 	}
 };
 
-var dragy = 0;
-var dragging = false;
+var dragy_code = 0;
+var dragging_code = false;
 buttonbar.onmousedown = function(e){
-	dragy = e.clientY;
-	dragging = true;
-	if(codeDiv.style.display!="none"){
+	dragy_code = e.clientY;
+	dragging_code = true;
+	if(commandDiv.style.display == "none"){
 		buttonbar.style.cursor = "ns-resize";
 	}
 };
 onmouseup = function(e){
-	dragging = false;
+	dragging_code = false;
 	buttonbar.style.cursor = "default";
 };
 onmousemove = function(e){
-	if(dragging && codeDiv.style.display!="none"){
-		var height = Number(code.style.height.replace("px",""));
-		var newheight = height + dragy - e.clientY;
+	if(dragging_code && commandDiv.style.display == "none"){
+		if(codeDiv.style.display == "block"){
+			var height = Number(code.style.height.replace("px",""));
+		}else if(instructionsDiv.style.display == "block"){
+			var height = Number(instructionsDiv.style.height.replace("px",""));
+		}
+		var newheight = height + dragy_code - e.clientY;
 		if(newheight < 63){newheight = 63;}
-		code.style.height = newheight;
-		linenumbers.style.height = newheight - 14;
-		dragy = e.clientY;
+		if(codeDiv.style.display == "block"){
+			code.style.height = newheight;
+			linenumbers.style.height = newheight - 14;
+		}else if(instructionsDiv.style.display == "block"){
+			instructionsDiv.style.height = newheight;
+		}
+		dragy_code = e.clientY;
 	}
 };
+
 
 linenumbers.style.height = Number(code.style.height.replace("px","")) - 14;
 
@@ -185,23 +306,31 @@ onkeydown = function(e) {
 		}else if(e.keyCode == 37) {
 			if(propertiesBtn.classList.contains("selected")){
 				openCommandDiv();
+			}else if(instructionsBtn.classList.contains("selected")){
+				openPropertiesDiv();
 			}else if(commandBtn.classList.contains("selected")){
 				openCodeDiv();
 			}else if(codeBtn.classList.contains("selected")){
-				openPropertiesDiv();
+				openInstructionsDiv();
 			}
+      return false;
 		}else if(e.keyCode == 38) {
 			maximize();
+      return false;
 		}else if(e.keyCode == 39) {
 			if(propertiesBtn.classList.contains("selected")){
+				openInstructionsDiv();
+			}else if(instructionsBtn.classList.contains("selected")){
 				openCodeDiv();
 			}else if(commandBtn.classList.contains("selected")){
 				openPropertiesDiv();
 			}else if(codeBtn.classList.contains("selected")){
 				openCommandDiv();
 			}
+      return false;
 		}else if(e.keyCode == 40) {
 			minimize();
+      return false;
 		}
 	}
 };
