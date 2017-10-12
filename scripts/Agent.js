@@ -45,17 +45,57 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 		bodyPubl.command(hideGlobals + newcommand);
 		newcommand = "";
 	}
+	var g;
 	if(typeof newcode !== 'undefined' && newcode){
-		var g = Function(hideGlobals + code.value + scriptTail);
+		g = Function(hideGlobals + code.value + scriptTail);
 		g().init(bodyPubl)
+		// emptyObj = {info: function(){return bodyPubl.info()}};
+		// g().init(emptyObj)
 		bodyPubl.step = g().loop
 		newcode = false;
 	}
-	propertiesDiv.innerHTML = "Energy: " + Math.round(bodyPriv.properties.energy) +
-							"<br>Coins: " + bodyPriv.properties.coins +
-							"<br>Health: " + Math.round(bodyPriv.properties.health) +
-							"<br>X: " + Math.round(bodyPriv.k.x) +
-							"<br>Y: " + Math.round(bodyPriv.k.y);
+
+	if(propertiesDiv.style.display != "none"){
+
+			customProperties = [];
+			customFunctions = [];
+			var keys = Object.keys(bodyPubl);
+			for(key of keys){
+				if(key == 'step') continue;
+				if(typeof(bodyPubl[key]) == 'function'){
+					customFunctions.push(key);
+				}else{
+					customProperties.push({key: key, value: bodyPubl[key]})
+				}
+			}
+			customPropertiesString = "";
+			for(prop of customProperties){
+				customPropertiesString += "<tr><td><b>" + prop.key + ": </b></td><td><b>" + prop.value + "</b></td></tr>";
+			}
+			customFunctionsString = "";
+			for(prop of customFunctions){
+				customFunctionsString += "<tr><td><b>" + prop + ": </b></td><td><b>[Function]</b></td></tr>";
+			}
+
+			propertiesDiv.innerHTML = "Robot = {<br><br><table>" +
+			"<tr><td>energy: </td><td>" + (Math.round(bodyPriv.properties.energy * 10) / 10) + "</td></tr>" +
+			"<tr><td>health: </td><td>" + (Math.round(bodyPriv.properties.health * 10) / 10) + "</td></tr>" +
+			"<tr><td>coins: </td><td>" + bodyPriv.properties.coins + "</td></tr>" +
+			"<tr><td>x: </td><td>" + (Math.round(bodyPriv.k.x * 10) / 10) + "</td></tr>" +
+			"<tr><td>y: </td><td>" + (Math.round(bodyPriv.k.y * 10) / 10) + "</td></tr>" +
+		  customPropertiesString +
+			"<tr><td>&nbsp;</td><td></td></tr>" +
+			"<tr><td>move: </td><td>[Function]</td></tr>" +
+			"<tr><td>gun:  </td><td>[Function]</td></tr>" +
+			"<tr><td>jump: </td><td>[Function]</td></tr>" +
+			"<tr><td>info: </td><td>[Function]</td></tr>" +
+			"<tr><td>turn: </td><td>[Function]</td></tr>" +
+			"<tr><td>init: </td><td>[Function]</td></tr>" +
+			"<tr><td>loop: </td><td>[Function]</td></tr>" +
+		  customFunctionsString +
+		"</table><br>}"
+}
+
 });
 return agent;
 });
