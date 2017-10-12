@@ -279,6 +279,39 @@ function loop(robot){
 			"instructions": `
 				<h1>Level 5</h1>
 			<p>
+				Apply the brakes with <code>robot.move(-robot.info().vx)</code>
+				<br><br>
+			</p>
+			`,
+			"player": {"x": 100, "y": 200},
+			"coins": [
+				{x: 200,y: 100},
+				{x: 550,y: 100},
+			],
+			"batteries": [],
+			"flag": {x: 1700, y: 322},
+			"sparkstrips": [{x: 460, y: 332}, {x: 640, y: 252}],
+			"walls": {"origin": [0,0],
+				"data":["                                              ",
+						"                                              ",
+						"                                              ",
+						"|                                            /",
+						"|                                            /",
+						"|                                            /",
+						"|                                            /",
+						"|            <---v                           /",
+						"|            /   |                           /",
+						".------------,   .---------------------------,"]
+					}
+
+
+				},
+
+
+	{
+			"instructions": `
+				<h1>Level 6</h1>
+			<p>
 				You know the drill.
 				<br><br>
 				<code>robot.gun()</code> might be useful to collect the coins on top of the spark strips without damaging the robot.<br><br>
