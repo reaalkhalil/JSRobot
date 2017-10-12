@@ -11,6 +11,136 @@ body{
         -ms-user-select: none;
             user-select: none;
 }
+.allowselect {
+  -webkit-touch-callout: text !important;
+    -webkit-user-select: text !important;
+     -khtml-user-select: text !important;
+       -moz-user-select: text !important;
+        -ms-user-select: text !important;
+            user-select: text !important;
+}
+#play{
+	display: none;
+}
+#menu{
+	display: none;
+}
+
+.robotbig{
+	width: 200px;
+	position: absolute;
+	top: calc(30% - 100px);
+	left: calc(50% - 300px);
+}
+#speechbubble{
+	width: calc(40% - 100px);
+	min-width: 350px;
+	height: 160px;
+	position: absolute;
+	top: calc(30% - 100px);
+	left: calc(50% - 50px);
+	display: block;
+	background: #260024;
+	border: 8px solid #D70047;
+	font-family: "Roboto Mono", menlo, monaco;
+	color: #D70047;
+	font-size: 40px;
+	padding: 20px;
+}
+#speechbubble::before{
+	content: ' ';
+	width: 0;
+	height: 0;
+	border: 30px solid rgba(0,0,0,0);
+	border-right: 30px solid #D70047;
+	position: absolute;
+	top: 35%;
+	left: -65px;
+}
+.menubutton{
+	background: #528BFF;
+	padding: 10px 20px;
+	font-size: 30px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background 0.3s, color 0.3s;
+	position: absolute;
+	top: calc(30% + 230px);
+	text-align: center;
+}
+.menubutton:hover{
+	background: #526AFF;
+}
+.start-menubutton{
+	right: calc(10% + 100px);
+	width: 120px;
+}
+@media screen and (max-width: 1200px){
+	.start-menubutton{
+		right: calc(50% - 350px);
+		width: 120px;
+	}
+}
+
+.level-menubutton{
+	left: calc(50% - 200px);
+	width: 140px;
+}
+.prevlevel-menubutton{
+	left: calc(50% - 280px);
+	width: 30px;
+}
+.exit-menubutton{
+	top: 15px;
+	left: 15px;
+	width: 30px;
+}
+.restartlevel-menubutton{
+	top: 15px;
+	left: 100px;
+	width: 30px;
+}
+.nextlevel-menubutton{
+	top: 15px;
+	right: 15px;
+	width: 200px;
+	display: none;
+}
+
+
+#instructionsDiv{
+	margin-top: 3px;
+	padding: 15px;
+	font-size: 14px;
+	overflow: scroll;
+	line-height: 20px;
+	letter-spacing: 0.4px;
+}
+#instructionsDiv a{
+	color: rgb(82,139,255);
+	text-decoration: none;
+}
+#instructionsDiv a:hover{
+	text-decoration: underline;
+}
+#instructionsDiv pre{
+	background-color: rgb(40,44,52);
+	padding: 10px;
+	border-radius: 5px;
+	font-family: "Roboto Mono", menlo, monaco;
+	border: 2px solid #434a57;
+	border-radius: 5px;
+	tab-size: 4;
+	font-size: 11px;
+}
+#instructionsDiv code{
+	background-color: rgb(40,44,52);
+	padding: 3px 5px;
+	border-radius: 5px;
+	font-family: "Roboto Mono", menlo, monaco;
+	border-radius: 5px;
+	font-size: 11px;
+}
 #codearea{
 	background: rgb(20,24,32);
 	position: absolute;
@@ -129,10 +259,10 @@ body{
 	color: #e8e8e8;
 }
 
-#code::-moz-selection, #command::-moz-selection{
+::-moz-selection{
 	background: #bbb;
 }
-#code::selection, #command::selection{
+::selection{
 	background: #bbb;
 }
 
