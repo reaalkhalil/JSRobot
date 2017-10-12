@@ -278,6 +278,8 @@ onmousemove = function(e){
 			var height = Number(code.style.height.replace("px",""));
 		}else if(instructionsDiv.style.display == "block"){
 			var height = Number(instructionsDiv.style.height.replace("px",""));
+		}else if(propertiesDiv.style.display == "block"){
+			var height = Number(propertiesDiv.style.height.replace("px",""));
 		}
 		var newheight = height + dragy_code - e.clientY;
 		if(newheight < 63){newheight = 63;}
@@ -286,6 +288,8 @@ onmousemove = function(e){
 			linenumbers.style.height = newheight - 14;
 		}else if(instructionsDiv.style.display == "block"){
 			instructionsDiv.style.height = newheight;
+		}else if(propertiesDiv.style.display == "block"){
+			propertiesDiv.style.height = newheight;
 		}
 		dragy_code = e.clientY;
 	}

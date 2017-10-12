@@ -110,7 +110,7 @@ body{
 
 #instructionsDiv{
 	margin-top: 3px;
-	padding: 15px;
+	padding: 30px;
 	font-size: 14px;
 	overflow: scroll;
 	line-height: 20px;
@@ -260,17 +260,35 @@ body{
 }
 
 ::-moz-selection{
-	background: #bbb;
+	background: #bbb !important;
+}
+::-webkit-selection{
+	background: #bbb !important;
 }
 ::selection{
-	background: #bbb;
+	background: #bbb !important;
 }
 
 #propertiesDiv{
 	display: none;
 	padding: 30px;
 	font-family: "Roboto Mono", menlo, monaco;
+	font-weight: normal !important;
 	font-size: 11px;
+	overflow: scroll;
+}
+#propertiesDiv table{
+	margin-left: 20px;
+	font-weight: normal;
+	font-size: 11px;
+}
+#propertiesDiv table td{
+    padding: 0px;
+    padding-left: 10px;
+}
+#propertiesDiv b{
+	font-weight: normal !important;
+	color: rgb(82,139,255);
 }
 #submitCode{
 	border: 2px solid #434a57;
