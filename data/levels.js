@@ -4,6 +4,7 @@ define(['mozart'], function (mozart) {
 		prototype.levels = [{
 		"instructions": `
 			<h1>Level 1</h1>
+			<p>
 			Beep boop! If you don't know what JavaScript is then watch <a href="https://www.youtube.com/watch?v=Ukg_U3CnJWI" target="_blank">this 12 minute video</a>.<br>
 			Now that that's out of the way and you kinda sorta know what JavaScript is, let's get started.
 			<br>
@@ -16,6 +17,7 @@ define(['mozart'], function (mozart) {
 			You can either keep giving the robot commands by hitting Enter over and over like a chump, or you can use a loop.
 			<br><br>
 			Go to the Script tab, it will have the following code:
+			</p>
 			<pre>function init(robot){
 	// your code here
 }
@@ -23,9 +25,11 @@ define(['mozart'], function (mozart) {
 function loop(robot){
 	// your code here
 }</pre>
+<p>
 		Inside the <code>loop</code> function, replace the line: <code>// your code here</code> with: <code>robot.move(10)</code>. Then click Apply.
-		<br><Br>
+		<br><br>
 		Well done!<br><br>
+		</p>
 		`,
 		"player": {"x": 100, "y": 200},
 		"coins": [
@@ -63,6 +67,7 @@ function loop(robot){
 			{
 			"instructions": `
 				<h1>Level 2</h1>
+				<p>
 				Now for a little twist... There are obstacles in the way.<br>
 				Luckily, the robot can jump! Go to the Command tab, type in <code>robot.jump()</code> and then hit Enter.<br><br>
 				Cool! Now to write a simple script, let's try making the robot jump, move forward, jump, move forward and repeat...
@@ -72,6 +77,7 @@ function loop(robot){
 				Now the robot holds a variable named <code>number</code> which is initialized to <code>0</code>.
 				<br><br>
 				Then type the following in the <code>loop</code> function:
+				</p>
 				<pre>if(robot.number % 2 == 0){
 	robot.jump()
 } else {
@@ -79,12 +85,14 @@ function loop(robot){
 }
 robot.number++;
 </pre>
+<p>
 <br>
 The <code>robot.number % 2 == 0</code> expression in the if-statement checks whether the remainder after dividing <code>robot.number</code> by <code>2</code> is zero. So if <code>robot.number</code> is even the robot jumps, if it's odd the robot moves forward.
 <br><br>
 <code>robot.number++</code> increments the <code>number</code> variable stored in the robot by <code>1</code> before repeating the loop again, this way the robot will alternate between jumping and moving.
 <br><br>
 With one adjustment, the full code is now:
+</p>
 <pre>
 function init(robot){
 	robot.number = 0;
@@ -98,10 +106,6 @@ function loop(robot){
 	}
 }
 </pre>
-
-
-
-
 			`,
 			"player": {"x": 100, "y": 200},
 			"coins": [
@@ -140,6 +144,7 @@ function loop(robot){
 				{
 			"instructions": `
 				<h1>Level 3</h1>
+				<p>
 				The spark strip damages your robot, every time you touch it you lose 20% health.<br>
 				You can use the <code>robot.info()</code> method to get an object containing:
 				<br><code>x</code> x position
@@ -157,11 +162,8 @@ function loop(robot){
 				Use <code>robot.info().x</code> to access the information in the script, replacing <code>x</code> with any of the above variables.<br><br>
 				You can also use <code>Game</code> to get information about the elements in the current level, for example to get the x position of the spark strip use: <code>Game.sparkstrips[0].x</code>
 				<br><br>
-
-
-
 				You're on your own.
-
+				</p>
 			`,
 			"player": {"x": 100, "y": 200},
 			"coins": [
@@ -202,7 +204,9 @@ function loop(robot){
 {
 		"instructions": `
 			<h1>Level 4</h1>
+			<p>
 			How deep does the rabbit hole go?
+			</p>
 		`,
 	"player": {"x": 100, "y": 140},
 	"coins": [
@@ -274,12 +278,12 @@ function loop(robot){
 	{
 			"instructions": `
 				<h1>Level 5</h1>
+			<p>
 				You know the drill.
 				<br><br>
 				<code>robot.gun()</code> might be useful to collect the coins on top of the spark strips without damaging the robot.<br><br>
 				<br><br>
-
-
+			</p>
 			`,
 			"player": {"x": 100, "y": 200},
 			"coins": [
