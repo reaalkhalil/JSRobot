@@ -2,6 +2,15 @@
 
     <head>
 		<title>JSRobot</title>
+
+
+  <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+  <link rel="stylesheet" href="codemirror/theme/dracula.css">
+  <script src="codemirror/lib/codemirror.js"></script>
+  <script src="codemirror/mode/javascript/javascript.js"></script>
+  <script src="codemirror/addon/selection/active-line.js"></script>
+  <script src="codemirror/addon/edit/matchbrackets.js"></script>
+
 		<script data-main="scripts/main" src="scripts/require.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,700|Roboto:300,400,700" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="style.css">
@@ -24,6 +33,7 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="icon/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
+
 
     </head>
 
@@ -55,14 +65,13 @@
 						<a>_</a></li>
 				</ul>
 	<div id="codeDiv" style="display: none;">
-			<div id="linenumbers" class="noselect">1<br>2<br>3</div>
 			<textarea id="code">
 function init(robot){
-	// your code here
+  // your code here
 }
 
 function loop(robot){
-	// your code here
+  // your code here
 }
 </textarea>
 		<a id="submitCode" class="noselect">Apply</a>
@@ -80,6 +89,16 @@ function loop(robot){
 
 
 	<script src="scripts/ui.js"></script>
+  <script>
+
+  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    lineNumbers: true,
+    styleActiveLine: true,
+    matchBrackets: true
+  });
+  editor.setOption("theme", "dracula");
+
+  </script>
     </body>
 
 </html>

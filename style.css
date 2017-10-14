@@ -213,18 +213,6 @@ body{
 #codeDiv{
 	display: block;
 }
-#linenumbers{
-	font-family: "Roboto Mono", menlo, monaco;
-	color: #999;
-	position: absolute;
-	font-size: 11px;
-	margin-top: 12px;
-	padding-top: 10px;
-	margin-left: 20px;
-	z-index: 1000;
-	overflow: hidden;
-	height: calc(100% - 69px);
-}
 #commandDiv{
 		display: none;
 		height: calc(100% - 35px);
@@ -285,6 +273,37 @@ body{
     border-top: 1px solid #3b3b3b !important;
     margin: 4px -20px;
 }
+
+.CodeMirror{
+	font-family: "Roboto Mono", menlo, monaco;
+	font-weight: normal;
+	font-size: 12px;
+  height: calc(100% - 59px);
+  margin: 10px;
+	border: 2px solid #434a57 !important;
+  border-radius: 5px;
+  transition: border 0.3s, color 0.3s, background 0.2s;
+}
+
+.CodeMirror-focused{
+	border: 2px solid rgb(82,139,255) !important;
+}
+
+.CodeMirror.cm-s-dracula.execute{
+	transition: background 0.1s;
+	border: 2px solid rgb(82,139,255) !important;
+  background: rgb(82,139,255) !important;
+}
+
+.CodeMirror.cm-s-dracula .CodeMirror-gutters {
+	transition: background 0.2s;
+}
+.CodeMirror.cm-s-dracula.execute .CodeMirror-gutters {
+	transition: background 0.1s;
+  background: rgb(82,139,255) !important;
+}
+
+
 #code:focus, #command:focus{
 	border: 2px solid rgb(82,139,255);
 	color: #e8e8e8;
@@ -323,6 +342,7 @@ body{
 	color: rgb(82,139,255);
 }
 #submitCode{
+	z-index: 1000;
 	border: 2px solid #434a57;
 	border-radius: 5px;
 	transition: background 0.3s, border 0.3s, color 0.3s;

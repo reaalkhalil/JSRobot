@@ -47,7 +47,7 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 	}
 	var g;
 	if(typeof newcode !== 'undefined' && newcode){
-		g = Function(hideGlobals + code.value + scriptTail);
+		g = Function(hideGlobals + editor.getValue() + scriptTail);
 		g().init(bodyPubl)
 		// emptyObj = {info: function(){return bodyPubl.info()}};
 		// g().init(emptyObj)

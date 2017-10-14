@@ -1,0 +1,44 @@
+/*
+
+    Name:       dracula
+    Author:     Michael Kaminsky (http://github.com/mkaminsky11)
+
+    Original dracula color scheme by Zeno Rocha (https://github.com/zenorocha/dracula-theme)
+
+*/
+
+
+.cm-s-dracula.CodeMirror, .cm-s-dracula .CodeMirror-gutters {
+  /*background-color: #282a36 !important;*/
+  background-color: rgb(40,44,52) !important;
+  color: #abb2bf !important;
+}
+.cm-s-dracula .CodeMirror-gutters{
+  border: none;
+}
+.cm-s-dracula .CodeMirror-gutters { color: #282a36; }
+.cm-s-dracula .CodeMirror-cursor { border-left: 2px solid rgb(82,139,255); }
+.cm-s-dracula .CodeMirror-linenumber { color: rgb(72,79,96); }
+.cm-s-dracula .CodeMirror-selected { background: rgba(255, 255, 255, 0.10); }
+.cm-s-dracula .CodeMirror-line::selection, .cm-s-dracula .CodeMirror-line > span::selection, .cm-s-dracula .CodeMirror-line > span > span::selection { background: rgba(255, 255, 255, 0.10); }
+.cm-s-dracula .CodeMirror-line::-moz-selection, .cm-s-dracula .CodeMirror-line > span::-moz-selection, .cm-s-dracula .CodeMirror-line > span > span::-moz-selection { background: rgba(255, 255, 255, 0.10); }
+.cm-s-dracula span.cm-comment { color: rgb(94, 101, 114); font-style: italic;}
+.cm-s-dracula span.cm-string, .cm-s-dracula span.cm-string-2 { color: #98c379; }/*green*/
+.cm-s-dracula span.cm-number { color: #d19a66; }
+.cm-s-dracula span.cm-variable { color: #abb2bf; }
+.cm-s-dracula span.cm-variable-2 { color: #abb2bf; }
+.cm-s-dracula span.cm-def { color: #61afef; }/*blue*/
+.cm-s-dracula span.cm-operator { color: #56b6c2; }/*cyan*/
+.cm-s-dracula span.cm-keyword { color: #c678dd; }/*purple*/
+.cm-s-dracula span.cm-atom { color: #d19a66; }
+.cm-s-dracula span.cm-meta { color: #f8f8f2; }
+.cm-s-dracula span.cm-tag { color: #ff79c6; }
+.cm-s-dracula span.cm-attribute { color: #61afef; }
+.cm-s-dracula span.cm-qualifier { color: #61afef; }
+.cm-s-dracula span.cm-property { color: #56b6c2; }
+.cm-s-dracula span.cm-builtin { color: #61afef; }
+.cm-s-dracula span.cm-variable-3, .cm-s-dracula span.cm-type { color: #ffb86c; }
+
+.cm-s-dracula .CodeMirror-activeline-background { background: rgba(255,255,255,0.05); }
+.cm-s-dracula .CodeMirror-matchingbracket { text-decoration: underline; color: #abb2bf !important; }
+.cm-s-dracula .CodeMirror-nonmatchingbracket {  text-decoration: underline; color: #e06c75 !important; }

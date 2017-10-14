@@ -49,7 +49,6 @@ levelButton.onclick = function(){
 function startGame(level){
 	menu.style.display = "none";
 	play.style.display = "inherit";
-	doCodeLines();
 	openInstructionsDiv();
 	startLevel(level)
 	instructionsDiv.innerHTML = levels[level-1].instructions;
@@ -81,7 +80,6 @@ var instructionsBtn = document.getElementById("instructionsBtn");
 var instructionsDiv = document.getElementById("instructionsDiv");
 var minmaxBtn = document.getElementById("minmax");
 var lineheight = document.getElementById("lineheight");
-var linenumbers = document.getElementById("linenumbers");
 var codearea = document.getElementById("codearea");
 
 var newcode = false;
@@ -103,8 +101,8 @@ restartlevel.onclick = function(){
 }
 
 function applyScript(){
-	code.classList.add('execute');
-	setTimeout(function(){code.classList.remove('execute');}, 80);
+	document.getElementsByClassName('CodeMirror')[0].classList.add('execute');
+	setTimeout(function(){document.getElementsByClassName('CodeMirror')[0].classList.remove('execute');}, 80);
 	newcode = true;
 }
 
@@ -143,30 +141,6 @@ code.onkeydown = function(e) {
         e.preventDefault();
     }
 };
-function doCodeLines(){
-	var linenumberstext = "";
-	var lines = code.value.split('\n');
-		//tabs to 4 spaces;
-	var count = (code.value.match(/\n/g) || []).length;
-	if(count>=99){
-		code.style.paddingLeft = "32px";
-	}else{
-		code.style.paddingLeft = "25px";
-	}
-	for(var i = 1; i <= 1+count; i++){
-		breaks = Math.ceil((lines[i-1].length*6.622533333)/(code.clientWidth- 39));
-		if(lines[i-1].length === 0){breaks = 1;}
-		linenumberstext = linenumberstext + i;
-		for(var j = 1; j <= breaks; j++){
-			linenumberstext = linenumberstext + "<br>";
-		}
-	}
-	linenumbers.innerHTML = linenumberstext + "<br>";
-}
-code.onkeyup = function(e) {
-	doCodeLines();
-};
-
 function openInstructionsDiv(){
 	propertiesDiv.style.display = "none";
 	commandDiv.style.display = "none";
@@ -204,7 +178,6 @@ function openCodeDiv(){
 	codeBtn.className = "selected";
 	minmaxBtn.innerHTML = "<a>_</a>";
 	buttonbar.classList.remove("minimized");
-	doCodeLines();
 	code.focus();
 }
 function openPropertiesDiv(){
@@ -283,13 +256,6 @@ onmousemove = function(e){
 	if(newheight < 63){newheight = 63;}
   codearea.style.height = newheight;
 	dragy = e.clientY;
-};
-
-
-linenumbers.style.height = Number(code.style.height.replace("px","")) - 14;
-
-code.onscroll = function(){
-	linenumbers.scrollTop=code.scrollTop;
 };
 
 
