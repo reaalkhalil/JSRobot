@@ -42,7 +42,7 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 	var hideGlobals = "var window=undefined;var engine=undefined;var effects=undefined;var collide=undefined;var context=undefined;";
 	var scriptTail = "if(typeof(loop) == 'undefined'){loop = function(){}}; if(typeof(init) == 'undefined'){init = function(){}}; return {init: init, loop: loop};";
 	if(typeof newcommand !== 'undefined' && newcommand !== ""){
-		bodyPubl.command(hideGlobals + newcommand);
+		bodyPubl.command(newcommand);
 		newcommand = "";
 	}
 	var g;

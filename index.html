@@ -46,17 +46,17 @@
 
 		<canvas id="canvasID" width="400" height="500"></canvas>
 
-		<div id="codearea">
+		<div id="codearea" style="height: 300px;">
 				<ul id="buttonbar" class="noselect">
 						<li><a id="instructionsBtn" class="selected">Instructions</a>
 						</li><li><a id="codeBtn">Script</a>
-						</li><li><a id="commandBtn">Command</a>
+						</li><li><a id="commandBtn">Console</a>
 						</li><li><a id="propertiesBtn">Properties</a></li><li id="minmax">
 						<a>_</a></li>
 				</ul>
 	<div id="codeDiv" style="display: none;">
 			<div id="linenumbers" class="noselect">1<br>2<br>3</div>
-			<textarea id="code" style="height: 100px;">
+			<textarea id="code">
 function init(robot){
 	// your code here
 }
@@ -67,8 +67,11 @@ function loop(robot){
 </textarea>
 		<a id="submitCode" class="noselect">Apply</a>
 	</div>
-		<div id="commandDiv"><input id="command" value="robot.move(10);"></div>
-		<div id="instructionsDiv" class="allowselect" style="display: block; height: 200px"></div>
+		<div id="commandDiv">
+      <div id="output" class="allowselect"></div>
+      <input id="command" value="robot.move(10);">
+    </div>
+		<div id="instructionsDiv" class="allowselect" style="display: block"></div>
 		<div id="propertiesDiv"></div>
 	</div>
 

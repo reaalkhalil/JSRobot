@@ -49,12 +49,23 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 	};
 
 	prototype.command = function(string){
-		var stringFn = new Function("var robot = this;"+string);
+		var hideGlobals = "var window=undefined;var engine=undefined;var effects=undefined;var collide=undefined;var context=undefined;";
+		var stringFn = new Function("var robot = this;" + hideGlobals + "var return_output = " + string + "\nreturn return_output;");
+		var outputDiv = document.getElementById("output");
+		if(outputDiv.innerHTML == ""){
+			outputDiv.innerHTML += "&rarr; " + string;
+		}else{
+			outputDiv.innerHTML += "<hr>&rarr; " + string;
+		}
 		try {
-			stringFn.call(this);
+			var output = stringFn.call(this);
+			if(output !== undefined){
+				outputDiv.innerHTML += "<br><b>&larr; " + output + "</b>";
+			}
 		}
 		catch(err) {
 			console.error(err.name + " " + err.message);
+			outputDiv.innerHTML += "<br><i>&larr; " + err.name + ": " + err.message + "</i>";
 		}
 	};
 

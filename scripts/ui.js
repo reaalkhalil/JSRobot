@@ -82,6 +82,7 @@ var instructionsDiv = document.getElementById("instructionsDiv");
 var minmaxBtn = document.getElementById("minmax");
 var lineheight = document.getElementById("lineheight");
 var linenumbers = document.getElementById("linenumbers");
+var codearea = document.getElementById("codearea");
 
 var newcode = false;
 var newcommand = "";
@@ -218,6 +219,7 @@ function openPropertiesDiv(){
 	minmaxBtn.innerHTML = "<a>_</a>";
 	buttonbar.classList.remove("minimized");
 }
+var oldCodeareaHeight = 0;
 function minimize(){
 	buttonbar.classList.add("minimized");
 	codeDiv.style.display = "none";
@@ -225,8 +227,11 @@ function minimize(){
 	instructionsDiv.style.display = "none";
 	commandDiv.style.display = "none";
 	minmaxBtn.innerHTML = "<a>&#11027;</a>";
+  oldCodeareaHeight = codearea.style.height;
+  codearea.style.height = 35;
 }
 function maximize(){
+   codearea.style.height = oldCodeareaHeight;
 	buttonbar.classList.remove("minimized");
 	if(commandBtn.className == "selected"){
 		openCommandDiv();
@@ -259,40 +264,25 @@ minmaxBtn.onclick = function(){
 	}
 };
 
-var dragy_code = 0;
-var dragging_code = false;
+var dragy = 0;
+var dragging = false;
 buttonbar.onmousedown = function(e){
-	dragy_code = e.clientY;
-	dragging_code = true;
-	if(commandDiv.style.display == "none"){
-		buttonbar.style.cursor = "ns-resize";
-	}
+	dragy = e.clientY;
+	dragging = true;
+	buttonbar.style.cursor = "ns-resize";
 };
 onmouseup = function(e){
-	dragging_code = false;
+	dragging = false;
 	buttonbar.style.cursor = "default";
 };
 onmousemove = function(e){
-	if(dragging_code && commandDiv.style.display == "none"){
-		if(codeDiv.style.display == "block"){
-			var height = Number(code.style.height.replace("px",""));
-		}else if(instructionsDiv.style.display == "block"){
-			var height = Number(instructionsDiv.style.height.replace("px",""));
-		}else if(propertiesDiv.style.display == "block"){
-			var height = Number(propertiesDiv.style.height.replace("px",""));
-		}
-		var newheight = height + dragy_code - e.clientY;
-		if(newheight < 63){newheight = 63;}
-		if(codeDiv.style.display == "block"){
-			code.style.height = newheight;
-			linenumbers.style.height = newheight - 14;
-		}else if(instructionsDiv.style.display == "block"){
-			instructionsDiv.style.height = newheight;
-		}else if(propertiesDiv.style.display == "block"){
-			propertiesDiv.style.height = newheight;
-		}
-		dragy_code = e.clientY;
-	}
+	if(dragging){
+		var height = Number(codearea.style.height.replace("px",""));
+  }
+	var newheight = height + dragy - e.clientY;
+	if(newheight < 63){newheight = 63;}
+  codearea.style.height = newheight;
+	dragy = e.clientY;
 };
 
 

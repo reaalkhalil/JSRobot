@@ -115,6 +115,7 @@ body{
 	overflow: scroll;
 	line-height: 20px;
 	letter-spacing: 0.4px;
+	height: calc(100% - 98px);
 }
 #instructionsDiv a{
 	color: rgb(82,139,255);
@@ -207,6 +208,7 @@ body{
 	resize: none;
 	padding-left: 25px;
 	position: relative;
+	height: calc(100% - 54px);
 }
 #codeDiv{
 	display: block;
@@ -221,15 +223,19 @@ body{
 	margin-left: 20px;
 	z-index: 1000;
 	overflow: hidden;
+	height: calc(100% - 69px);
 }
 #commandDiv{
 		display: none;
+		height: calc(100% - 35px);
+		position: relative;
 }
 #command{
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin: 10px;
 	width: calc(100% - 20px);
 	padding-left: 25px;
+	position: absolute;
+  bottom: 0;
 }
 #command.execute, #code.execute{
 	transition: background 0.1s;
@@ -237,12 +243,12 @@ body{
 	border: 2px solid rgb(82,139,255);
   background: rgb(82,139,255);
 }
-#commandDiv::before{
+#commandDiv::after{
 	content: '>';
 	color: #e8e8e8;
 	font-family: "Roboto Mono", menlo, monaco;
-	position: relative;
-	top: 2px;
+	position: absolute;
+	bottom: 20px;
 	width: 10px;
 	left: 20px;
 	display: inline-block;
@@ -253,7 +259,32 @@ body{
 	-o-transform:scale(0.75, 1.0);
 	transform:scale(0.75,1.0);
 }
-
+#output{
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 50px;
+	overflow: scroll;
+	padding: 6px 20px;
+	font-family: "Roboto Mono", menlo, monaco;
+	font-size: 11px;
+	color: #ddd;
+}
+#output b{
+	color: #528bff;
+}
+#output i{
+	font-style: normal;
+	font-weight: bold;
+	color: #ff2c72;
+}
+#output hr{
+		border-width: 1px 0 0 0;
+    border-top: 1px solid #3b3b3b !important;
+    margin: 4px -20px;
+}
 #code:focus, #command:focus{
 	border: 2px solid rgb(82,139,255);
 	color: #e8e8e8;
@@ -276,6 +307,7 @@ body{
 	font-weight: normal !important;
 	font-size: 11px;
 	overflow: scroll;
+	height: calc(100% - 95px);
 }
 #propertiesDiv table{
 	margin-left: 20px;

@@ -9,7 +9,7 @@ define(['mozart'], function (mozart) {
 			Now that that's out of the way and you kinda sorta know what JavaScript is, let's get started.
 			<br>
 			Every level has its separate instructions as there's too much to learn at once.
-			<br><br>Click on the Command tab where it says: <code>robot.move(10);</code> and then hit Enter.
+			<br><br>Click on the Console tab where it says: <code>robot.move(10);</code> and then hit Enter.
 			<br>Whoa! Did you see that? The robot executed your command and moved to the right, it even caught a coin! Do it again!<br><br>
 			You can vary how far the robot moves when you call the <code>move</code> method. From <code>-20</code> (negative values move it to the left) to <code>20</code>.
 			Every time the robot does an action it uses up energy, go to the Properties tab to check how much energy you have left.
@@ -69,7 +69,7 @@ function loop(robot){
 				<h1>Level 2</h1>
 				<p>
 				Now for a little twist... There are obstacles in the way.<br>
-				Luckily, the robot can jump! Go to the Command tab, type in <code>robot.jump()</code> and then hit Enter.<br><br>
+				Luckily, the robot can jump! Go to the Console tab, type in <code>robot.jump()</code> and then hit Enter.<br><br>
 				Cool! Now to write a simple script, let's try making the robot jump, move forward, jump, move forward and repeat...
 				<br>We'll need the <code>init</code> function, this initializes the robot with custom variables or methods before the loop starts running.<br>Let's see how it works:
 				<br><br>
