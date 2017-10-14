@@ -240,9 +240,11 @@ minmaxBtn.onclick = function(){
 var dragy = 0;
 var dragging = false;
 buttonbar.onmousedown = function(e){
-	dragy = e.clientY;
-	dragging = true;
-	buttonbar.style.cursor = "ns-resize";
+  if(codearea.style.height != '35px'){
+  	dragy = e.clientY;
+  	dragging = true;
+  	buttonbar.style.cursor = "ns-resize";
+  }
 };
 onmouseup = function(e){
 	dragging = false;
