@@ -10,6 +10,8 @@
   <script src="codemirror/mode/javascript/javascript.js"></script>
   <script src="codemirror/addon/selection/active-line.js"></script>
   <script src="codemirror/addon/edit/matchbrackets.js"></script>
+  <script src="codemirror/addon/edit/closebrackets.js"></script>
+  <script src="codemirror/addon/display/autorefresh.js"></script>
 
 		<script data-main="scripts/main" src="scripts/require.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,700|Roboto:300,400,700" rel="stylesheet">
@@ -94,7 +96,11 @@ function loop(robot){
   var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     lineNumbers: true,
     styleActiveLine: true,
-    matchBrackets: true
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    autoRefresh: true,
+    autofocus: true,
+    lineWrapping: true
   });
   editor.setOption("theme", "dracula");
 

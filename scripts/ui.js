@@ -178,7 +178,6 @@ function openCodeDiv(){
 	codeBtn.className = "selected";
 	minmaxBtn.innerHTML = "<a>_</a>";
 	buttonbar.classList.remove("minimized");
-	code.focus();
 }
 function openPropertiesDiv(){
 	propertiesDiv.style.display = "block";
