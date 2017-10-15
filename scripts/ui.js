@@ -8,7 +8,7 @@ var startButton = document.getElementById("start");
 
 var level = 1;
 
-lines = ['Beep boop!', '01101000 01101001', 'Have a spare charger?', 'DESTROY. DESTROY.', 'Resistance is futile.', 'Sleep is for humans..', 'We\'re stealing your jobs LOOL']
+lines = ['Beep boop!', '01101000 01101001', 'Have a spare charger?', 'DESTROY. DESTROY.', 'Resistance is futile.', 'Sleep is for humans..', 'We\'re stealing your jobs LOL']
 speechbubble.innerHTML = lines[Math.floor(Math.random() * (lines.length))];
 
 var maxLevels = 1;

@@ -71,10 +71,21 @@ function loop(robot){
 				Now for a little twist... There are obstacles in the way.<br>
 				Luckily, the robot can jump! Go to the Console tab, type in <code>robot.jump()</code> and then hit Enter.<br><br>
 				Cool! Now to write a simple script, let's try making the robot jump, move forward, jump, move forward and repeat...
-				<br>We'll need the <code>init</code> function, this initializes the robot with custom variables or methods before the loop starts running.<br>Let's see how it works:
+				<br><br>
+				Try to use this as your robot's <code>loop()</code> function:
+				<pre>function loop(robot){
+	robot.jump();
+	robot.move(4);
+}
+</pre>
+				Silly robot, it's trying to plough through the obstacle! This is happening because the robot only executes the very <i>last</i> command you give it.
+				The robot executes functions at 3Hz (3 times a second), so ignoring all but the last command prevents the build-up of a queue.
+				<br><br>
+				Okay, let's try a different approach.<br>
+				We'll need the <code>init</code> function, this initializes the robot with custom variables or methods before the loop starts running.<br>Let's see how it works:
 				<br><br>
 				Go to the Script tab and in the <code>init</code> function replace the comment with <code>robot.number = 0;</code>.<br>
-				Now the robot holds a variable named <code>number</code> which is initialized to <code>0</code>.
+				Now when you click apply, the robot will hold a variable named <code>number</code> which initializes to <code>0</code>.
 				<br><br>
 				Then type the following in the <code>loop</code> function:
 				</p>
@@ -91,7 +102,7 @@ The <code>robot.number % 2 == 0</code> expression in the if-statement checks whe
 <br><br>
 <code>robot.number++</code> increments the <code>number</code> variable stored in the robot by <code>1</code> before repeating the loop again, this way the robot will alternate between jumping and moving.
 <br><br>
-With one adjustment, the full code is now:
+The full code can be shortened to the following:
 </p>
 <pre>
 function init(robot){
@@ -99,10 +110,9 @@ function init(robot){
 }
 
 function loop(robot){
+	robot.jump();
 	if(robot.number++ % 2 == 0){
-		robot.jump()
-	} else {
-		robot.move(2)
+		robot.move(2);
 	}
 }
 </pre>
@@ -146,6 +156,7 @@ function loop(robot){
 				<h1>Level 3</h1>
 				<p>
 				The spark strip damages your robot, every time you touch it you lose 20% health.<br>
+				If your robot dies, it won't respond to any of your commands, neither from the Script tab or the Console tab.<br><br>
 				You can use the <code>robot.info()</code> method to get an object containing:
 				<br><code>x</code> x position
 				<br><code>y</code> y position
