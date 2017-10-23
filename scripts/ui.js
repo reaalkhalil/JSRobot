@@ -57,14 +57,13 @@ levelButton.onclick = function(){
 function startGame(level, URLcode){
 	menu.style.display = "none";
 	play.style.display = "inherit";
-  if(URLcode != ''){
-    console.log(URLcode);
-    console.log(URLcode.replaceAll('%0A', '\n'));
-    editor.setValue(URLcode.replaceAll('%0A', '\n'))
-  }
 	openInstructionsDiv();
 	startLevel(level)
 	instructionsDiv.innerHTML = levels[level-1].instructions;
+  if(URLcode != ''){
+    editor.setValue(URLcode.replaceAll('%0A', '\n'))
+    openCodeDiv()
+  }
 }
 startButton.onclick = function(){
 	startGame(level, '')
