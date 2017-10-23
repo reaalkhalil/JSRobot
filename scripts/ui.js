@@ -26,6 +26,7 @@ requirejs(['mozart', '../data/levels'],
 		if(!isNaN(location.hash.slice(7,8))){
 			level = Number(location.hash.slice(7,8));
 			if(level <= maxLevels){
+        URLcode = '';
         if(location.hash.indexOf('code') > -1 ){
           URLcode = location.hash.slice(14)
         }
@@ -60,7 +61,7 @@ function startGame(level, URLcode){
 	openInstructionsDiv();
 	startLevel(level)
 	instructionsDiv.innerHTML = levels[level-1].instructions;
-  if(URLcode != ''){
+  if(URLcode !== undefined && URLcode != ''){
     editor.setValue(URLcode.replaceAll('%0A', '\n'))
     openCodeDiv()
   }
