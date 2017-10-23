@@ -23,10 +23,13 @@ requirejs(['mozart', '../data/levels'],
 
 	var gameStarted = false;
 	if(location.hash.length > 0){
-		if(!isNaN(location.hash.slice(1))){
-			level = Number(location.hash.slice(1));
+		if(!isNaN(location.hash.slice(7,8))){
+			level = Number(location.hash.slice(7,8));
 			if(level <= maxLevels){
-				startGame(level);
+        if(location.hash.indexOf('code') > -1 ){
+          URLcode = location.hash.slice(14)
+        }
+				startGame(level, URLcode);
 				gameStarted = true;
 			}
 		}
@@ -41,21 +44,31 @@ prevlevelButton.onclick = function(){
 	levelButton.innerHTML = "Level " + level;
 };
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
 levelButton.onclick = function(){
 	level = Math.min(maxLevels, level + 1);
 	levelButton.innerHTML = "Level " + level;
 };
 
-function startGame(level){
+function startGame(level, URLcode){
 	menu.style.display = "none";
 	play.style.display = "inherit";
+  if(URLcode != ''){
+    console.log(URLcode);
+    console.log(URLcode.replaceAll('%0A', '\n'));
+    editor.setValue(URLcode.replaceAll('%0A', '\n'))
+  }
 	openInstructionsDiv();
 	startLevel(level)
 	instructionsDiv.innerHTML = levels[level-1].instructions;
 }
 startButton.onclick = function(){
-	startGame(level)
-	location.hash = level;
+	startGame(level, '')
+	location.hash = "level=" + level;
 };
 
 
@@ -92,11 +105,13 @@ backtomenu.onclick = function(){
 
 nextlevel.onclick = function(){
 	level = Math.min(maxLevels, level + 1);
-	location.hash = level;
+	location.hash = "level=" + level;
 	location.reload();
 }
 
 restartlevel.onclick = function(){
+  console.log();
+  location.hash = "level=" + level + "&code=" + editor.getValue().replaceAll('\n', '%0A')
 	location.reload();
 }
 
