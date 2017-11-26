@@ -252,20 +252,28 @@ function maximize(){
 }
 
 instructionsBtn.onclick = function(){
-	maximize();
 	openInstructionsDiv();
+	if(codearea.style.height == '35px'){
+		maximize();
+	}
 };
 propertiesBtn.onclick = function(){
-	maximize();
 	openPropertiesDiv();
+	if(codearea.style.height == '35px'){
+		maximize();
+	}
 };
 commandBtn.onclick = function(){
-	maximize();
 	openCommandDiv();
+	if(codearea.style.height == '35px'){
+		maximize();
+	}
 };
 codeBtn.onclick = function(){
-	maximize();
 	openCodeDiv();
+	if(codearea.style.height == '35px'){
+		maximize();
+	}
 };
 minmaxBtn.onclick = function(){
 	if(codeDiv.style.display == "none" &&
