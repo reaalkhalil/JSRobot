@@ -40,6 +40,10 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 	}
 	bodyPriv.properties.nextMove = null;
 	var hideGlobals = "var window=undefined;var engine=undefined;var effects=undefined;var collide=undefined;var context=undefined;";
+
+	var logging = "outputDiv = document.getElementById('output'); console = {log: function(a){outputDiv.innerHTML += '<hr><b>&larr; ' + a + '</b>'; outputDiv.scrollTop = outputDiv.scrollHeight;}, error: function(a){_error(a);}};";
+
+				
 	var scriptTail = "if(typeof(loop) == 'undefined'){loop = function(){}}; if(typeof(init) == 'undefined'){init = function(){}}; return {init: init, loop: loop};";
 	if(typeof newcommand !== 'undefined' && newcommand !== ""){
 		bodyPubl.command(newcommand);
@@ -47,7 +51,7 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 	}
 	var g;
 	if(typeof newcode !== 'undefined' && newcode){
-		g = Function(hideGlobals + editor.getValue() + scriptTail);
+		g = Function(hideGlobals + logging + editor.getValue() + scriptTail);
 		g().init(bodyPubl)
 		// emptyObj = {info: function(){return bodyPubl.info()}};
 		// g().init(emptyObj)

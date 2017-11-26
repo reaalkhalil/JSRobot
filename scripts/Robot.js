@@ -67,6 +67,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 			console.error(err.name + " " + err.message);
 			outputDiv.innerHTML += "<br><i>&larr; " + err.name + ": " + err.message + "</i>";
 		}
+		outputDiv.scrollTop = outputDiv.scrollHeight;
 	};
 
 	prototype.step = function(robot){};
