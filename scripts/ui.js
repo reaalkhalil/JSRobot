@@ -8,7 +8,29 @@ var startButton = document.getElementById("start");
 
 var level = 1;
 
-lines = ['Beep boop!', '01101000 01101001', 'Have a spare charger?', 'DESTROY. DESTROY.', 'Resistance is futile.', 'Sleep is for humans..', 'We\'re stealing your jobs LOL']
+lines = ['Beep boop!',
+			'01101000 01101001',
+			'Have a spare charger?',
+			'DESTROY. DESTROY.',
+			'Resistance is futile.',
+			'Sleep is for humans..',
+			'We\'re stealing your jobs LOL'];
+
+var saveCode = function(level, code)
+{
+	if(!localStorage)
+	{
+		return false;
+	}
+	localStorage['js_robot_level_' + level] = code;
+};
+
+var getCode = function(level)
+{
+	var code = localStorage['js_robot_level_' + level];
+	return code?code:'';
+};
+
 speechbubble.innerHTML = lines[Math.floor(Math.random() * (lines.length))];
 
 var maxLevels = 1;
@@ -16,27 +38,23 @@ var levels;
 requirejs.config({
     baseUrl: 'scripts',
 });
+
 requirejs(['mozart', '../data/levels'],
   function (mozart, levelData) {
-		levels = (new levelData()).levels
+		levels = (new levelData()).levels;
     maxLevels = levels.length;
 
-	var gameStarted = false;
+	menu.style.display = "block";
+
 	if(location.hash.length > 0){
 		if(!isNaN(location.hash.slice(7,8))){
 			level = Number(location.hash.slice(7,8));
 			if(level <= maxLevels){
-        URLcode = '';
-        if(location.hash.indexOf('code') > -1 ){
-          URLcode = location.hash.slice(14)
-        }
-				startGame(level, URLcode);
-				gameStarted = true;
+				code = getCode(level);
+				startGame(level, code);
+				menu.style.display = "none";
 			}
 		}
-	}
-	if(!gameStarted){
-		menu.style.display = "block";
 	}
 });
 
@@ -55,19 +73,20 @@ levelButton.onclick = function(){
 	levelButton.innerHTML = "Level " + level;
 };
 
-function startGame(level, URLcode){
+function startGame(level, code){
 	menu.style.display = "none";
 	play.style.display = "inherit";
 	openInstructionsDiv();
-	startLevel(level)
+	startLevel(level);
 	instructionsDiv.innerHTML = levels[level-1].instructions;
-  if(URLcode !== undefined && URLcode != ''){
-    editor.setValue(URLcode.replaceAll('%0A', '\n'))
-    openCodeDiv()
+  if(code !== undefined && code !== ''){
+    editor.setValue(code);
+    openCodeDiv();
   }
 }
+
 startButton.onclick = function(){
-	startGame(level, '')
+	startGame(level, '');
 	location.hash = "level=" + level;
 };
 
@@ -101,19 +120,19 @@ var newcommand = "";
 backtomenu.onclick = function(){
 	location.hash = "";
 	location.reload();
-}
+};
 
 nextlevel.onclick = function(){
 	level = Math.min(maxLevels, level + 1);
 	location.hash = "level=" + level;
 	location.reload();
-}
+};
 
 restartlevel.onclick = function(){
-  console.log();
-  location.hash = "level=" + level + "&code=" + editor.getValue().replaceAll('\n', '%0A')
+	location.hash = "level=" + level;
+	saveCode(level, editor.getValue());
 	location.reload();
-}
+};
 
 function applyScript(){
 	document.getElementsByClassName('CodeMirror')[0].classList.add('execute');
@@ -122,6 +141,7 @@ function applyScript(){
 }
 
 submit.onclick = function(){
+	saveCode(level, editor.getValue());
 	applyScript();
 };
 
@@ -244,7 +264,11 @@ codeBtn.onclick = function(){
 	openCodeDiv();
 };
 minmaxBtn.onclick = function(){
-	if(codeDiv.style.display == "none" && commandDiv.style.display == "none" && propertiesDiv.style.display == "none" && instructionsDiv.style.display == "none"){
+	if(codeDiv.style.display == "none" &&
+			commandDiv.style.display == "none" &&
+			propertiesDiv.style.display == "none" &&
+			instructionsDiv.style.display == "none")
+	{
 		maximize();
 	}else{
 		minimize();
@@ -257,21 +281,23 @@ buttonbar.onmousedown = function(e){
   if(codearea.style.height != '35px'){
   	dragy = e.clientY;
   	dragging = true;
-  	buttonbar.style.cursor = "ns-resize";
   }
 };
+
 onmouseup = function(e){
 	dragging = false;
 	buttonbar.style.cursor = "default";
 };
+
 onmousemove = function(e){
 	if(dragging){
+		buttonbar.style.cursor = "ns-resize";
 		var height = Number(codearea.style.height.replace("px",""));
+		var newheight = height + dragy - e.clientY;
+		if(newheight < 63){newheight = 63;}
+		codearea.style.height = newheight;
+		dragy = e.clientY;
   }
-	var newheight = height + dragy - e.clientY;
-	if(newheight < 63){newheight = 63;}
-  codearea.style.height = newheight;
-	dragy = e.clientY;
 };
 
 
