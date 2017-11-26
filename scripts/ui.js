@@ -252,15 +252,19 @@ function maximize(){
 }
 
 instructionsBtn.onclick = function(){
+	maximize();
 	openInstructionsDiv();
 };
 propertiesBtn.onclick = function(){
+	maximize();
 	openPropertiesDiv();
 };
 commandBtn.onclick = function(){
+	maximize();
 	openCommandDiv();
 };
 codeBtn.onclick = function(){
+	maximize();
 	openCodeDiv();
 };
 minmaxBtn.onclick = function(){
@@ -294,7 +298,7 @@ onmousemove = function(e){
 		buttonbar.style.cursor = "ns-resize";
 		var height = Number(codearea.style.height.replace("px",""));
 		var newheight = height + dragy - e.clientY;
-		if(newheight < 63){newheight = 63;}
+		if(newheight < 104){newheight = 104;}
 		codearea.style.height = newheight;
 		dragy = e.clientY;
   }
