@@ -52,7 +52,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		var hideGlobals = "var window=undefined;var engine=undefined;var effects=undefined;var collide=undefined;var context=undefined;";
 		var stringFn = new Function("var robot = this;" + hideGlobals + "var return_output = " + string + "\nreturn return_output;");
 		var outputDiv = document.getElementById("output");
-		if(outputDiv.innerHTML == ""){
+		if(outputDiv.innerHTML === ""){
 			outputDiv.innerHTML += "&rarr; " + string;
 		}else{
 			outputDiv.innerHTML += "<hr>&rarr; " + string;
@@ -64,8 +64,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 			}
 		}
 		catch(err) {
-			console.error(err.name + " " + err.message);
-			outputDiv.innerHTML += "<br><i>&larr; " + err.name + ": " + err.message + "</i>";
+			outputDiv.innerHTML += "<br><i>" + err.name + ": " + err.message + "</i>";
 		}
 		outputDiv.scrollTop = outputDiv.scrollHeight;
 	};

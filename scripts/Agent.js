@@ -41,7 +41,7 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 	bodyPriv.properties.nextMove = null;
 	var hideGlobals = "var window=undefined;var engine=undefined;var effects=undefined;var collide=undefined;var context=undefined;";
 
-	var logging = "outputDiv = document.getElementById('output'); console = {log: function(a){outputDiv.innerHTML += '<hr><b>&larr; ' + a + '</b>'; outputDiv.scrollTop = outputDiv.scrollHeight;}, error: function(a){_error(a);}};";
+	var logging = "outputDiv = document.getElementById('output'); console = {log: function(a){outputDiv.innerHTML += '<hr><b>&larr; ' + a + '</b>'; outputDiv.scrollTop = outputDiv.scrollHeight;}, error: function(a){outputDiv.innerHTML += '<hr><i>' + a + '</i>'; outputDiv.scrollTop = outputDiv.scrollHeight;}};";
 
 				
 	var scriptTail = "if(typeof(loop) == 'undefined'){loop = function(){}}; if(typeof(init) == 'undefined'){init = function(){}}; return {init: init, loop: loop};";
