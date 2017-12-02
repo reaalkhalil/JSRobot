@@ -2,7 +2,7 @@
 define(['mozart', 'Behavior', 'Builder', 'Body'], function (mozart, behavior, Builder, Body) {
 Behavior = behavior.B;
 
-var agent = new Behavior(function(bodyPriv, bodyPubl){
+var player = new Behavior(function(bodyPriv, bodyPubl){
 	if(!bodyPubl.isAgent()){return;}
 	robotSprite = bodyPriv.getSprite("robot");
 	gunSprite = bodyPriv.getSprite("gun");
@@ -149,5 +149,5 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 }
 
 });
-return agent;
+return player;
 });

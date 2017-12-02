@@ -1,4 +1,4 @@
-define(['mozart', 'Behavior', 'Collision', 'Agent'], function (mozart, behavior, collide, agent) {
+define(['mozart', 'Behavior', 'Collision', 'Player'], function (mozart, behavior, collide, player) {
 gravitate = behavior.g;
 keyboardcontrol = behavior.k;
 var Body = mozart(function(prototype, _, _protected, __, __private) {
@@ -125,7 +125,7 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 				this.step = function(){};
 				console.error(err.name + " " + err.message);
 			}
-			agent.act(__(this), this);
+			player.act(__(this), this);
 		}
 
 		var dt = 1;

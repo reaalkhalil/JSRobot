@@ -76,6 +76,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		}else if(ac.action == 'shoot'){
 			this.wait();
 		}
+		ac.action = 'wait';
 	};
 
 	prototype.playerCode = function(robot){};

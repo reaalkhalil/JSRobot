@@ -20,10 +20,10 @@ function startLevel(level){
   	   	'Robot',
   	   	'Sprite',
   	   	'Effects',
-  	   	'Agent'],
-  function   (mozart, levelData, Behavior, Collision, builder, Engine, Body, robot, Sprite, Effects, Agent) {
+  	   	'Player'],
+  function   (mozart, levelData, Behavior, Collision, builder, Engine, Body, robot, Sprite, Effects, Player) {
 
-  	//agent = Agent;
+  	//Player = Player;
   	//Robot = robot.Robot;
   	//RobotOne = robot.RobotOne;
     levels = (new levelData()).levels;
