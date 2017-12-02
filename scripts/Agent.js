@@ -30,7 +30,7 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 			robotSprite.show();
 			bodyPriv.k.ax = amount;
 			bodyPriv.properties.energy -= Math.abs(amount)/10;
-		}else if(options[0] == "gun"){
+		}else if(options[0] == "shoot"){
 			gunSprite.show();
 			robotSprite.hide();
 			builder = bodyPriv.engine.priv.builder;
@@ -58,19 +58,22 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 	var logging = `
 		outputDiv = document.getElementById('output');
 		function console_output(a){
-			outputDiv.innerHTML += a;
-			outputDiv.scrollTop = outputDiv.scrollHeight;
+			if(outputDiv.innerHTML != ''){
+				outputDiv.innerHTML += '<hr>';
+			}
+				outputDiv.innerHTML += a;
+				outputDiv.scrollTop = outputDiv.scrollHeight;
 		}
 		console = {
 			log: function(a,b){
 				if(b == null || b == undefined){
-					console_output('<hr><b>&larr; ' + a + '</b>');
+					console_output('<b>&larr; ' + a + '</b>');
 				}else{
-					console_output('<hr>&rarr; ' + a + '<br><b>&larr; ' + b + '</b>');
+					console_output('&rarr; ' + a + '<br><b>&larr; ' + b + '</b>');
 				}
 			},
 			error: function(a){
-				console_output('<hr><i>' + a + '</i>');
+				console_output('<i>' + a + '</i>');
 			}
 		};`;
 
@@ -135,7 +138,7 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 		  customPropertiesString +
 			"<tr><td>&nbsp;</td><td></td></tr>" +
 			"<tr><td>move: </td><td>[Function]</td></tr>" +
-			"<tr><td>gun:  </td><td>[Function]</td></tr>" +
+			"<tr><td>shoot:  </td><td>[Function]</td></tr>" +
 			"<tr><td>jump: </td><td>[Function]</td></tr>" +
 			"<tr><td>info: </td><td>[Function]</td></tr>" +
 			"<tr><td>turn: </td><td>[Function]</td></tr>" +

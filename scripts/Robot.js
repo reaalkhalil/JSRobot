@@ -34,7 +34,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		}
 	};
 	prototype.move = function(dx){
-		if(dx != Number(dx)){return;}
+		if(dx != Number(dx)){dx = 10;}
 		_protected.super.super.setNextMove.call(this,"move:"+dx);
 	};
 
@@ -50,6 +50,11 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 	prototype.step = function(robot){
 		ac = this.playerCode(robot);
 
+		this.setAction(ac);
+	};
+
+	prototype.setAction = function(ac){
+
 		if(ac === undefined || ac === null){
 			return;
 		}
@@ -59,20 +64,18 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		}else if(ac.action === undefined || ac.action === null){
 			return;
 		}
-
 		if(ac.action == 'move'){
 			dx = ac.amount || 10;
-			_protected.super.super.setNextMove.call(this,"move:" + dx);
+			this.move(dx);
 		}else if(ac.action == 'jump'){
-			if(this.onGround() && Math.abs(this.getK().vy)<1){
-				_protected.super.super.setNextMove.call(this,"jump");
-			}
+			this.jump();
 		}else if(ac.action == 'turn'){
-			_protected.super.super.setNextMove.call(this,"turn");
+			this.turn();
 		}else if(ac.action == 'shoot'){
-			_protected.super.super.setNextMove.call(this,"shoot");
+			this.shoot();
+		}else if(ac.action == 'shoot'){
+			this.wait();
 		}
-
 	};
 
 	prototype.playerCode = function(robot){};
