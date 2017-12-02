@@ -25,8 +25,8 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 	prototype.turn = function(){
 		_protected.super.super.setNextMove.call(this,"turn");
 	};
-	prototype.gun = function(){
-		_protected.super.super.setNextMove.call(this,"gun");
+	prototype.shoot = function(){
+		_protected.super.super.setNextMove.call(this,"shoot");
 	};
 	prototype.jump = function(dx){
 		if(dx != Number(dx)){dx = 0;}

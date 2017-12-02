@@ -129,8 +129,6 @@ var Collision = Behavior.subclass(function(prototype, _, _protected, __, __priva
 	};
 });
 
-
-// make a collect object same as this for coins
 var collide = new Collision(function(bodyPriv, bodyPubl){
 	var pairs = collide.getPairs();
 	var col = null;
@@ -179,7 +177,7 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			if(isNaN(bodyPriv.properties.health)){
 				bodyPriv.properties.health = 100;
 			}
-			bodyPriv.properties.health -= 20;
+			bodyPriv.properties.health -= 60;
 			effects.play("spark",{x: bodyPriv.k.x, y: bodyPriv.k.y});
 		}
 		if(bodyPriv.type == "bullet"){
@@ -216,8 +214,8 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 		}else{
 			bodyPriv.k.x -= (overlap[0]);
 			bodyPriv.k.y -= (overlap[1]);
-			nx = -0.5;
-			ny = -0.5;
+			nx = -0.2;
+			ny = -0.2;
 			if(overlap[0] === 0){nx = 0.9;}
 			if(overlap[1] === 0){ny = 0.9;}
 			bodyPriv.k.vx  = nx * relvx;
