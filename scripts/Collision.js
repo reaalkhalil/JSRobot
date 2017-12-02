@@ -212,20 +212,15 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			bodyPriv.k.vx  = nx * relvx * mratio;
 			bodyPriv.k.vy  = ny * relvy * mratio;
 		}else{
-			bodyPriv.k.x -= (overlap[0]);
-			bodyPriv.k.y -= (overlap[1]);
-			nx = -0.2;
-			ny = -0.2;
+			bodyPriv.k.x -= (overlap[0]*0.9);
+			bodyPriv.k.y -= (overlap[1]/0.6);
+			nx = -0.1;
+			ny = -0.1;
 			if(overlap[0] === 0){nx = 0.9;}
 			if(overlap[1] === 0){ny = 0.9;}
 			bodyPriv.k.vx  = nx * relvx;
 			bodyPriv.k.vy  = ny * relvy;
 		}
-
-		//bodyPriv.k.x = Math.ceil(bodyPriv.k.x*10)/10;
-		//bodyPriv.k.y = Math.ceil(bodyPriv.k.y*10)/10;
-		if(Math.abs(bodyPriv.k.vx)<=0.2){bodyPriv.k.vx=0;}
-		if(Math.abs(bodyPriv.k.vy)<=0.2){bodyPriv.k.vy=0;}
 	}
 });
 
