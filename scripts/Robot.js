@@ -4,16 +4,6 @@ var Robot = Body.subclass(function(prototype, _, _protected, __, __private) {
 		prototype.super.init.call(this, options);
 	};
 
-	prototype.getOpponentProperties = function(){
-		return __(this).opponent.getK();
-	};
-
-	// nope:
-	prototype.setOpponent = function(op){
-		__(this).opponent = op;
-	};
-	//prototype.getEnergy = function(){ return __(this).energy; };
-	// ^ will need to call super properties energy
 });
 
 
@@ -39,7 +29,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		_protected.super.super.setNextMove.call(this,"gun");
 	};
 	prototype.jump = function(){
-		if(this.onGround()&&Math.abs(this.getK().vy)<1){
+		if(this.onGround() && Math.abs(this.getK().vy)<1){
 			_protected.super.super.setNextMove.call(this,"jump");
 		}
 	};
@@ -48,87 +38,48 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		_protected.super.super.setNextMove.call(this,"move:"+dx);
 	};
 
-	prototype.command = function(string){
-		var hideGlobals = "var window=undefined;var engine=undefined;var effects=undefined;var collide=undefined;var context=undefined;";
-		var stringFn = new Function("var robot = this;" + hideGlobals + "var return_output = " + string + "\nreturn return_output;");
-		var outputDiv = document.getElementById("output");
-		if(outputDiv.innerHTML === ""){
-			outputDiv.innerHTML += "&rarr; " + string;
-		}else{
-			outputDiv.innerHTML += "<hr>&rarr; " + string;
+	prototype.command = function(commandFn){
+		try{
+			var output = commandFn.call(this);
+			return {error: null, output: output};
+		}catch(err){
+			return {error: err, output: null};
 		}
-		try {
-			var output = stringFn.call(this);
-			if(output !== undefined){
-				outputDiv.innerHTML += "<br><b>&larr; " + output + "</b>";
+	};
+
+	prototype.step = function(robot){
+		ac = this.playerCode(robot);
+
+		if(ac === undefined || ac === null){
+			return;
+		}
+
+		if(typeof(ac) == 'string'){
+			ac = {action: ac};
+		}else if(ac.action === undefined || ac.action === null){
+			return;
+		}
+
+		if(ac.action == 'move'){
+			dx = ac.amount || 10;
+			_protected.super.super.setNextMove.call(this,"move:" + dx);
+		}else if(ac.action == 'jump'){
+			if(this.onGround() && Math.abs(this.getK().vy)<1){
+				_protected.super.super.setNextMove.call(this,"jump");
 			}
+		}else if(ac.action == 'turn'){
+			_protected.super.super.setNextMove.call(this,"turn");
+		}else if(ac.action == 'shoot'){
+			_protected.super.super.setNextMove.call(this,"shoot");
 		}
-		catch(err) {
-			outputDiv.innerHTML += "<br><i>" + err.name + ": " + err.message + "</i>";
-		}
-		outputDiv.scrollTop = outputDiv.scrollHeight;
+
 	};
 
-	prototype.step = function(robot){};
+	prototype.playerCode = function(robot){};
 
 });
 
 
 
-
-
-/*
-var Robot = Body.subclass(function(prototype, _, _protected, __, __private) {
-	prototype.init = function(x, y, img) {
-		__(this).x = x;
-		__(this).y = y;
-		__(this).image = img;
-		__(this).health = 100;
-		__(this).energy = 100;
-		__(this).coins = 0;
-		elements.push(this);
-		gravitatingObjects.push(this);
-	};
-	prototype.getX = function(){
-		return __(this).x;
-	};
-
-	prototype.getOpponentProperties = function(){
-		return {x: __(this).opponent.getX()};
-	};
-
-	prototype.setOpponent = function(op){
-		__(this).opponent = op;
-	};
-
-	prototype.redraw = function(){
-		context.drawImage(images[__(this).image], __(this).x, __(this).y, 30, 41);
-	};
-
-	_protected.move = function(dx,dy){
-		__(this).x += dx;
-		__(this).y += dy;
-	};
-});
-
-
-var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) {
-	prototype.init = function(x, y, img) {
-		prototype.super.init.call(this, x, y, img);
-	};
-
-	prototype.step = function(){
-		var _x = prototype.super.getX.call(this);
-		var _op = prototype.super.getOpponentProperties.call(this);
-		var towardopponent = (_op.x - _x) / Math.abs(_op.x - _x);
-
-		if(Math.abs(_op.x - _x) > 200){
-			_protected.super.move.call(this,towardopponent*5,0);
-		}else{
-		}
-	}
-});
-
-*/
 return {'Robot': Robot, 'RobotOne': RobotOne};
 });

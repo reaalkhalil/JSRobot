@@ -9,11 +9,15 @@ var Behavior = mozart(function(prototype, _, _protected, __, __private) {
 	};
 });
 
+
+
 var gravitate = new Behavior(function(bodyPriv, bodyPubl){
 	if(!bodyPriv.fixed && bodyPriv.mass != -1){
 		bodyPriv.k.ay += 1;
 	}
 });
+
+
 
 var arrowkeys = [false,false,false,false];
 document.onkeydown = function myFunction() {
@@ -28,7 +32,6 @@ document.onkeyup = function myFunction() {
 };
 var keyboardcontrol = new Behavior(function(bodyPriv, bodyPubl){
 	if(bodyPriv.fixed || bodyPriv.type != "player"){return;}
-	// antigravity: bodyPriv.k.ay += -1;
 	if(arrowkeys[0]){ bodyPriv.k.ax += -1; }
 	if(arrowkeys[1]){ bodyPriv.k.ay += -2; }
 	if(arrowkeys[2]){ bodyPriv.k.ax += 1; }

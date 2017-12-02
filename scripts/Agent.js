@@ -1,13 +1,19 @@
+/*jshint esversion: 6 */
 define(['mozart', 'Behavior', 'Builder', 'Body'], function (mozart, behavior, Builder, Body) {
 Behavior = behavior.B;
+
 var agent = new Behavior(function(bodyPriv, bodyPubl){
 	if(!bodyPubl.isAgent()){return;}
 	robotSprite = bodyPriv.getSprite("robot");
 	gunSprite = bodyPriv.getSprite("gun");
 	deadSprite = bodyPriv.getSprite("dead");
 	winSprite = bodyPriv.getSprite("win");
-	if(bodyPriv.properties.health < 1 || bodyPriv.properties.energy < 1){robotSprite.hide(); gunSprite.hide();winSprite.hide(); deadSprite.show(); return;}
+
+	if(bodyPriv.properties.health < 1 || bodyPriv.properties.energy < 1){
+		robotSprite.hide(); gunSprite.hide();winSprite.hide(); deadSprite.show(); return;}
+
 	if(bodyPriv.properties.win){robotSprite.hide(); gunSprite.hide(); deadSprite.hide();winSprite.show(); return;}
+
 	if(bodyPriv.properties.nextMove){
 		var options = bodyPriv.properties.nextMove.split(':');
 		var turned = robotSprite.getInfo().fh?-1:1;// false: right, true: left
@@ -29,7 +35,9 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 			robotSprite.hide();
 			builder = bodyPriv.engine.priv.builder;
 			builder.addToEngine(bodyPriv.engine.priv, "bullet",
-				{x: bodyPriv.k.x + turned * 35, y:bodyPriv.k.y, vx: turned*10, t: engine.getTime()},[{r: Math.PI*(turned-1)/2}]);
+				{x: bodyPriv.k.x + turned * 35,
+					y: bodyPriv.k.y,
+					vx: turned*10, t: engine.getTime()},[{r: Math.PI*(turned-1)/2}]);
 		}else if(options[0] == "turn"){
 			turned *= -1;
 			robotSprite.fliph();
@@ -38,42 +46,79 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 			if(turned<0){gunSprite.setPos(-5,0);}else{gunSprite.setPos(5,0);}
 		}
 	}
+
 	bodyPriv.properties.nextMove = null;
-	var hideGlobals = "var window=undefined;var engine=undefined;var effects=undefined;var collide=undefined;var context=undefined;";
+	var hideGlobals = `var window=undefined;
+		var engine=undefined;
+		var effects=undefined;
+		var collide=undefined;
+		var context=undefined;`;
 
-	var logging = "outputDiv = document.getElementById('output'); console = {log: function(a){outputDiv.innerHTML += '<hr><b>&larr; ' + a + '</b>'; outputDiv.scrollTop = outputDiv.scrollHeight;}, error: function(a){outputDiv.innerHTML += '<hr><i>' + a + '</i>'; outputDiv.scrollTop = outputDiv.scrollHeight;}};";
+	// TODO TODO TODO: move logging stuff into its own class
+	var logging = `
+		outputDiv = document.getElementById('output');
+		function console_output(a){
+			outputDiv.innerHTML += a;
+			outputDiv.scrollTop = outputDiv.scrollHeight;
+		}
+		console = {
+			log: function(a,b){
+				if(b == null || b == undefined){
+					console_output('<hr><b>&larr; ' + a + '</b>');
+				}else{
+					console_output('<hr>&rarr; ' + a + '<br><b>&larr; ' + b + '</b>');
+				}
+			},
+			error: function(a){
+				console_output('<hr><i>' + a + '</i>');
+			}
+		};`;
 
-				
-	var scriptTail = "if(typeof(loop) == 'undefined'){loop = function(){}}; if(typeof(init) == 'undefined'){init = function(){}}; return {init: init, loop: loop};";
+	var scriptTail = `if(typeof(loop) == 'undefined'){
+				loop = function(){}
+			};
+			if(typeof(init) == 'undefined'){
+				init = function(){}
+			};
+			return {init: init, loop: loop};`;
+
+
 	if(typeof newcommand !== 'undefined' && newcommand !== ""){
-		bodyPubl.command(newcommand);
+		var commandFn= new Function(logging + hideGlobals +
+			"var robot = this; var return_output = " + newcommand +
+			"\n\nreturn return_output;");
+
+		var a = bodyPubl.command(commandFn);
+		if(a.error === null){
+			console.log(newcommand, a.output);
+		}else{
+			console.error(a.error.name + ': ' + a.error.message);
+		}
 		newcommand = "";
 	}
+
 	var g;
 	if(typeof newcode !== 'undefined' && newcode){
-		g = Function(hideGlobals + logging + editor.getValue() + scriptTail);
-		g().init(bodyPubl)
-		// emptyObj = {info: function(){return bodyPubl.info()}};
-		// g().init(emptyObj)
-		bodyPubl.step = g().loop
+		g = Function(logging + hideGlobals + editor.getValue() + scriptTail);
+		g().init(bodyPubl);
+		bodyPubl.playerCode = g().loop;
 		newcode = false;
 	}
 
 	if(propertiesDiv.style.display != "none"){
-
 			customProperties = [];
 			customFunctions = [];
 			var keys = Object.keys(bodyPubl);
-			for(key of keys){
+			for(var key of keys){
 				if(key == 'step') continue;
 				if(typeof(bodyPubl[key]) == 'function'){
 					customFunctions.push(key);
 				}else{
-					customProperties.push({key: key, value: bodyPubl[key]})
+					customProperties.push({key: key, value: bodyPubl[key]});
 				}
 			}
 			customPropertiesString = "";
-			for(prop of customProperties){
+			for(var prop of customProperties){
 				customPropertiesString += "<tr><td><b>" + prop.key + ": </b></td><td><b>" + prop.value + "</b></td></tr>";
 			}
 			customFunctionsString = "";
@@ -97,7 +142,7 @@ var agent = new Behavior(function(bodyPriv, bodyPubl){
 			"<tr><td>init: </td><td>[Function]</td></tr>" +
 			"<tr><td>loop: </td><td>[Function]</td></tr>" +
 		  customFunctionsString +
-		"</table><br>}"
+		"</table><br>}";
 }
 
 });
