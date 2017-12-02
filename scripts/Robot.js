@@ -28,14 +28,13 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 	prototype.gun = function(){
 		_protected.super.super.setNextMove.call(this,"gun");
 	};
-	prototype.jump = function(){
-		if(this.onGround() && Math.abs(this.getK().vy)<1){
-			_protected.super.super.setNextMove.call(this,"jump");
-		}
+	prototype.jump = function(dx){
+		if(dx != Number(dx)){dx = 0;}
+		_protected.super.super.setNextMove.call(this,"jump:" + dx);
 	};
 	prototype.move = function(dx){
 		if(dx != Number(dx)){dx = 10;}
-		_protected.super.super.setNextMove.call(this,"move:"+dx);
+		_protected.super.super.setNextMove.call(this,"move:" + dx);
 	};
 
 	prototype.command = function(commandFn){
@@ -68,7 +67,8 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 			dx = ac.amount || 10;
 			this.move(dx);
 		}else if(ac.action == 'jump'){
-			this.jump();
+			dx = ac.amount || 0;
+			this.jump(dx);
 		}else if(ac.action == 'turn'){
 			this.turn();
 		}else if(ac.action == 'shoot'){

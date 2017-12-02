@@ -20,16 +20,23 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			if(turned<0){gunSprite.setPos(-5,0);}else{gunSprite.setPos(5,0);}
 		if(options[0] == "jump"){
 			if(bodyPubl.onGround()){
+				var amount = Number(options[1]);
+				if(Math.abs(amount) > 10){amount = 10 * Math.sign(amount);}
+				gunSprite.hide();
+				robotSprite.show();
+				bodyPriv.k.ax = amount/2;
 				bodyPriv.k.ay = -15;
-				bodyPriv.properties.energy -= 1;
+				bodyPriv.properties.energy -= (1 + Math.abs(amount)/10);
 			}
 		}else if(options[0] == "move"){
-			var amount = Number(options[1]);
-			if(Math.abs(amount) > 20){amount = 20 * Math.sign(amount);}
-			gunSprite.hide();
-			robotSprite.show();
-			bodyPriv.k.ax = amount;
-			bodyPriv.properties.energy -= Math.abs(amount)/10;
+			if(bodyPubl.onGround()){
+				var amount = Number(options[1]);
+				if(Math.abs(amount) > 20){amount = 20 * Math.sign(amount);}
+				gunSprite.hide();
+				robotSprite.show();
+				bodyPriv.k.ax = amount;
+				bodyPriv.properties.energy -= Math.abs(amount)/10;
+			}
 		}else if(options[0] == "shoot"){
 			gunSprite.show();
 			robotSprite.hide();
