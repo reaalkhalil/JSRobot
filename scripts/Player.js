@@ -84,7 +84,11 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			log: function(a,b){
 				if(b == null || b == undefined){
 					console_output('<b>&larr; ' + a + '</b>');
+				}else if(b == ''){
+					console_output('&rarr; ' + a);
 				}else{
+					if(typeof(b) == 'object'){b = JSON.stringify(b);}
+					if(typeof(b) == 'function'){b = '[Function]'}
 					console_output('&rarr; ' + a + '<br><b>&larr; ' + b + '</b>');
 				}
 			},
@@ -109,7 +113,11 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			"\n\nreturn return_output;");
 
 		var a = bodyPubl.command(commandFn);
+		if(keyboardControl){
+			newcommand = ""; return;
+		}
 		if(a.error === null){
+			a.output = a.output || '';
 			console.log(newcommand, a.output);
 		}else{
 			console.error(a.error.name + ': ' + a.error.message);

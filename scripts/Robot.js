@@ -81,10 +81,10 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 			var action = JSON.stringify(this.keyboardControlMap[String(_ac.keyCode)]);
 			if(action && action != 'undefined'){
 				ac = JSON.parse(action);
-				console.error("KEYBOARD INPUT: " + _ac.keyCode + "  =>  " + action);
+				console.log("KEYBOARD INPUT: keyCode = " + _ac.keyCode, 'robot.setAction(' + action + ');');
 			}else{
 				ac = {action: 'wait'};
-				console.error("KEYBOARD INPUT: " + _ac.keyCode + "  NO ACTION ASSIGNED");
+				console.log("KEYBOARD INPUT: keyCode = " + _ac.keyCode, 'robot.setAction({"type":"wait"});');
 			}
 		}else if(typeof(_ac) == 'string'){
 			ac = {type: _ac};
