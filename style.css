@@ -101,6 +101,10 @@ body{
 .skiplevel-menubutton{
 	top: 160px;
 	width: 300px;
+	background: #fb1549;
+}
+.skiplevel-menubutton:hover{
+	background: #db0049;
 }
 .repeatlevel-menubutton{
 	width: 300px;
@@ -445,4 +449,5 @@ transition: background 0.1s, color 0.3s;
 
 #submitCode.running{
 	background-color: #23bb4e !important;
+	cursor: default !important;
 }
