@@ -90,17 +90,20 @@ body{
 	left: calc(50% - 280px);
 	width: 30px;
 }
+.repeatlevel-menubutton,
+.skiplevel-menubutton,
 .nextlevel-menubutton{
 	top: 55px;
 	right: 15px;
 	width: 200px;
 	display: none;
 }
-.repeatlevel-menubutton{
-	top: 55px;
-	right: 15px;
+.skiplevel-menubutton{
+	top: 160px;
 	width: 300px;
-	display: none;
+}
+.repeatlevel-menubutton{
+	width: 300px;
 }
 
 #instructionsDiv{

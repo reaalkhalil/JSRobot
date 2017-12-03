@@ -97,6 +97,7 @@ startButton.onclick = function(){
 
 var backtomenu = document.getElementById("backtomenu");
 var nextlevel = document.getElementById("nextlevel");
+var skiplevel = document.getElementById("skiplevel");
 var restartlevel = document.getElementById("restartlevel");
 var submit = document.getElementById("submitCode");
 var code = document.getElementById("code");
@@ -134,6 +135,7 @@ backtomenu.onclick = function(){
 function getFlag(){
 	if(practiceMode){
 		repeatLevel.style.display = "block";
+		skiplevel.style.display = "block";
 	}else{
 		nextlevel.style.display = "block";
 	}
@@ -144,6 +146,8 @@ nextlevel.onclick = function(){
 	location.hash = "level=" + level;
 	location.reload();
 };
+
+skiplevel.onclick = nextlevel.onclick;
 
 restartlevel.onclick = function(){
 	location.hash = "level=" + level;
