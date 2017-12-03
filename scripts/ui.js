@@ -81,6 +81,10 @@ function startGame(level, code){
 	instructionsDiv.innerHTML = levels[level-1].instructions;
   if(code !== undefined && code !== ''){
     editor.setValue(code);
+		editor.on('focus',
+		function(){
+			setKeyboardControl(false);
+		})
     openCodeDiv();
   }
 }
@@ -291,6 +295,8 @@ function openCodeDiv(){
 	commandBtn.className = "";
 	propertiesBtn.className = "";
 	codeBtn.className = "selected";
+	editor.focus();
+	editor.setCursor(editor.lineCount(), 0);
 	minmaxBtn.innerHTML = "<a>_</a>";
 	buttonbar.classList.remove("minimized");
 }
