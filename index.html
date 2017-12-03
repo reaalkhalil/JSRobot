@@ -55,11 +55,27 @@
 
 
     <div id="play">
-      <a class="menubutton exit-menubutton" id="backtomenu">&larr;</a>
-      <a class="menubutton restartlevel-menubutton" id="restartlevel">&#10226;</a>
-      <a class="menubutton nextlevel-menubutton" id="nextlevel"> Next Level&nbsp; &rarr;</a>
+      <a class="menubutton repeatlevel-menubutton" id="repeatlevel">Repeat Level Without Practice Mode</a>
+      <a class="menubutton nextlevel-menubutton" id="nextlevel">Next Level&nbsp; &rarr;</a>
 
 		<canvas id="canvasID" width="400" height="500"></canvas>
+
+    <ul id="topbar">
+      <li><a id="backtomenu"><img src="images/topbar_menu.png" class="topbar-button-img">Menu</a>
+      </li><li><a id="restartlevel"><img src="images/topbar_reset.png" class="topbar-button-img">Reset</a>
+      </li><li><a id="submitCode"><img src="images/topbar_run.png" class="topbar-button-img">Run</a>
+      </li><li><a id="topbar-pausebutton"><img src="images/topbar_pause.png" class="topbar-button-img">Pause</a>
+      </li><li><a id="topbar-arrowkeys">&nbsp;<img src="images/topbar_arrowkeys.png" class="topbar-button-img">&nbsp;</a>
+
+      </li><li id="topbar-practicemode">Practice Mode
+      </li><li id="hud">
+        <span id="hud-coins">0</span> <img src="images/hud_coin.png">
+        <span id="hud-health">100</span> <img src="images/hud_heart.png">
+        <span id="hud-battery">100</span> <img src="images/hud_battery.png">
+      </li>
+
+
+    </ul>
 
 		<div id="codearea" style="height: 300px;">
 				<ul id="buttonbar" class="noselect">
@@ -79,7 +95,6 @@ function loop(robot){
   // your code here
 }
 </textarea>
-		<a id="submitCode" class="noselect">Apply</a>
 	</div>
 		<div id="commandDiv">
       <div id="output" class="allowselect"></div>

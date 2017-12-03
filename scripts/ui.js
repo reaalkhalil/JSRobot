@@ -113,14 +113,31 @@ var instructionsDiv = document.getElementById("instructionsDiv");
 var minmaxBtn = document.getElementById("minmax");
 var lineheight = document.getElementById("lineheight");
 var codearea = document.getElementById("codearea");
+var topBarpracticeMode = document.getElementById("topbar-practicemode");
+var pauseButton = document.getElementById("topbar-pausebutton");
+var repeatLevel = document.getElementById("repeatlevel");
+var toggleKeyboardControlButton = document.getElementById("topbar-arrowkeys");
+
 
 var newcode = false;
+var resetcode = false;
+var practiceMode = false;
+var codeRunning = false;
 var newcommand = "";
+var keyboardControl = false;
 
 backtomenu.onclick = function(){
 	location.hash = "";
 	location.reload();
 };
+
+function getFlag(){
+	if(practiceMode){
+		repeatLevel.style.display = "block";
+	}else{
+		nextlevel.style.display = "block";
+	}
+}
 
 nextlevel.onclick = function(){
 	level = Math.min(maxLevels, level + 1);
@@ -134,10 +151,52 @@ restartlevel.onclick = function(){
 	location.reload();
 };
 
+repeatLevel.onclick = restartlevel.onclick;
+
+pauseScript = function(){
+	if(codeRunning){
+		practiceMode = true;
+		codeRunning = false;
+		topBarpracticeMode.style.display="inline-block";
+		resetScript();
+	}
+}
+
+pauseButton.onclick = function(){
+		pauseScript();
+};
+
+setKeyboardControl = function(a){
+	keyboardControl = a;
+	if(keyboardControl){
+		practiceMode = true;
+		topBarpracticeMode.style.display="inline-block";
+		toggleKeyboardControlButton.classList.add('on')
+	}else{
+		toggleKeyboardControlButton.classList.remove('on')
+	}
+}
+
+toggleKeyboardControlButton.onclick = function(){
+	if(codeRunning){
+		console.error("Error: Pause the running script to control the robot with your keyboard.")
+		return;
+	}
+	setKeyboardControl(!keyboardControl);
+}
+
 function applyScript(){
-	document.getElementsByClassName('CodeMirror')[0].classList.add('execute');
-	setTimeout(function(){document.getElementsByClassName('CodeMirror')[0].classList.remove('execute');}, 80);
+	setKeyboardControl(false);
+	saveCode(level, editor.getValue());
 	newcode = true;
+	codeRunning = true;
+	document.getElementById('submitCode').classList.add('running');
+}
+
+function resetScript(){
+	codeRunning = false;
+	resetcode = true;
+	document.getElementById('submitCode').classList.remove('running');
 }
 
 submit.onclick = function(){
@@ -148,13 +207,25 @@ submit.onclick = function(){
 var commandLog = [];
 var commandIndex = 0;
 
-command.onkeydown = function(e) {
-    if(e.keyCode === 13) {
-		newcommand = command.value;
-		commandLog.push(command.value);
+function executeCommand(commandText){
+		newcommand = commandText;
+		commandLog.push(commandText);
 		commandIndex = 0;
 		command.classList.add('execute');
 		setTimeout(function(){command.classList.remove('execute');}, 80);
+}
+
+command.onkeydown = function(e) {
+  if(e.keyCode === 13) {
+
+		if(codeRunning){
+			console.error("Error: Pause the running script to run commands.")
+			return;
+		}
+		executeCommand(command.value);
+		practiceMode = true;
+		topBarpracticeMode.style.display="inline-block";
+
 		e.preventDefault();
 	}else if(e.keyCode === 38 && commandLog.length -1 > commandIndex) {
 		commandIndex++;
@@ -316,36 +387,43 @@ onmousemove = function(e){
 onkeydown = function(e) {
     if(e.metaKey || e.ctrlKey) {
     	if(e.keyCode == 13) {
-			applyScript();
-		}else if(e.keyCode == 37) {
-			if(propertiesBtn.classList.contains("selected")){
-				openCommandDiv();
-			}else if(instructionsBtn.classList.contains("selected")){
-				openPropertiesDiv();
-			}else if(commandBtn.classList.contains("selected")){
-				openCodeDiv();
-			}else if(codeBtn.classList.contains("selected")){
-				openInstructionsDiv();
-			}
+				if(!codeRunning){
+					applyScript();
+				}else{
+					pauseScript();
+				}
+				return false;
+		}else if(e.keyCode == 49) {
+			openInstructionsDiv();
       return false;
-		}else if(e.keyCode == 38) {
-			maximize();
+		}else if(e.keyCode == 50) {
+			openCodeDiv();
       return false;
-		}else if(e.keyCode == 39) {
-			if(propertiesBtn.classList.contains("selected")){
-				openInstructionsDiv();
-			}else if(instructionsBtn.classList.contains("selected")){
-				openCodeDiv();
-			}else if(commandBtn.classList.contains("selected")){
-				openPropertiesDiv();
-			}else if(codeBtn.classList.contains("selected")){
-				openCommandDiv();
-			}
+		}else if(e.keyCode == 51) {
+			openCommandDiv();
       return false;
-		}else if(e.keyCode == 40) {
-			minimize();
+		}else if(e.keyCode == 52) {
+			openPropertiesDiv();
       return false;
 		}
 	}
 };
 
+topBarpracticeMode.style.display = 'none';
+
+
+
+
+
+/////////////// keyboard control
+
+command.onfocus = function(){
+	setKeyboardControl(false);
+}
+
+document.onkeydown = function myFunction() {
+	if(keyboardControl){
+		key = event.keyCode || event.which;
+		executeCommand("robot.setAction({keyCode: " + key + "});")
+	}
+};
