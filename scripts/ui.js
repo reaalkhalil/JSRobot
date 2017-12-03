@@ -204,6 +204,9 @@ function resetScript(){
 }
 
 submit.onclick = function(){
+	if(codeRunning){
+		return;
+	}
 	saveCode(level, editor.getValue());
 	applyScript();
 };
@@ -275,7 +278,9 @@ function openCommandDiv(){
 	commandBtn.className = "selected";
 	minmaxBtn.innerHTML = "<a>_</a>";
 	buttonbar.classList.remove("minimized");
-	command.focus();
+	if(!keyboardControl){
+		command.focus();
+	}
 }
 function openCodeDiv(){
 	codeDiv.style.display = "block";
