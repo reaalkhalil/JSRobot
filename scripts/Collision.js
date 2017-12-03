@@ -169,7 +169,7 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 		if(bodyPubl.isAgent() && col.obj2.t == "flag"){
 			if(isNaN(bodyPriv.properties.win)){
 				bodyPriv.properties.win = true;
-				nextlevel.style.display = "block";
+				getFlag();
 			}
 			continue;
 		}
@@ -212,12 +212,12 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			bodyPriv.k.vx  = nx * relvx * mratio;
 			bodyPriv.k.vy  = ny * relvy * mratio;
 		}else{
-			bodyPriv.k.x -= (overlap[0]*0.9);
-			bodyPriv.k.y -= (overlap[1]/0.6);
-			nx = -0.1;
-			ny = -0.1;
-			if(overlap[0] === 0){nx = 0.9;}
-			if(overlap[1] === 0){ny = 0.9;}
+			bodyPriv.k.x -= (overlap[0]);
+			bodyPriv.k.y -= (overlap[1]);
+			nx = -0.4;
+			ny = -0.4;
+			if(overlap[0] === 0){nx = 0.8;}
+			if(overlap[1] === 0){ny = 0.8;}
 			bodyPriv.k.vx  = nx * relvx;
 			bodyPriv.k.vy  = ny * relvy;
 		}
