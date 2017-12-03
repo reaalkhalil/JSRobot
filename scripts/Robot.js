@@ -19,6 +19,16 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		return k;
 	};
 
+	prototype.keyboardControlMap = {
+		68: {action: "move", amount: 10},
+		65: {action: "move", amount: -10},
+		87: {action: "jump"},
+		69: {action: "jump", amount: 10},
+		81: {action: "jump", amount: -10},
+		84: {action: "turn"},
+		71: {action: "shoot"},
+	};
+
 	prototype.wait = function(){
 		_protected.super.super.setNextMove.call(this,null);
 	};
@@ -48,21 +58,34 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 
 	prototype.step = function(robot){
 		ac = this.playerCode(robot);
-
 		this.setAction(ac);
 	};
 
-	prototype.setAction = function(ac){
-
-		if(ac === undefined || ac === null){
+	prototype.setAction = function(_ac){
+		if(!_ac){return;}
+		if(_ac === undefined || _ac === null){
 			return;
 		}
 
-		if(typeof(ac) == 'string'){
-			ac = {action: ac};
-		}else if(ac.action === undefined || ac.action === null){
+		if(typeof(_ac) == 'object' && _ac.keyCode){
+			var action = JSON.stringify(this.keyboardControlMap[String(_ac.keyCode)]);
+			if(action && action != 'undefined'){
+				ac = JSON.parse(action);
+				console.error("KEYBOARD INPUT: " + _ac.keyCode + "  =>  " + action);
+			}else{
+				ac = {action: 'wait'};
+				console.error("KEYBOARD INPUT: " + _ac.keyCode + "  NO ACTION ASSIGNED");
+			}
+		}else if(typeof(_ac) == 'string'){
+			ac = {action: _ac};
+		}else if(_ac.action === undefined || _ac.action === null){
 			return;
+		}else if(_ac.amount === undefined || _ac.amount === null){
+			ac = {action: _ac.action};
+		}else{
+			ac = {action: _ac.action, amount: _ac.amount};
 		}
+
 		if(ac.action == 'move'){
 			dx = ac.amount || 10;
 			this.move(dx);
