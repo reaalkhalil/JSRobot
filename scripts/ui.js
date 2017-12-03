@@ -103,7 +103,7 @@ var backtomenu = document.getElementById("backtomenu");
 var nextlevel = document.getElementById("nextlevel");
 var skiplevel = document.getElementById("skiplevel");
 var restartlevel = document.getElementById("restartlevel");
-var submit = document.getElementById("submitCode");
+var runCodeBtn = document.getElementById("submitCode");
 var code = document.getElementById("code");
 var codeDiv = document.getElementById("codeDiv");
 var command = document.getElementById("command");
@@ -166,7 +166,7 @@ pauseScript = function(){
 		practiceMode = true;
 		codeRunning = false;
 		topBarpracticeMode.style.display="inline-block";
-		resetScript();
+		resetCode();
 	}
 }
 
@@ -193,26 +193,25 @@ toggleKeyboardControlButton.onclick = function(){
 	setKeyboardControl(!keyboardControl);
 }
 
-function applyScript(){
+function runCode(){
 	setKeyboardControl(false);
 	saveCode(level, editor.getValue());
 	newcode = true;
 	codeRunning = true;
-	document.getElementById('submitCode').classList.add('running');
+	runCodeBtn.classList.add('running');
 }
 
-function resetScript(){
+function resetCode(){
 	codeRunning = false;
 	resetcode = true;
-	document.getElementById('submitCode').classList.remove('running');
+	runCodeBtn.classList.remove('running');
 }
 
-submit.onclick = function(){
+runCodeBtn.onclick = function(){
 	if(codeRunning){
 		return;
 	}
-	saveCode(level, editor.getValue());
-	applyScript();
+	runCode();
 };
 
 var commandLog = [];
@@ -272,6 +271,7 @@ function openInstructionsDiv(){
 }
 
 function openCommandDiv(){
+	setConsoleError(false);
 	commandDiv.style.display = "block";
 	propertiesDiv.style.display = "none";
 	codeDiv.style.display = "none";
@@ -403,7 +403,7 @@ onkeydown = function(e) {
     if(e.metaKey || e.ctrlKey) {
     	if(e.keyCode == 13) {
 				if(!codeRunning){
-					applyScript();
+					runCode();
 				}else{
 					pauseScript();
 				}
@@ -427,6 +427,14 @@ onkeydown = function(e) {
 topBarpracticeMode.style.display = 'none';
 
 
+function setConsoleError(a){
+	pauseScript();
+	if(a && commandDiv.style.display == "none"){
+		commandBtn.classList.add('error');
+	}else{
+		commandBtn.classList.remove('error');
+	}
+}
 
 
 

@@ -89,6 +89,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 				}
 			},
 			error: function(a){
+				setConsoleError(true);
 				console_output('<i>' + a + '</i>');
 			}
 		};`;

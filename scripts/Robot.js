@@ -20,13 +20,13 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 	};
 
 	prototype.keyboardControlMap = {
-		68: {action: "move", amount: 10},
-		65: {action: "move", amount: -10},
-		87: {action: "jump"},
-		69: {action: "jump", amount: 10},
-		81: {action: "jump", amount: -10},
-		84: {action: "turn"},
-		71: {action: "shoot"},
+		68: {type: "move", amount: 10},
+		65: {type: "move", amount: -10},
+		87: {type: "jump"},
+		69: {type: "jump", amount: 10},
+		81: {type: "jump", amount: -10},
+		84: {type: "turn"},
+		71: {type: "shoot"},
 	};
 
 	prototype.wait = function(){
@@ -57,8 +57,18 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 	};
 
 	prototype.step = function(robot){
-		ac = this.playerCode(robot);
+		try{
+			this.playerCode(robot);
+		}catch(err){
+			resetCode();
+			console.error(err.name + ": " + err.message)
+		}
+		ac = 'wait';
+		if(robot.action){
+			ac = JSON.parse(JSON.stringify(robot.action));
+		}
 		this.setAction(ac);
+		robot.action = 'wait';
 	};
 
 	prototype.setAction = function(_ac){
@@ -77,29 +87,29 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 				console.error("KEYBOARD INPUT: " + _ac.keyCode + "  NO ACTION ASSIGNED");
 			}
 		}else if(typeof(_ac) == 'string'){
-			ac = {action: _ac};
-		}else if(_ac.action === undefined || _ac.action === null){
+			ac = {type: _ac};
+		}else if(_ac.type === undefined || _ac.type === null){
 			return;
 		}else if(_ac.amount === undefined || _ac.amount === null){
-			ac = {action: _ac.action};
+			ac = {type: _ac.type};
 		}else{
-			ac = {action: _ac.action, amount: _ac.amount};
+			ac = {type: _ac.type, amount: _ac.amount};
 		}
 
-		if(ac.action == 'move'){
+		if(ac.type == 'move'){
 			dx = ac.amount || 10;
 			this.move(dx);
-		}else if(ac.action == 'jump'){
+		}else if(ac.type == 'jump'){
 			dx = ac.amount || 0;
 			this.jump(dx);
-		}else if(ac.action == 'turn'){
+		}else if(ac.type == 'turn'){
 			this.turn();
-		}else if(ac.action == 'shoot'){
+		}else if(ac.type == 'shoot'){
 			this.shoot();
-		}else if(ac.action == 'shoot'){
+		}else if(ac.type == 'shoot'){
 			this.wait();
 		}
-		ac.action = 'wait';
+		ac.type = 'wait';
 	};
 
 	prototype.playerCode = function(robot){};
