@@ -9,6 +9,12 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 	deadSprite = bodyPriv.getSprite("dead");
 	winSprite = bodyPriv.getSprite("win");
 
+
+	document.getElementById('hud-coins').innerHTML = bodyPriv.properties.coins;
+	document.getElementById('hud-battery').innerHTML = Math.max(0,(Math.round(bodyPriv.properties.energy * 10) / 10));
+	document.getElementById('hud-health').innerHTML = Math.max(0,(Math.round(bodyPriv.properties.health * 10) / 10));
+
+
 	if(bodyPriv.properties.health < 1 || bodyPriv.properties.energy < 1){
 		robotSprite.hide(); gunSprite.hide();winSprite.hide(); deadSprite.show(); return;}
 
@@ -26,7 +32,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 				robotSprite.show();
 				bodyPriv.k.ax = amount/2;
 				bodyPriv.k.ay = -15;
-				bodyPriv.properties.energy -= (1 + Math.abs(amount)/10);
+				bodyPriv.properties.energy -= (2 + Math.abs(amount)/10);
 			}
 		}else if(options[0] == "move"){
 			if(bodyPubl.onGround()){
@@ -51,6 +57,9 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			deadSprite.fliph();
 			gunSprite.fliph();
 			if(turned<0){gunSprite.setPos(-5,0);}else{gunSprite.setPos(5,0);}
+		}else if(options[0] == "toggleKeyboardControl"){
+			bodyPubl.keyboardControl = !bodyPubl.keyboardControl;
+			alert('toggleKeyboardControl')
 		}
 	}
 
@@ -115,6 +124,10 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		newcode = false;
 	}
 
+	if(typeof resetcode !== 'undefined' && resetcode){
+		bodyPubl.playerCode = function(){};
+		resetcode = false;
+	}
 	if(propertiesDiv.style.display != "none"){
 			customProperties = [];
 			customFunctions = [];
