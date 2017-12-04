@@ -84,7 +84,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 				console.log("KEYBOARD INPUT: keyCode = " + _ac.keyCode, 'robot.setAction(' + action + ');');
 			}else{
 				ac = {action: 'wait'};
-				//console.log("KEYBOARD INPUT: keyCode = " + _ac.keyCode, 'robot.setAction({"type":"wait"});');
+			  console.log("KEYBOARD INPUT: keyCode = " + _ac.keyCode, '');
 			}
 		}else if(typeof(_ac) == 'string'){
 			ac = {type: _ac};
