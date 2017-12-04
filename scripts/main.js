@@ -13,15 +13,15 @@ function startLevel(level){
   requirejs(['mozart',
   	   	'../data/levels',
   	   	'Behavior',
-  	   	'Collision',
   	   	'Builder',
   	   	'Engine',
   	   	'Body',
   	   	'Robot',
   	   	'Sprite',
   	   	'Effects',
-  	   	'Player'],
-  function   (mozart, levelData, Behavior, Collision, builder, Engine, Body, robot, Sprite, Effects, Player) {
+  	   	'Player',
+  	   	'Collision'],
+  function   (mozart, levelData, Behavior, builder, Engine, Body, robot, Sprite, Effects, Player, Collision) {
 
   	//Player = Player;
   	//Robot = robot.Robot;
