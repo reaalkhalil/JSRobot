@@ -18,6 +18,7 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).r = options.r || 0;
 		__(this).fh = options.fh || false;
 		__(this).fv = options.fv || false;
+		__(this).paused = options.paused || false;
 		if(options.visible === false){__(this).visible = false;}else{__(this).visible = true;}
 	};
 
@@ -52,8 +53,8 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		}
 
 		if(__(this).r!==0 || __(this).fv || __(this).fh){
-			__(this).context.save(); 
-			__(this).context.translate(__(this).x + px, __(this).y + py); 
+			__(this).context.save();
+			__(this).context.translate(__(this).x + px, __(this).y + py);
 			if(__(this).r!==0){
 				__(this).context.rotate(__(this).r);
 			}
@@ -92,13 +93,20 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).visible = false;
 	};
 	prototype.play = function () {
+		__(this).tickCount = 0;
+		__(this).paused = false;
 		__(this).frameIndex = 0;
 		__(this).visible = true;
 		__(this).loop = false;
 	};
+
+	prototype.frame = function(){
+		return __(this).frameIndex;
+	}
+
 	__private.update = function () {
 		if(!__(this).visible){return;}
-		if(__(this).numberOfFrames == 1){return;}
+		if(__(this).numberOfFrames == 1 || __(this).paused){return;}
 			__(this).tickCount += 1;
 		if (__(this).tickCount > __(this).ticksPerFrame) {
 			__(this).tickCount = 0;
