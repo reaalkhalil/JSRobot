@@ -1,5 +1,7 @@
-define(['mozart', 'Behavior'], function (mozart, behavior) {
+define(['mozart', 'Behavior', 'Player'], function (mozart, behavior, player) {
 Behavior = behavior.B;
+gameObjectBehaviors = behavior.o;
+playerCollide = player.collideWith;
 // include the bottom bits into the subclass and then make a new collision object in main.js
 
 var Collision = Behavior.subclass(function(prototype, _, _protected, __, __private) {
@@ -113,10 +115,19 @@ var Collision = Behavior.subclass(function(prototype, _, _protected, __, __priva
 					//continue;
 				}
 
+				cp1 = null;
+				cp2 = null;
+				if('collisionProperties' in obj1){
+					cp1 = obj1.collisionProperties;
+				}
+				if('collisionProperties' in obj2){
+					cp2 = obj2.collisionProperties;
+				}
+
 				__(this).pairs.push({
 					overlap: overlap,
-					obj1: {obj: obj1, k: k1, b: b1, m: m1, t: t1},
-					obj2: {obj: obj2, k: k2, b: b2, m: m2, t: t2}
+					obj1: {obj: obj1, k: k1, b: b1, m: m1, t: t1, collisionProperties: cp1},
+					obj2: {obj: obj2, k: k2, b: b2, m: m2, t: t2, collisionProperties: cp2}
 				});
 			}
 		}
@@ -130,6 +141,7 @@ var Collision = Behavior.subclass(function(prototype, _, _protected, __, __priva
 });
 
 var collide = new Collision(function(bodyPriv, bodyPubl){
+
 	var pairs = collide.getPairs();
 	var col = null;
 	for(var i in pairs){
@@ -186,6 +198,32 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			continue;
 		}
 
+
+
+		if(bodyPriv.type in gameObjectBehaviors && gameObjectBehaviors[bodyPriv.type].collideBehavior)
+		{
+			var skip = gameObjectBehaviors[bodyPriv.type].collideWith(bodyPriv, bodyPubl, col.obj2);
+			if(skip){
+				continue;
+			}
+		}
+
+		if(bodyPriv.type == 'player'){
+			var skip = player.collideWith(bodyPriv, bodyPubl, col.obj2);
+			if(skip){
+				continue;
+			}
+		}
+
+		//if(col.obj2.t == "spikes" || bodyPriv.type == 'spikes'){
+			//if(bodyPriv.type == 'player'){
+				//effects.play("bulletpop",{x: col.obj2.k.x, y:  col.obj2.k.y});
+				//continue;
+			//}else{
+				//continue;
+			//}
+		//}
+
 		var k1 = col.obj1.k;
 		var k2 = col.obj2.k;
 		var overlap = col.overlap;
@@ -203,12 +241,12 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 
 		if(col.obj2.m != -1){
 			var mratio = col.obj1.m / (col.obj1.m + col.obj2.m);
-			bodyPriv.k.x -= overlap[0] * mratio;
-			bodyPriv.k.y -= overlap[1] * mratio;
+			bodyPriv.k.x -= overlap[0] * mratio * 1;
+			bodyPriv.k.y -= overlap[1] * mratio * 1;
 			nx = -1;
 			ny = -1;
-			if(overlap[0] === 0){nx = 1;}
-			if(overlap[1] === 0){ny = 1;}
+			if(overlap[0] === 0){nx = 1.01;}
+			if(overlap[1] === 0){ny = 1.01;}
 			bodyPriv.k.vx  = nx * relvx * mratio;
 			bodyPriv.k.vy  = ny * relvy * mratio;
 		}else{
@@ -221,6 +259,10 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			bodyPriv.k.vx  = nx * relvx;
 			bodyPriv.k.vy  = ny * relvy;
 		}
+			if(col.obj1.t == 'player'){
+				bodyPriv.k.vy*=0.75;
+				bodyPriv.k.vx*=0.75;
+			}
 	}
 });
 

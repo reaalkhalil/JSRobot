@@ -4,7 +4,7 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function() {
 		__(this).imageFiles =	["robot1", "robot1gun", "robot1dead", "robot1win", "robot2", "coin", "wall1", "wall2", "wall3",
 			   					"wall4", "wall5", "wall6", "wall7", "wall8", "wall9", "wall10", "battery",
-			   					"coinpop", "batterypop", "bullet", "sparkstrip", "spark", "bulletpop", "flag"];
+			   					"coinpop", "batterypop", "bullet", "sparkstrip", "spark", "bulletpop", "flag", "spikes", "box", "turret"];
 		__(this).images = {};
 		__(this).engine = null;
 
@@ -21,6 +21,12 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 		wall: [{x: 0, y: 0, width: 50, height: 50, destwidth: 40, destheight: 40, image: "wall1" }],
 		sparkstrip: [{x: 0, y: 0, width: 84, height: 5, destwidth: 70, destheight: 12.5, image: "sparkstrip", numberOfFrames: 3, loop: true, ticksPerFrame: 2 }],
 		bullet: [{x: 0, y: 0, width: 14, height: 10, destwidth: 14, destheight: 10, image: "bullet" }],
+		spikes: [{name: "spikes", x: 0, y: 0, width: 150, height: 12, destwidth: 40,
+			   	destheight: 15, image: "spikes", numberOfFrames: 3, loop: false, ticksPerFrame: 16, paused: true }],
+		turret: [{name: "turret", x: 0, y: 0, width: 14, height: 12, destwidth: 28,
+			   	destheight: 24, image: "turret" }],
+		box: [{name: "box", x: 0, y: 0, width: 50, height: 50, destwidth: 40,
+			   	destheight: 40, image: "box" }],
 		flag: [{x: 0, y: 0, width: 50, height: 11, destwidth: 30, destheight: 33, image: "flag", numberOfFrames: 5, loop: true, ticksPerFrame: 4 }]
 		};
 
@@ -30,6 +36,9 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 		battery: {x: 0, y: 0, type: "battery"},
 		wall: {x: 0, y: 0, fixed: true, type: "wall", mass: -1},
 		sparkstrip: {x: 0, y: 0, fixed: true, type: "sparkstrip", mass: -1},
+		spikes: {x: 0, y: 0, type: "spikes", mass: -1},
+		box: {x: 0, y: 0, type: "box"},
+		turret: {x: 0, y: 0, type: "turret", fixed: true, mass: -1},
 		bullet: {x: 0, y: 0, vx: 10, type: "bullet", mass: -1, lifetime: 100},
 		flag: {x: 0, y: 0, fixed: true, type: "flag", mass: -1}
 		};
@@ -115,6 +124,18 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 		for(var s in data.sparkstrips){
 			var sparkstrip = new Body(__(this).prepareObject("sparkstrip", data.sparkstrips[s]));
 			__(this).engine.priv.add(sparkstrip);
+		}
+		for(var t in data.turrets){
+			var turret = new Body(__(this).prepareObject("turret", data.turrets[t]));
+			__(this).engine.priv.add(turret);
+		}
+		for(var b in data.boxes){
+			var box = new Body(__(this).prepareObject("box", data.boxes[b]));
+			__(this).engine.priv.add(box);
+		}
+		for(var s in data.spikes){
+			var spikes = new Body(__(this).prepareObject("spikes", data.spikes[s]));
+			__(this).engine.priv.add(spikes);
 		}
 		var flag = new Body(__(this).prepareObject("flag", data.flag));
 		__(this).engine.priv.add(flag);

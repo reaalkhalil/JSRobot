@@ -40,7 +40,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 				if(Math.abs(amount) > 20){amount = 20 * Math.sign(amount);}
 				gunSprite.hide();
 				robotSprite.show();
-				bodyPriv.k.ax = amount;
+				bodyPriv.k.ax = amount*2;
 				bodyPriv.properties.energy -= Math.abs(amount)/10;
 			}
 		}else if(options[0] == "shoot"){
@@ -177,6 +177,21 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		"</table><br>}";
 }
 
+},
+// player collides with something
+function(bodyPriv, bodyPubl, collideWith){
+		if(collideWith.t == 'spikes'){
+			if('collisionProperties' in collideWith &&
+			collideWith.collisionProperties != null &&
+			'spikesUp' in collideWith.collisionProperties &&
+			collideWith.collisionProperties.spikesUp){
+				bodyPriv.properties.health = 0;
+				return false;
+			}
+			return true;
+		}else{
+			return false;
+		}
 });
 return player;
 });

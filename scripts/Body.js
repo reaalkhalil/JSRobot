@@ -1,5 +1,6 @@
 define(['mozart', 'Behavior', 'Collision', 'Player'], function (mozart, behavior, collide, player) {
 gravitate = behavior.g;
+gameObjectBehaviors = behavior.o;
 var Body = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(opts) {
 		__(this).fixed = opts.fixed || false;
@@ -114,6 +115,9 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).onGround = false;
 		gravitate.act(__(this), this);
 		collide.act(__(this), this);
+		if(__(this).type in gameObjectBehaviors){
+			gameObjectBehaviors[__(this).type].act(__(this), this);
+		}
 		// this works but needs the behaviours need to be in body's array
 		if(__(this).agent && this.getK().t % 10 === 0){
 			try {
