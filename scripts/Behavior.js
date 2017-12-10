@@ -50,6 +50,7 @@ var spikes = new Behavior(
 		if(cWith.t == 'player'){
 			if(!bodyPubl.properties.spikesUp){
 				bodyPubl.properties.spikesGoingUp = true;
+				bodyPriv.getSprite('spikes').rewind();
 				bodyPriv.getSprite('spikes').play();
 			}
 			return true;

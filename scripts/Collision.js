@@ -215,14 +215,6 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			}
 		}
 
-		//if(col.obj2.t == "spikes" || bodyPriv.type == 'spikes'){
-			//if(bodyPriv.type == 'player'){
-				//effects.play("bulletpop",{x: col.obj2.k.x, y:  col.obj2.k.y});
-				//continue;
-			//}else{
-				//continue;
-			//}
-		//}
 
 		var k1 = col.obj1.k;
 		var k2 = col.obj2.k;

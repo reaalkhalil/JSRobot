@@ -92,10 +92,18 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.hide = function () {
 		__(this).visible = false;
 	};
-	prototype.play = function () {
+
+	prototype.rewind = function () {
 		__(this).tickCount = 0;
-		__(this).paused = false;
 		__(this).frameIndex = 0;
+	}
+
+	prototype.play = function () {
+		__(this).paused = false;
+		if(__(this).frameIndex == __(this).numberOfFrames - 1 &&
+				__(this).tickCount == __(this).ticksPerFrame){
+			__(this).frameIndex = 0;
+		}
 		__(this).visible = true;
 		__(this).loop = false;
 	};
