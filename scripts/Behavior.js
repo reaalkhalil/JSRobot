@@ -37,7 +37,7 @@ var spikes = new Behavior(
 			!bodyPubl.properties.spikesUp &&
 			bodyPubl.properties.spikesGoingUp &&
 			bodyPriv.getSprite){
-				if(bodyPriv.getSprite('spikes').frame() > 0){
+				if(bodyPriv.getSprite('spikes').frame() == bodyPriv.getSprite('spikes').lastframe()){
 					bodyPubl.properties.spikesUp = true;
 				}
 		}
@@ -169,6 +169,42 @@ var bullet = new Behavior(
 	}
 );
 
+var lift = new Behavior(
+	//action
+	function(bodyPriv, bodyPubl){
+		if(!('properties' in bodyPriv)){
+			bodyPriv.properties = {};
+		}
+		if(!('x1' in bodyPriv.properties)){
+			bodyPriv.properties.x1 = bodyPriv.k.x;
+			bodyPriv.properties.y1 = bodyPriv.k.y;
+			bodyPriv.properties.at = 1;
+		}
+		var v = bodyPriv.properties.v;
+		if(bodyPriv.properties.at == 1){
+			if(Math.abs(bodyPriv.properties.y2 - bodyPriv.k.y) < 2*v &&
+				Math.abs(bodyPriv.properties.x2 - bodyPriv.k.x) < 2*v){
+				bodyPriv.properties.at = 2;
+				//return;
+			}
+		bodyPriv.k.vy = v * Math.sign(bodyPriv.properties.y2 - bodyPriv.k.y);
+		bodyPriv.k.vx = v * Math.sign(bodyPriv.properties.x2 - bodyPriv.k.x);
+		}else if(bodyPriv.properties.at == 2){
+			if(Math.abs(bodyPriv.properties.y1 - bodyPriv.k.y) < 2*v &&
+				Math.abs(bodyPriv.properties.x1 - bodyPriv.k.x) < 2*v){
+				bodyPriv.properties.at = 1;
+				//return;
+			}
+		bodyPriv.k.vy = v * Math.sign(bodyPriv.properties.y1 - bodyPriv.k.y);
+		bodyPriv.k.vx = v * Math.sign(bodyPriv.properties.x1 - bodyPriv.k.x);
+		}
+	},
+// collision
+	function(bodyPriv, bodyPubl, cWith){
+		return true;
+	}
+);
+
 
 var gameObjects = {
 	spikes: spikes,
@@ -176,7 +212,8 @@ var gameObjects = {
 	box: box,
 	battery: battery,
 	portal: portal,
-	bullet: bullet
+	bullet: bullet,
+	lift: lift
 };
 
 return {B: Behavior, g: gravitate, o: gameObjects};
