@@ -29,6 +29,15 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		71: {type: "shoot"},
 	};
 
+	prototype.on = function(eventName, callback){
+		var events = _protected.super.super.getProperties.call(this).events;
+		for(e of events){
+			if(e.event == eventName){
+				callback(e);
+			}
+		}
+	}
+
 	prototype.wait = function(){
 		_protected.super.super.setNextMove.call(this,null);
 	};
@@ -107,7 +116,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		}else if(ac.type == 'shoot'){
 			this.shoot();
 		}
-		
+
 		ac.type = 'wait';
 	};
 

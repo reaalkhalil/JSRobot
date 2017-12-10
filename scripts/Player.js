@@ -57,10 +57,12 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			deadSprite.fliph();
 			gunSprite.fliph();
 			if(turned<0){gunSprite.setPos(-5,0);}else{gunSprite.setPos(5,0);}
-		}else if(options[0] == "toggleKeyboardControl"){
-			bodyPubl.keyboardControl = !bodyPubl.keyboardControl;
-			alert('toggleKeyboardControl')
 		}
+	}
+
+	bodyPriv.properties.events = [];
+	if(bodyPubl.onGround()){
+		bodyPriv.properties.events.push({event: 'ground'});
 	}
 
 	bodyPriv.properties.nextMove = null;
@@ -184,6 +186,15 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 },
 // player collides with something
 function(bodyPriv, bodyPubl, collideWith){
+		collideExists = false;
+		for(ev in bodyPriv.properties.events){
+			if(ev.event == 'collide'){
+				collideExists = true;
+			}
+		}
+		if(!collideExists){
+			bodyPriv.properties.events.push({event: 'collide', with: collideWith});
+		}
 		if(collideWith.t == 'spikes')
 		{
 			if('properties' in collideWith &&
