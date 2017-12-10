@@ -155,51 +155,6 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			continue;
 		}
 
-		if(bodyPubl.isAgent() && col.obj2.t == "battery"){
-			if(isNaN(bodyPriv.properties.energy)){
-				bodyPriv.properties.energy = 0;
-			}
-			bodyPriv.properties.energy = 100;
-			continue;
-		}else if(bodyPriv.type == "battery" && col.obj2.t == "player"){
-			// objects have private engine object, use that to play effects, effects can be a private member in engine
-			effects.play("batterypop",{x:bodyPriv.k.x, y:bodyPriv.k.y});
-			bodyPriv.toBeDestroyed = true;
-			continue;
-		}
-		if(bodyPubl.isAgent() && col.obj2.t == "coin"){
-			if(isNaN(bodyPriv.properties.coins)){
-				bodyPriv.properties.coins = 0;
-			}
-			bodyPriv.properties.coins += 1;
-			continue;
-		}else if(bodyPriv.type == "coin" && col.obj2.t == "player"){
-			effects.play("coinpop",{x: bodyPriv.k.x, y: bodyPriv.k.y});
-			bodyPriv.toBeDestroyed = true;
-			continue;
-		}
-		if(bodyPubl.isAgent() && col.obj2.t == "flag"){
-			if(isNaN(bodyPriv.properties.win)){
-				bodyPriv.properties.win = true;
-				getFlag();
-			}
-			continue;
-		}
-		if(bodyPubl.isAgent() && col.obj2.t == "sparkstrip"){
-			if(isNaN(bodyPriv.properties.health)){
-				bodyPriv.properties.health = 100;
-			}
-			bodyPriv.properties.health -= 60;
-			effects.play("spark",{x: bodyPriv.k.x, y: bodyPriv.k.y});
-		}
-		if(bodyPriv.type == "bullet"){
-			effects.play("bulletpop",{x: bodyPriv.k.x+10, y: bodyPriv.k.y});
-			bodyPriv.toBeDestroyed = true;
-			continue;
-		}
-
-
-
 		if(bodyPriv.type in gameObjectBehaviors && gameObjectBehaviors[bodyPriv.type].collideBehavior)
 		{
 			var skip = gameObjectBehaviors[bodyPriv.type].collideWith(bodyPriv, bodyPubl, col.obj2);
@@ -214,7 +169,6 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 				continue;
 			}
 		}
-
 
 		var k1 = col.obj1.k;
 		var k2 = col.obj2.k;

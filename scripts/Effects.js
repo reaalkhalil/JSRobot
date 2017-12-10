@@ -17,6 +17,7 @@ var Effects = mozart(function(prototype, _, _protected, __, __private) {
 		if(options.x && options.y){
 			__(this).effects[name].setPos(options.x, options.y);
 		}
+		__(this).effects[name].rewind();
 		__(this).effects[name].play();
 	};
 	prototype.render = function(x,y){

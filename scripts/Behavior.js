@@ -45,7 +45,7 @@ var spikes = new Behavior(
 		bodyPubl.properties = {spikesUp: false, spikesGoingUp: false};
 	}
 },
-// spikes collided with something
+// collision
 	function(bodyPriv, bodyPubl, cWith){
 		if(cWith.t == 'player'){
 			if(!bodyPubl.properties.spikesUp){
@@ -64,7 +64,7 @@ var coin = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
 },
-// spikes collided with something
+// collision
 	function(bodyPriv, bodyPubl, cWith){
 		if(cWith.t == 'spikes'){
 			if('properties' in cWith &&
@@ -73,6 +73,10 @@ var coin = new Behavior(
 			cWith.properties.spikesUp){
 				return false;
 			}
+			return true;
+		}else if(cWith.t == 'player'){
+			effects.play("coinpop",{x: bodyPriv.k.x, y: bodyPriv.k.y});
+			bodyPriv.toBeDestroyed = true;
 			return true;
 		}else{
 			return false;
@@ -84,7 +88,7 @@ var box = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
 },
-// spikes collided with something
+// collision
 	function(bodyPriv, bodyPubl, cWith){
 		if(cWith.t == 'spikes'){
 			if('properties' in cWith &&
@@ -104,7 +108,7 @@ var battery = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
 },
-// spikes collided with something
+// collision
 	function(bodyPriv, bodyPubl, cWith){
 		if(cWith.t == 'spikes'){
 			if('properties' in cWith &&
@@ -113,6 +117,10 @@ var battery = new Behavior(
 			cWith.properties.spikesUp){
 				return false;
 			}
+			return true;
+		}else if(cWith.t == 'player'){
+			effects.play("batterypop",{x:bodyPriv.k.x, y:bodyPriv.k.y});
+			bodyPriv.toBeDestroyed = true;
 			return true;
 		}else{
 			return false;
@@ -129,7 +137,7 @@ var portal = new Behavior(
 					{portalDestination: bodyPriv.properties.portalDestination};
 		}
 },
-// spikes collided with something
+// collision
 	function(bodyPriv, bodyPubl, cWith){
 		if(cWith.t == 'player'){
 			return true;
@@ -140,12 +148,35 @@ var portal = new Behavior(
 );
 
 
+var bullet = new Behavior(
+	//action
+	function(bodyPriv, bodyPubl){
+},
+// collision
+	function(bodyPriv, bodyPubl, cWith){
+		if(cWith.t == 'spikes'){
+			if('properties' in cWith &&
+			cWith.properties != null &&
+			'spikesUp' in cWith.properties &&
+			cWith.properties.spikesUp){
+			}else{
+			return true;
+			}
+		}
+		effects.play("bulletpop",{x: bodyPriv.k.x + 15 * Math.sign(bodyPriv.k.vx), y: bodyPriv.k.y});
+		bodyPriv.toBeDestroyed = true;
+		return true;
+	}
+);
+
+
 var gameObjects = {
 	spikes: spikes,
 	coin: coin,
 	box: box,
 	battery: battery,
 	portal: portal,
+	bullet: bullet
 };
 
 return {B: Behavior, g: gravitate, o: gameObjects};

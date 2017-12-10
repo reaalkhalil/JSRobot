@@ -182,7 +182,8 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 },
 // player collides with something
 function(bodyPriv, bodyPubl, collideWith){
-		if(collideWith.t == 'spikes'){
+		if(collideWith.t == 'spikes')
+		{
 			if('properties' in collideWith &&
 			collideWith.properties != null &&
 			'spikesUp' in collideWith.properties &&
@@ -191,7 +192,9 @@ function(bodyPriv, bodyPubl, collideWith){
 				return false;
 			}
 			return true;
-		}else if(collideWith.t == 'portal'){
+		}
+		else if(collideWith.t == 'portal')
+		{
 					console.log( collideWith)
 			if('properties' in collideWith &&
 				collideWith.properties != null &&
@@ -205,7 +208,48 @@ function(bodyPriv, bodyPubl, collideWith){
 				return true
 			}
 			return false;
-		}else{
+		}
+		else if(collideWith.t == 'battery')
+		{
+			if(isNaN(bodyPriv.properties.energy)){
+				bodyPriv.properties.energy = 0;
+			}
+			bodyPriv.properties.energy = 100;
+			return true;
+		}
+		else if(collideWith.t == 'coin')
+		{
+			if(isNaN(bodyPriv.properties.coins)){
+				bodyPriv.properties.coins = 0;
+			}
+			bodyPriv.properties.coins += 1;
+			return true;
+		}
+		else if(collideWith.t == 'flag')
+		{
+			if(isNaN(bodyPriv.properties.win)){
+				bodyPriv.properties.win = true;
+				getFlag();
+			}
+			return true;
+		}
+		else if(collideWith.t == 'sparkstrip')
+		{
+			if(isNaN(bodyPriv.properties.health)){
+				bodyPriv.properties.health = 100;
+			}
+			bodyPriv.properties.health -= 60;
+			effects.play("spark",{x: bodyPriv.k.x, y: bodyPriv.k.y});
+			return false;
+		}
+		else if(collideWith.t == 'bullet')
+		{
+			if(isNaN(bodyPriv.properties.health)){
+				bodyPriv.properties.health = 100;
+			}
+			bodyPriv.properties.health -= 10;
+		}
+		else{
 			return false;
 		}
 });
