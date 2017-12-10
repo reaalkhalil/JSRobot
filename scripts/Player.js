@@ -30,7 +30,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 				if(Math.abs(amount) > 20){amount = 20 * Math.sign(amount);}
 				gunSprite.hide();
 				robotSprite.show();
-				bodyPriv.k.ax = amount/4;
+				bodyPriv.k.ax = amount/2;
 				bodyPriv.k.ay = -15;
 				bodyPriv.properties.energy -= (2 + Math.abs(amount)/20);
 			}
@@ -208,7 +208,6 @@ function(bodyPriv, bodyPubl, collideWith){
 		}
 		else if(collideWith.t == 'portal')
 		{
-					console.log( collideWith)
 			if('properties' in collideWith &&
 				collideWith.properties != null &&
 				'portalDestination' in collideWith.properties &&

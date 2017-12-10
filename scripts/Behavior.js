@@ -154,6 +154,22 @@ var bullet = new Behavior(
 },
 // collision
 	function(bodyPriv, bodyPubl, cWith){
+
+		if(cWith.t == 'portal')
+		{
+			if('properties' in cWith &&
+				cWith.properties != null &&
+				'portalDestination' in cWith.properties &&
+				cWith.properties.portalDestination != null){
+					var a = cWith.properties.portalDestination;
+				bodyPriv.k.x = a.x;
+				bodyPriv.k.y = a.y;
+				bodyPriv.k.vy = 0;
+				bodyPriv.toBeDestroyed = false;
+				return true
+			}
+			return true;
+		}
 		if(cWith.t == 'spikes'){
 			if('properties' in cWith &&
 			cWith.properties != null &&
