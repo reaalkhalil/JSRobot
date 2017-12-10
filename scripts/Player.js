@@ -264,7 +264,9 @@ function(bodyPriv, bodyPubl, collideWith){
 			if(isNaN(bodyPriv.properties.health)){
 				bodyPriv.properties.health = 100;
 			}
-			bodyPriv.properties.health -= 2;
+			if(collideWith.obj.properties.dead == false){
+				bodyPriv.properties.health -= 2;
+			}
 			return false;
 		}
 		else{

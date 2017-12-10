@@ -19,39 +19,56 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 	};
 
 	__private.exportWorld = function(){
+		var flag = [];
 		var coins = [];
 		var batteries = [];
 		var walls = [];
 		var sparkstrips = [];
-		var flag = [];
+		var bullets = [];
+		var enemies = [];
+		var lifts = [];
+		var turrets = [];
+		var portals = [];
+		var spikes = [];
 		for(var j in __(this).world){
+			var obj = {};
 			var o = __(this).world[j];
 			var k = o.getK();
 			var t = o.getType();
 			if(t=="effects"){continue;}
 			var w = o.getDimensions().w;
 			var h = o.getDimensions().h;
-			if(t == "coin"){
-				coins.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay});
+
+			obj = {x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay}
+
+			if(t == "flag"){ flag.push(obj); }
+			if(t == "coin"){ coins.push(obj); }
+			if(t == "battery"){ batteries.push(obj); }
+			if(t == "wall"){ walls.push(obj); }
+			if(t == "sparkstrip"){ sparkstrips.push(obj); }
+			if(t == "bullet"){ bullets.push(obj); }
+			if(t == "enemy"){
+				if('properties' in o){
+					obj.health = o.properties.health;
+				}
+				enemies.push(obj);
 			}
-			if(t == "flag"){
-				flag.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay});
-			}
-			if(t == "battery"){
-				batteries.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay, w: w, h: h});
-			}
-			if(t == "wall"){
-				walls.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay, w: w, h: h});
-			}
-			if(t == "sparkstrip"){
-				sparkstrips.push({x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay, w: w, h: h});
-			}
+			if(t == "lift"){ lifts.push(obj); }
+			if(t == "turret"){ turrets.push(obj); }
+			if(t == "portal"){ portals.push(obj); }
+			if(t == "spikes"){ spikes.push(obj); }
 		}
 		Game.flag = flag;
 		Game.coins = coins;
-		Game.sparkstrips = sparkstrips;
 		Game.batteries = batteries;
 		Game.walls = walls;
+		Game.sparkstrips = sparkstrips;
+		Game.bullets = bullets;
+		Game.enemies = enemies;
+		Game.lifts = lifts;
+		Game.turrets = turrets;
+		Game.portals = portals;
+		Game.spikes = spikes;
 	};
 
 	__private.update = function(){
