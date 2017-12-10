@@ -158,6 +158,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			}
 			customFunctionsString = "";
 			for(prop of customFunctions){
+				if(prop == 'playerCode'){continue;}
 				customFunctionsString += "<tr><td><b>" + prop + ": </b></td><td><b>[Function]</b></td></tr>";
 			}
 
@@ -249,6 +250,14 @@ function(bodyPriv, bodyPubl, collideWith){
 				bodyPriv.properties.health = 100;
 			}
 			bodyPriv.properties.health -= 10;
+			return false;
+		}
+		else if(collideWith.t == 'lift')
+		{
+			bodyPriv.k.y += collideWith.k.vy;
+			bodyPriv.k.x += collideWith.k.vx;
+			//bodyPriv.k.vx = null;
+			return 'skipX'
 		}
 		else{
 			return false;
