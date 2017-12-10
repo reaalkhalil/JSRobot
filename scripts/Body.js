@@ -3,6 +3,7 @@ gravitate = behavior.g;
 gameObjectBehaviors = behavior.o;
 var Body = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(opts) {
+		__(this).collisionProperties = opts.collisionProperties || {};
 		__(this).fixed = opts.fixed || false;
 		__(this).agent = opts.agent || false;
 		__(this).sprites = opts.sprites || [];

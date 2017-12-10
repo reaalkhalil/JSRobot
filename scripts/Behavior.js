@@ -59,8 +59,95 @@ var spikes = new Behavior(
 	}
 );
 
+var coin = new Behavior(
+	//action
+	function(bodyPriv, bodyPubl){
+},
+// spikes collided with something
+	function(bodyPriv, bodyPubl, cWith){
+		if(cWith.t == 'spikes'){
+			if('collisionProperties' in cWith &&
+			cWith.collisionProperties != null &&
+			'spikesUp' in cWith.collisionProperties &&
+			cWith.collisionProperties.spikesUp){
+				bodyPriv.properties.health = 0;
+				return false;
+			}
+			return true;
+		}else{
+			return false;
+		}
+	}
+);
+
+var box = new Behavior(
+	//action
+	function(bodyPriv, bodyPubl){
+},
+// spikes collided with something
+	function(bodyPriv, bodyPubl, cWith){
+		if(cWith.t == 'spikes'){
+			if('collisionProperties' in cWith &&
+			cWith.collisionProperties != null &&
+			'spikesUp' in cWith.collisionProperties &&
+			cWith.collisionProperties.spikesUp){
+				bodyPriv.properties.health = 0;
+				return false;
+			}
+			return true;
+		}else{
+			return false;
+		}
+	}
+);
+
+var battery = new Behavior(
+	//action
+	function(bodyPriv, bodyPubl){
+},
+// spikes collided with something
+	function(bodyPriv, bodyPubl, cWith){
+		if(cWith.t == 'spikes'){
+			if('collisionProperties' in cWith &&
+			cWith.collisionProperties != null &&
+			'spikesUp' in cWith.collisionProperties &&
+			cWith.collisionProperties.spikesUp){
+				bodyPriv.properties.health = 0;
+				return false;
+			}
+			return true;
+		}else{
+			return false;
+		}
+	}
+);
+
+
+var portal = new Behavior(
+	//action
+	function(bodyPriv, bodyPubl){
+		if(!("collisionProperties" in bodyPubl) || bodyPubl.collisionProperties == null){
+			bodyPubl.collisionProperties =
+					{portalDestination: bodyPriv.collisionProperties.portalDestination};
+		}
+},
+// spikes collided with something
+	function(bodyPriv, bodyPubl, cWith){
+		if(cWith.t == 'player'){
+			return true;
+		}else{
+			return true;
+		}
+	}
+);
+
+
 var gameObjects = {
 	spikes: spikes,
+	coin: coin,
+	box: box,
+	battery: battery,
+	portal: portal,
 };
 
 return {B: Behavior, g: gravitate, o: gameObjects};
