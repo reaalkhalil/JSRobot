@@ -87,6 +87,7 @@ function startGame(level, code){
 		})
     openCodeDiv();
   }
+	resetCode();
 }
 
 startButton.onclick = function(){

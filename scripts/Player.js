@@ -137,6 +137,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 
 	if(typeof resetcode !== 'undefined' && resetcode){
 		bodyPubl.playerCode = function(){};
+		bodyPubl.action = {type: 'wait'};
 		resetcode = false;
 	}
 	if(propertiesDiv.style.display != "none"){
@@ -153,7 +154,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			}
 			customPropertiesString = "";
 			for(var prop of customProperties){
-				customPropertiesString += "<tr><td><b>" + prop.key + ": </b></td><td><b>" + prop.value + "</b></td></tr>";
+				customPropertiesString += "<tr><td><b>" + prop.key + ": </b></td><td><b>" + JSON.stringify(prop.value) + "</b></td></tr>";
 			}
 			customFunctionsString = "";
 			for(prop of customFunctions){

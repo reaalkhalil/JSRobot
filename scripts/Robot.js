@@ -68,7 +68,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 			ac = JSON.parse(JSON.stringify(robot.action));
 		}
 		this.setAction(ac);
-		robot.action = 'wait';
+		//robot.action = 'wait';
 	};
 
 	prototype.setAction = function(_ac){
@@ -106,9 +106,8 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 			this.turn();
 		}else if(ac.type == 'shoot'){
 			this.shoot();
-		}else if(ac.type == 'shoot'){
-			this.wait();
 		}
+		
 		ac.type = 'wait';
 	};
 
