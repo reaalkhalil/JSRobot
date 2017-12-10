@@ -112,6 +112,10 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		return __(this).frameIndex;
 	}
 
+	prototype.lastframe = function(){
+		return __(this).numberOfFrames - 1;
+	}
+
 	__private.update = function () {
 		if(!__(this).visible){return;}
 		if(__(this).numberOfFrames == 1 || __(this).paused){return;}
