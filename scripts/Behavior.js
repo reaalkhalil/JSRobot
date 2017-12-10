@@ -32,24 +32,24 @@ var gravitate = new Behavior(function(bodyPriv, bodyPubl){
 var spikes = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
-	if('collisionProperties' in bodyPubl){
-		if('spikesGoingUp' in bodyPubl.collisionProperties &&
-			!bodyPubl.collisionProperties.spikesUp &&
-			bodyPubl.collisionProperties.spikesGoingUp &&
+	if('properties' in bodyPubl){
+		if('spikesGoingUp' in bodyPubl.properties &&
+			!bodyPubl.properties.spikesUp &&
+			bodyPubl.properties.spikesGoingUp &&
 			bodyPriv.getSprite){
 				if(bodyPriv.getSprite('spikes').frame() > 0){
-					bodyPubl.collisionProperties.spikesUp = true;
+					bodyPubl.properties.spikesUp = true;
 				}
 		}
 	}else{
-		bodyPubl.collisionProperties = {spikesUp: false, spikesGoingUp: false};
+		bodyPubl.properties = {spikesUp: false, spikesGoingUp: false};
 	}
 },
 // spikes collided with something
 	function(bodyPriv, bodyPubl, cWith){
 		if(cWith.t == 'player'){
-			if(!bodyPubl.collisionProperties.spikesUp){
-				bodyPubl.collisionProperties.spikesGoingUp = true;
+			if(!bodyPubl.properties.spikesUp){
+				bodyPubl.properties.spikesGoingUp = true;
 				bodyPriv.getSprite('spikes').play();
 			}
 			return true;
@@ -66,11 +66,10 @@ var coin = new Behavior(
 // spikes collided with something
 	function(bodyPriv, bodyPubl, cWith){
 		if(cWith.t == 'spikes'){
-			if('collisionProperties' in cWith &&
-			cWith.collisionProperties != null &&
-			'spikesUp' in cWith.collisionProperties &&
-			cWith.collisionProperties.spikesUp){
-				bodyPriv.properties.health = 0;
+			if('properties' in cWith &&
+			cWith.properties != null &&
+			'spikesUp' in cWith.properties &&
+			cWith.properties.spikesUp){
 				return false;
 			}
 			return true;
@@ -87,11 +86,10 @@ var box = new Behavior(
 // spikes collided with something
 	function(bodyPriv, bodyPubl, cWith){
 		if(cWith.t == 'spikes'){
-			if('collisionProperties' in cWith &&
-			cWith.collisionProperties != null &&
-			'spikesUp' in cWith.collisionProperties &&
-			cWith.collisionProperties.spikesUp){
-				bodyPriv.properties.health = 0;
+			if('properties' in cWith &&
+			cWith.properties != null &&
+			'spikesUp' in cWith.properties &&
+			cWith.properties.spikesUp){
 				return false;
 			}
 			return true;
@@ -108,11 +106,10 @@ var battery = new Behavior(
 // spikes collided with something
 	function(bodyPriv, bodyPubl, cWith){
 		if(cWith.t == 'spikes'){
-			if('collisionProperties' in cWith &&
-			cWith.collisionProperties != null &&
-			'spikesUp' in cWith.collisionProperties &&
-			cWith.collisionProperties.spikesUp){
-				bodyPriv.properties.health = 0;
+			if('properties' in cWith &&
+			cWith.properties != null &&
+			'spikesUp' in cWith.properties &&
+			cWith.properties.spikesUp){
 				return false;
 			}
 			return true;
@@ -126,9 +123,9 @@ var battery = new Behavior(
 var portal = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
-		if(!("collisionProperties" in bodyPubl) || bodyPubl.collisionProperties == null){
-			bodyPubl.collisionProperties =
-					{portalDestination: bodyPriv.collisionProperties.portalDestination};
+		if(!("properties" in bodyPubl) || bodyPubl.properties == null){
+			bodyPubl.properties =
+					{portalDestination: bodyPriv.properties.portalDestination};
 		}
 },
 // spikes collided with something

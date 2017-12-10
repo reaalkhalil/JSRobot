@@ -183,21 +183,21 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 // player collides with something
 function(bodyPriv, bodyPubl, collideWith){
 		if(collideWith.t == 'spikes'){
-			if('collisionProperties' in collideWith &&
-			collideWith.collisionProperties != null &&
-			'spikesUp' in collideWith.collisionProperties &&
-			collideWith.collisionProperties.spikesUp){
+			if('properties' in collideWith &&
+			collideWith.properties != null &&
+			'spikesUp' in collideWith.properties &&
+			collideWith.properties.spikesUp){
 				bodyPriv.properties.health = 0;
 				return false;
 			}
 			return true;
 		}else if(collideWith.t == 'portal'){
 					console.log( collideWith)
-			if('collisionProperties' in collideWith &&
-				collideWith.collisionProperties != null &&
-				'portalDestination' in collideWith.collisionProperties &&
-				collideWith.collisionProperties.portalDestination != null){
-					var a = collideWith.collisionProperties.portalDestination;
+			if('properties' in collideWith &&
+				collideWith.properties != null &&
+				'portalDestination' in collideWith.properties &&
+				collideWith.properties.portalDestination != null){
+					var a = collideWith.properties.portalDestination;
 				bodyPriv.k.x = a.x;
 				bodyPriv.k.y = a.y;
 				bodyPriv.k.vx = 0;

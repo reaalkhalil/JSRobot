@@ -117,17 +117,17 @@ var Collision = Behavior.subclass(function(prototype, _, _protected, __, __priva
 
 				cp1 = null;
 				cp2 = null;
-				if('collisionProperties' in obj1){
-					cp1 = obj1.collisionProperties;
+				if('properties' in obj1){
+					cp1 = obj1.properties;
 				}
-				if('collisionProperties' in obj2){
-					cp2 = obj2.collisionProperties;
+				if('properties' in obj2){
+					cp2 = obj2.properties;
 				}
 
 				__(this).pairs.push({
 					overlap: overlap,
-					obj1: {obj: obj1, k: k1, b: b1, m: m1, t: t1, collisionProperties: cp1},
-					obj2: {obj: obj2, k: k2, b: b2, m: m2, t: t2, collisionProperties: cp2}
+					obj1: {obj: obj1, k: k1, b: b1, m: m1, t: t1, properties: cp1},
+					obj2: {obj: obj2, k: k2, b: b2, m: m2, t: t2, properties: cp2}
 				});
 			}
 		}
