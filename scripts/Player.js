@@ -259,6 +259,14 @@ function(bodyPriv, bodyPubl, collideWith){
 			//bodyPriv.k.vx = null;
 			return 'skipX'
 		}
+		else if(collideWith.t == 'enemy')
+		{
+			if(isNaN(bodyPriv.properties.health)){
+				bodyPriv.properties.health = 100;
+			}
+			bodyPriv.properties.health -= 2;
+			return false;
+		}
 		else{
 			return false;
 		}

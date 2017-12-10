@@ -206,6 +206,46 @@ var lift = new Behavior(
 );
 
 
+var enemy = new Behavior(
+	//action
+	function(bodyPriv, bodyPubl){
+		if(!("properties" in bodyPubl) || bodyPubl.properties == null){
+			bodyPubl.properties =
+					{health: 100};
+		}
+		if(!('x1' in bodyPriv.properties)){
+			bodyPriv.properties.x1 = bodyPriv.k.x;
+			bodyPriv.properties.at = 1;
+		}
+		var v = bodyPriv.properties.v;
+		if(bodyPriv.properties.at == 1){
+			if(Math.abs(bodyPriv.properties.x2 - bodyPriv.k.x) < 2*v){
+				bodyPriv.properties.at = 2;
+				bodyPriv.getSprite('enemy').fliph();
+				//return;
+			}
+		bodyPriv.k.vx = v * Math.sign(bodyPriv.properties.x2 - bodyPriv.k.x);
+		}else if(bodyPriv.properties.at == 2){
+			if(Math.abs(bodyPriv.properties.x1 - bodyPriv.k.x) < 2*v){
+				bodyPriv.properties.at = 1;
+				bodyPriv.getSprite('enemy').fliph();
+				//return;
+			}
+		bodyPriv.k.vx = v * Math.sign(bodyPriv.properties.x1 - bodyPriv.k.x);
+		}
+},
+// collision
+	function(bodyPriv, bodyPubl, cWith){
+		if(cWith.t == 'player'){
+			return false;
+		}else{
+			return false;
+		}
+	}
+);
+
+
+
 var gameObjects = {
 	spikes: spikes,
 	coin: coin,
@@ -213,7 +253,8 @@ var gameObjects = {
 	battery: battery,
 	portal: portal,
 	bullet: bullet,
-	lift: lift
+	lift: lift,
+	enemy: enemy
 };
 
 return {B: Behavior, g: gravitate, o: gameObjects};
