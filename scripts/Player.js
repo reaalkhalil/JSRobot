@@ -82,6 +82,8 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		}
 		console = {
 			log: function(a,b){
+				if(typeof(a) == 'object'){a = JSON.stringify(a);}
+				if(typeof(a) == 'function'){a = '[Function]'}
 				if(b == null || b == undefined){
 					console_output('<b>&larr; ' + a + '</b>');
 				}else if(b == ''){
@@ -189,6 +191,20 @@ function(bodyPriv, bodyPubl, collideWith){
 				return false;
 			}
 			return true;
+		}else if(collideWith.t == 'portal'){
+					console.log( collideWith)
+			if('collisionProperties' in collideWith &&
+				collideWith.collisionProperties != null &&
+				'portalDestination' in collideWith.collisionProperties &&
+				collideWith.collisionProperties.portalDestination != null){
+					var a = collideWith.collisionProperties.portalDestination;
+				bodyPriv.k.x = a.x;
+				bodyPriv.k.y = a.y;
+				bodyPriv.k.vx = 0;
+				bodyPriv.k.vy = 0;
+				return true
+			}
+			return false;
 		}else{
 			return false;
 		}

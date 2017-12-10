@@ -4,7 +4,7 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.init = function() {
 		__(this).imageFiles =	["robot1", "robot1gun", "robot1dead", "robot1win", "robot2", "coin", "wall1", "wall2", "wall3",
 			   					"wall4", "wall5", "wall6", "wall7", "wall8", "wall9", "wall10", "battery",
-			   					"coinpop", "batterypop", "bullet", "sparkstrip", "spark", "bulletpop", "flag", "spikes", "box", "turret"];
+			   					"coinpop", "batterypop", "bullet", "sparkstrip", "spark", "bulletpop", "flag", "spikes", "box", "turret", "portal"];
 		__(this).images = {};
 		__(this).engine = null;
 
@@ -27,6 +27,7 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 			   	destheight: 24, image: "turret" }],
 		box: [{name: "box", x: 0, y: 0, width: 50, height: 50, destwidth: 40,
 			   	destheight: 40, image: "box" }],
+		portal: [{x: 0, y: 0, width: 12, height: 47, destwidth: 4, destheight: 47, image: "portal", numberOfFrames: 3, loop: true, ticksPerFrame: 4 }],
 		flag: [{x: 0, y: 0, width: 50, height: 11, destwidth: 30, destheight: 33, image: "flag", numberOfFrames: 5, loop: true, ticksPerFrame: 4 }]
 		};
 
@@ -38,6 +39,7 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 		sparkstrip: {x: 0, y: 0, fixed: true, type: "sparkstrip", mass: -1},
 		spikes: {x: 0, y: 0, type: "spikes", mass: -1},
 		box: {x: 0, y: 0, type: "box"},
+		portal: {x: 0, y: 0, type: "portal", mass: -1},
 		turret: {x: 0, y: 0, type: "turret", fixed: true, mass: -1},
 		bullet: {x: 0, y: 0, vx: 10, type: "bullet", mass: -1, lifetime: 100},
 		flag: {x: 0, y: 0, fixed: true, type: "flag", mass: -1}
@@ -132,6 +134,10 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 		for(var b in data.boxes){
 			var box = new Body(__(this).prepareObject("box", data.boxes[b]));
 			__(this).engine.priv.add(box);
+		}
+		for(var p in data.portals){
+			var portal = new Body(__(this).prepareObject("portal", data.portals[p]));
+			__(this).engine.priv.add(portal);
 		}
 		for(var s in data.spikes){
 			var spikes = new Body(__(this).prepareObject("spikes", data.spikes[s]));
