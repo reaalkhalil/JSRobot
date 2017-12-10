@@ -155,17 +155,25 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			continue;
 		}
 
+		var skipX = false;
+
 		if(bodyPriv.type in gameObjectBehaviors && gameObjectBehaviors[bodyPriv.type].collideBehavior)
 		{
 			var skip = gameObjectBehaviors[bodyPriv.type].collideWith(bodyPriv, bodyPubl, col.obj2);
-			if(skip){
+			if(typeof(skip) == 'string' && skip == 'skipX'){
+				skipX = true;
+			}
+			if(typeof(skip) == 'boolean' && skip){
 				continue;
 			}
 		}
 
 		if(bodyPriv.type == 'player'){
 			var skip = player.collideWith(bodyPriv, bodyPubl, col.obj2);
-			if(skip){
+			if(typeof(skip) == 'string' && skip == 'skipX'){
+				skipX = true;
+			}
+			if(typeof(skip) == 'boolean' && skip){
 				continue;
 			}
 		}
@@ -196,13 +204,15 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			bodyPriv.k.vx  = nx * relvx * mratio;
 			bodyPriv.k.vy  = ny * relvy * mratio;
 		}else{
-			bodyPriv.k.x -= (overlap[0]);
+			if(!skipX){
+				bodyPriv.k.x -= (overlap[0]);
+				nx = -0.4;
+				if(overlap[0] === 0){nx = 0.8;}
+				bodyPriv.k.vx = nx * relvx;
+			}
 			bodyPriv.k.y -= (overlap[1]);
-			nx = -0.4;
 			ny = -0.4;
-			if(overlap[0] === 0){nx = 0.8;}
 			if(overlap[1] === 0){ny = 0.8;}
-			bodyPriv.k.vx  = nx * relvx;
 			bodyPriv.k.vy  = ny * relvy;
 		}
 			if(col.obj1.t == 'player'){
