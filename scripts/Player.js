@@ -187,6 +187,9 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 // player collides with something
 function(bodyPriv, bodyPubl, collideWith){
 		collideExists = false;
+		if(!('events' in bodyPriv.properties)){
+			bodyPriv.properties.events = [];
+		}
 		for(ev in bodyPriv.properties.events){
 			if(ev.event == 'collide'){
 				collideExists = true;
