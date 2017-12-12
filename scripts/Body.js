@@ -39,8 +39,11 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		}
 	};
 
-	prototype.getBox = function(){
+	prototype.getBox = function(a){
 		var k = __(this).k;
+		if(a === "cached"){
+			return __(this).box;
+		}
 		var box = [0,0,0,0]; // top right bottom left
 		for(var i in __(this).sprites){
 			var info = __(this).sprites[i].getInfo();
@@ -50,7 +53,8 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 			box[2] = Math.max(box[2], info.y + info.h/2);
 			box[3] = Math.max(box[3], -info.x + info.w/2);
 		}
-		return [k.y - box[0], k.x + box[1], k.y + box[2], k.x - box[3]];
+		__(this).box = [k.y - box[0], k.x + box[1], k.y + box[2], k.x - box[3]];
+		return JSON.parse(JSON.stringify(__(this).box));
 	};
 	prototype.getDimensions = function(){
 		var box = this.getBox();
