@@ -216,8 +216,9 @@ function(bodyPriv, bodyPubl, collideWith){
 				'portalDestination' in collideWith.properties &&
 				collideWith.properties.portalDestination != null){
 					var a = collideWith.properties.portalDestination;
-				bodyPriv.k.x = a.x;
-				bodyPriv.k.y = a.y;
+					var d = collideWith.properties.portalDestination.d;
+				bodyPriv.k.x = a.x + (d%2) * (bodyPubl.info().width / 2 + 5) * ((d==3)?(-1):(1));
+				bodyPriv.k.y = a.y + ((d+1)%2) * (bodyPubl.info().height / 2 + 5)* ((d==0)?(-1):(1));
 				bodyPriv.k.vx = 0;
 				bodyPriv.k.vy = 0;
 				return true
