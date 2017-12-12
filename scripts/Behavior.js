@@ -354,7 +354,6 @@ var lift = new Behavior(
 		return true;
 	}
 );
-
 /////////////////////           ENEMY           /////////////////////////////
 var enemy = new Behavior(
 	//action
@@ -390,6 +389,104 @@ var enemy = new Behavior(
 			if(Math.abs(bodyPriv.properties.x1 - bodyPriv.k.x) < 2*v){
 				bodyPriv.properties.at = 1;
 				bodyPriv.getSprite('enemy').fliph();
+				//return;
+			}
+		bodyPriv.k.vx = v * Math.sign(bodyPriv.properties.x1 - bodyPriv.k.x);
+		}
+},
+// collision
+	function(bodyPriv, bodyPubl, cWith){
+		if(cWith.t == 'bullet'){
+			if(bodyPriv.properties.health <= 0 && bodyPriv.properties.dead === false){
+				bodyPriv.properties.dead = true;
+				builder.addToEngine(bodyPriv.engine.priv, "coin",
+					{x: bodyPriv.k.x,
+					 y: bodyPriv.k.y-30,
+					 t: engine.getTime()},[]);
+				 }
+			if(bodyPriv.properties.health <= 0){
+				effects.play("spark",{x: bodyPriv.k.x, y: bodyPriv.k.y});
+			}else{
+				bodyPriv.properties.health -= 10;
+			}
+			return false;
+		}else{
+			return false;
+		}
+	}
+);
+
+
+/////////////////////           GUN ENEMY           /////////////////////////////
+var gunEnemy = new Behavior(
+	//action
+	function(bodyPriv, bodyPubl){
+
+
+		if(!("properties" in bodyPriv) ||
+			bodyPriv.properties === null){
+			bodyPriv.properties = {tick: 0, turned: false};
+		}
+
+			if(!('turned' in bodyPriv.properties)){
+				bodyPriv.properties.turned = false;
+			}
+			if(!('tick' in bodyPriv.properties)){
+				bodyPriv.properties.tick = 0;
+			}
+			if(typeof(bodyPriv.properties.turned) == 'boolean'){
+				if(bodyPriv.properties.turned === true){
+					bodyPriv.getSprite('gun-robot').fliph();
+					bodyPriv.properties.turned = 1;
+				}else{
+					bodyPriv.properties.turned = -1;
+				}
+			}
+			turned = bodyPriv.properties.turned;
+
+		if(bodyPriv.properties.tick++ == bodyPriv.properties.shootingRate){
+				builder = bodyPriv.engine.priv.builder;
+				builder.addToEngine(bodyPriv.engine.priv, "bullet",
+					{x: bodyPriv.k.x + turned * 25,
+					 y: bodyPriv.k.y,
+					 vx: turned*10, t: engine.getTime()},[{r: Math.PI*(turned-1)/2}]);
+				bodyPriv.properties.tick = 0;
+		}
+
+
+		if(!("properties" in bodyPriv) || bodyPriv.properties === null){
+			bodyPriv.properties =
+					{health: 100, dead: false};
+		}
+
+		if(!("properties" in bodyPubl) || bodyPubl.properties === null){
+				bodyPubl.properties = {health: 100, dead: false};
+		}
+
+		bodyPubl.properties.health = bodyPriv.properties.health;
+		bodyPubl.properties.dead = bodyPriv.properties.dead;
+		if(bodyPriv.properties.dead === true){return;}
+
+		if(!('x1' in bodyPriv.properties)){
+			bodyPriv.properties.x1 = bodyPriv.k.x;
+			bodyPriv.properties.at = 1;
+			bodyPriv.properties.health = 100;
+			bodyPriv.properties.dead = false;
+		}
+		var v = bodyPriv.properties.v;
+		if(bodyPriv.properties.at == 1){
+			if(Math.abs(bodyPriv.properties.x2 - bodyPriv.k.x) < 2*v){
+				bodyPriv.properties.at = 2;
+				bodyPriv.getSprite('gunEnemy').fliph();
+				bodyPriv.properties.turned *= -1;
+				//return;
+			}
+		bodyPriv.k.vx = v * Math.sign(bodyPriv.properties.x2 - bodyPriv.k.x);
+		}else if(bodyPriv.properties.at == 2){
+			if(Math.abs(bodyPriv.properties.x1 - bodyPriv.k.x) < 2*v){
+				bodyPriv.properties.at = 1;
+				bodyPriv.getSprite('gunEnemy').fliph();
+				bodyPriv.properties.turned *= -1;
 				//return;
 			}
 		bodyPriv.k.vx = v * Math.sign(bodyPriv.properties.x1 - bodyPriv.k.x);
@@ -465,7 +562,8 @@ var gameObjects = {
 	bullet: bullet,
 	lift: lift,
 	turret: turret,
-	enemy: enemy
+	enemy: enemy,
+	gunEnemy: gunEnemy
 };
 
 return {B: Behavior, g: gravitate, o: gameObjects};
