@@ -15,7 +15,10 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 	prototype.info = function(){
 		var p = _protected.super.super.getProperties.call(this);
 		var k =  prototype.super.super.getK.call(this);
+		var b =  prototype.super.super.getBox.call(this, "cached");
 		k.energy = p.energy; k.health = p.health; k.coins = p.coins; k.nextMove = p.nextMove;
+		k.box = []; k.box[0] = b[0]; k.box[1] = b[1]; k.box[2] = b[2]; k.box[3] = b[3];
+		k.width = b[1] - b[3]; k.height = b[2] - b[0];
 		return k;
 	};
 
