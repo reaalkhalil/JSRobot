@@ -5,7 +5,7 @@ var Behavior = mozart(function(prototype, _, _protected, __, __private) {
 
 	prototype.init = function(action, collide) {
 		_(this).action = action;
-		if(collide != null){
+		if(collide !== null){
 			prototype.collideBehavior = true;
 			_(this).collide = collide;
 		}
@@ -17,7 +17,7 @@ var Behavior = mozart(function(prototype, _, _protected, __, __private) {
 
 	prototype.collideWith = function(bodyPriv, bodyPubl, cWith){
 		return _(this).collide(bodyPriv, bodyPubl, cWith);
-	}
+	};
 
 });
 
@@ -29,6 +29,7 @@ var gravitate = new Behavior(function(bodyPriv, bodyPubl){
 	}
 });
 
+/////////////////////           SPIKES           /////////////////////////////
 var spikes = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
@@ -60,15 +61,39 @@ var spikes = new Behavior(
 	}
 );
 
+/////////////////////           COIN           /////////////////////////////
 var coin = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
 },
 // collision
 	function(bodyPriv, bodyPubl, cWith){
+		if(cWith.t == 'portal')
+		{
+			if('properties' in cWith &&
+				cWith.properties !== null &&
+				'portalDestination' in cWith.properties &&
+				cWith.properties.portalDestination !== null){
+					var a = cWith.properties.portalDestination;
+					var d = cWith.properties.portalDestination.d;
+
+					var oldDX = bodyPriv.k.x - cWith.k.x;
+					if(oldDX * ((d%2) * ((d==3)?(-1):(1))) > 0){
+					bodyPriv.k.vx *= -1;
+					}
+					bodyPriv.k.x = a.x + (d%2) * 20 *((d==3)?(-1):(1));
+					bodyPriv.k.y = a.y + ((d+1)%2) * 20 *((d===0)?(-1):(1));
+
+					bodyPriv.k.vy = 0;
+					bodyPriv.k.vx = 0;
+					bodyPriv.toBeDestroyed = false;
+					return true;
+			}
+			return true;
+		}
 		if(cWith.t == 'spikes'){
 			if('properties' in cWith &&
-			cWith.properties != null &&
+			cWith.properties !== null &&
 			'spikesUp' in cWith.properties &&
 			cWith.properties.spikesUp){
 				return false;
@@ -84,6 +109,7 @@ var coin = new Behavior(
 	}
 );
 
+/////////////////////           BOX           /////////////////////////////
 var box = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
@@ -94,28 +120,28 @@ var box = new Behavior(
 		if(cWith.t == 'portal')
 		{
 			if('properties' in cWith &&
-				cWith.properties != null &&
+				cWith.properties !== null &&
 				'portalDestination' in cWith.properties &&
-				cWith.properties.portalDestination != null){
+				cWith.properties.portalDestination !== null){
 					var a = cWith.properties.portalDestination;
 					var d = cWith.properties.portalDestination.d;
 
-					var oldDX = bodyPriv.k.y - cWith.k.x;
+					var oldDX = bodyPriv.k.x - cWith.k.x;
 					if(oldDX * ((d%2) * ((d==3)?(-1):(1))) > 0){
-					bodyPriv.k.vx *= -1;
+						bodyPriv.k.vx *= -1;
 					}
 					bodyPriv.k.x = a.x + (d%2) * 40 *((d==3)?(-1):(1));
-					bodyPriv.k.y = a.y + ((d+1)%2) * 40 *((d==0)?(-1):(1));
+					bodyPriv.k.y = a.y + ((d+1)%2) * 40 *((d===0)?(-1):(1));
 
 					bodyPriv.k.vy = 0;
 					bodyPriv.toBeDestroyed = false;
-					return true
+					return true;
 			}
 			return true;
 		}
 		if(cWith.t == 'spikes'){
 			if('properties' in cWith &&
-			cWith.properties != null &&
+			cWith.properties !== null &&
 			'spikesUp' in cWith.properties &&
 			cWith.properties.spikesUp){
 				return false;
@@ -127,6 +153,7 @@ var box = new Behavior(
 	}
 );
 
+/////////////////////           BATTERY           /////////////////////////////
 var battery = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
@@ -136,28 +163,28 @@ var battery = new Behavior(
 		if(cWith.t == 'portal')
 		{
 			if('properties' in cWith &&
-				cWith.properties != null &&
+				cWith.properties !== null &&
 				'portalDestination' in cWith.properties &&
-				cWith.properties.portalDestination != null){
+				cWith.properties.portalDestination !== null){
 					var a = cWith.properties.portalDestination;
 					var d = cWith.properties.portalDestination.d;
 
-					var oldDX = bodyPriv.k.y - cWith.k.x;
+					var oldDX = bodyPriv.k.x - cWith.k.x;
 					if(oldDX * ((d%2) * ((d==3)?(-1):(1))) > 0){
-					bodyPriv.k.vx *= -1;
+						bodyPriv.k.vx *= -1;
 					}
 					bodyPriv.k.x = a.x + (d%2) * 20 *((d==3)?(-1):(1));
-					bodyPriv.k.y = a.y + ((d+1)%2) * 20 *((d==0)?(-1):(1));
+					bodyPriv.k.y = a.y + ((d+1)%2) * 20 *((d===0)?(-1):(1));
 
 					bodyPriv.k.vy = 0;
 					bodyPriv.toBeDestroyed = false;
-					return true
+					return true;
 			}
 			return true;
 		}
 		if(cWith.t == 'spikes'){
 			if('properties' in cWith &&
-			cWith.properties != null &&
+			cWith.properties !== null &&
 			'spikesUp' in cWith.properties &&
 			cWith.properties.spikesUp){
 				return false;
@@ -174,10 +201,11 @@ var battery = new Behavior(
 );
 
 
+/////////////////////           PORTAL           /////////////////////////////
 var portal = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
-		if(!("properties" in bodyPubl) || bodyPubl.properties == null){
+		if(!("properties" in bodyPubl) || bodyPubl.properties === null){
 			bodyPubl.properties =
 					{portalDestination: bodyPriv.properties.portalDestination};
 		}
@@ -193,6 +221,7 @@ var portal = new Behavior(
 );
 
 
+/////////////////////           BULLET           /////////////////////////////
 var bullet = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
@@ -202,16 +231,16 @@ var bullet = new Behavior(
 
 		if(cWith.t == 'portal')
 		{
-			console.log(cWith)
+			console.log(cWith);
 			if('properties' in cWith &&
-				cWith.properties != null &&
+				cWith.properties !== null &&
 				'portalDestination' in cWith.properties &&
-				cWith.properties.portalDestination != null){
+				cWith.properties.portalDestination !== null){
 					if(bodyPriv.toBeDestroyed === true){return true;}
 					var a = cWith.properties.portalDestination;
 					var d = cWith.properties.portalDestination.d;
 
-					var oldDX = bodyPriv.k.y - cWith.k.x;
+					var oldDX = bodyPriv.k.x - cWith.k.x;
 
 					if(oldDX * ((d%2) * ((d==3)?(-1):(1))) > 0){
 						builder = bodyPriv.engine.priv.builder;
@@ -240,14 +269,14 @@ var bullet = new Behavior(
 					}
 
 					bodyPriv.toBeDestroyed = true;
-					return true
+					return true;
 			}
 			bodyPriv.toBeDestroyed = true;
 			return true;
 		}
 		if(cWith.t == 'spikes'){
 			if('properties' in cWith &&
-			cWith.properties != null &&
+			cWith.properties !== null &&
 			'spikesUp' in cWith.properties &&
 			cWith.properties.spikesUp){
 			}else{
@@ -260,6 +289,7 @@ var bullet = new Behavior(
 	}
 );
 
+/////////////////////           LIFT           /////////////////////////////
 var lift = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
@@ -272,40 +302,69 @@ var lift = new Behavior(
 			bodyPriv.properties.at = 1;
 		}
 		var v = bodyPriv.properties.v;
+		var vel = 1;
+		var xd, yd;
 		if(bodyPriv.properties.at == 1){
 			if(Math.abs(bodyPriv.properties.y2 - bodyPriv.k.y) < 2*v &&
 				Math.abs(bodyPriv.properties.x2 - bodyPriv.k.x) < 2*v){
 				bodyPriv.properties.at = 2;
-				//return;
 			}
-		bodyPriv.k.vy = v * Math.sign(bodyPriv.properties.y2 - bodyPriv.k.y);
-		bodyPriv.k.vx = v * Math.sign(bodyPriv.properties.x2 - bodyPriv.k.x);
+			yd = bodyPriv.properties.y2 - bodyPriv.k.y;
+			xd = bodyPriv.properties.x2 - bodyPriv.k.x;
+			bodyPriv.k.vy = v * (Math.abs(yd) < v) ? 0 : Math.sign(yd);
+			bodyPriv.k.vx = v * (Math.abs(xd) < v) ? 0 : Math.sign(xd);
 		}else if(bodyPriv.properties.at == 2){
 			if(Math.abs(bodyPriv.properties.y1 - bodyPriv.k.y) < 2*v &&
 				Math.abs(bodyPriv.properties.x1 - bodyPriv.k.x) < 2*v){
 				bodyPriv.properties.at = 1;
-				//return;
 			}
-		bodyPriv.k.vy = v * Math.sign(bodyPriv.properties.y1 - bodyPriv.k.y);
-		bodyPriv.k.vx = v * Math.sign(bodyPriv.properties.x1 - bodyPriv.k.x);
+			yd = bodyPriv.properties.y1 - bodyPriv.k.y;
+			xd = bodyPriv.properties.x1 - bodyPriv.k.x;
+			bodyPriv.k.vy = v * (Math.abs(yd) < v) ? 0 : Math.sign(yd);
+			bodyPriv.k.vx = v * (Math.abs(xd) < v) ? 0 : Math.sign(xd);
 		}
 	},
 // collision
 	function(bodyPriv, bodyPubl, cWith){
+		if(cWith.t == 'portal')
+		{
+			if('properties' in cWith &&
+				cWith.properties !== null &&
+				'portalDestination' in cWith.properties &&
+				cWith.properties.portalDestination !== null){
+					if(bodyPriv.justTeleported === true){
+						bodyPriv.justTeleported = false;
+						return;
+					}
+
+					var a = cWith.properties.portalDestination;
+					var d = cWith.properties.portalDestination.d;
+
+					var oldDX = bodyPriv.k.x - cWith.k.x;
+					if(oldDX * ((d%2) * ((d==3)?(-1):(1))) > 0){
+						bodyPriv.k.vx *= -1;
+					}
+					bodyPriv.k.x += (a.x -cWith.k.x + (d%2) * 45 *((d==3)?(-1):(1)));
+					bodyPriv.k.y += (a.y -cWith.k.y + ((d+1)%2) * 45 *((d===0)?(-1):(1)));
+					bodyPriv.justTeleported = true;
+					return true;
+			}
+			return true;
+		}
 		return true;
 	}
 );
 
-
+/////////////////////           ENEMY           /////////////////////////////
 var enemy = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
-		if(!("properties" in bodyPriv) || bodyPriv.properties == null){
+		if(!("properties" in bodyPriv) || bodyPriv.properties === null){
 			bodyPriv.properties =
 					{health: 100, dead: false};
 		}
 
-		if(!("properties" in bodyPubl) || bodyPubl.properties == null){
+		if(!("properties" in bodyPubl) || bodyPubl.properties === null){
 				bodyPubl.properties = {health: 100, dead: false};
 		}
 
@@ -358,11 +417,12 @@ var enemy = new Behavior(
 	}
 );
 
+/////////////////////           TURRET           /////////////////////////////
 var turret = new Behavior(
 	//action
 	function(bodyPriv, bodyPubl){
 		if(!("properties" in bodyPriv) ||
-			bodyPriv.properties == null){
+			bodyPriv.properties === null){
 			bodyPriv.properties = {tick: 0};
 		}
 
