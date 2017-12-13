@@ -141,28 +141,28 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 			var enemy = new Body(__(this).prepareObject("enemy", data.enemies[l]));
 			__(this).engine.priv.add(enemy);
 		}
-		for(var l in data.gunEnemies){
-			var gunEnemy = new Body(__(this).prepareObject("gunEnemy", data.gunEnemies[l]));
+		for(var g in data.gunEnemies){
+			var gunEnemy = new Body(__(this).prepareObject("gunEnemy", data.gunEnemies[g]));
 			__(this).engine.priv.add(gunEnemy);
 		}
-		for(var l in data.lifts){
-			var lift = new Body(__(this).prepareObject("lift", data.lifts[l]));
+		for(var f in data.lifts){
+			var lift = new Body(__(this).prepareObject("lift", data.lifts[f]));
 			__(this).engine.priv.add(lift);
 		}
 		for(var t in data.turrets){
 			var turret = new Body(__(this).prepareObject("turret", data.turrets[t]));
 			__(this).engine.priv.add(turret);
 		}
-		for(var b in data.boxes){
-			var box = new Body(__(this).prepareObject("box", data.boxes[b]));
+		for(var x in data.boxes){
+			var box = new Body(__(this).prepareObject("box", data.boxes[x]));
 			__(this).engine.priv.add(box);
 		}
 		for(var p in data.portals){
 			var portal = new Body(__(this).prepareObject("portal", data.portals[p]));
 			__(this).engine.priv.add(portal);
 		}
-		for(var s in data.spikes){
-			var spikes = new Body(__(this).prepareObject("spikes", data.spikes[s]));
+		for(var k in data.spikes){
+			var spikes = new Body(__(this).prepareObject("spikes", data.spikes[k]));
 			__(this).engine.priv.add(spikes);
 		}
 		var flag = new Body(__(this).prepareObject("flag", data.flag));
@@ -293,7 +293,13 @@ effects.addEffect("spark",new Sprite({
 			 	images: ["wall5"],
 		 		r: 0
 			}
-		]
+		];
+
+	function filterChars(a) {
+		if(a.char == wallChar){
+			return a;
+		}
+	}
 
 		for(var i in walls.data){
 			var start = 0;
@@ -304,13 +310,9 @@ effects.addEffect("spark",new Sprite({
 				var prevChar = walls.data[i].charAt(j-1);
 				if(wallChar != " " && wallChar !== ""){
 					if(prevChar == " " || prevChar === ""){start = j;}
-					wallType = wallTypes.filter(function(a) {
-						if(a.char == wallChar){
-							return a;
-						}
-					})[0];
+					wallType = wallTypes.filter(filterChars)[0];
 					var wallImage = wallType.images[Math.floor(Math.random() * wallType.images.length)];
-					var wallRotation = Math.PI * wallType.r
+					var wallRotation = Math.PI * wallType.r;
 					spritesHolder.push({x: 40*(j-start), y: 0, image: wallImage, r: wallRotation});
 				}else if((wallChar == " " || wallChar === "") && prevChar != " " && prevChar !== ""){
 					result.push({x: walls.origin[0] + start * 40,
