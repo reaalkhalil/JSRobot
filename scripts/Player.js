@@ -26,7 +26,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			if(turned<0){gunSprite.setPos(-5,0);}else{gunSprite.setPos(5,0);}
 		if(options[0] == "jump"){
 			if(bodyPubl.onGround()){
-				var amount = Number(options[1]);
+				amount = Number(options[1]);
 				if(Math.abs(amount) > 20){amount = 20 * Math.sign(amount);}
 				gunSprite.hide();
 				robotSprite.show();
@@ -36,7 +36,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			}
 		}else if(options[0] == "move"){
 			if(bodyPubl.onGround()){
-				var amount = Number(options[1]);
+				amount = Number(options[1]);
 				if(Math.abs(amount) > 20){amount = 20 * Math.sign(amount);}
 				gunSprite.hide();
 				robotSprite.show();
@@ -190,7 +190,7 @@ function(bodyPriv, bodyPubl, collideWith){
 		if(!('events' in bodyPriv.properties)){
 			bodyPriv.properties.events = [];
 		}
-		for(ev in bodyPriv.properties.events){
+		for(var ev in bodyPriv.properties.events){
 			if(ev.event == 'collide'){
 				collideExists = true;
 			}
@@ -201,7 +201,7 @@ function(bodyPriv, bodyPubl, collideWith){
 		if(collideWith.t == 'spikes')
 		{
 			if('properties' in collideWith &&
-			collideWith.properties != null &&
+			collideWith.properties !== null &&
 			'spikesUp' in collideWith.properties &&
 			collideWith.properties.spikesUp){
 				bodyPriv.properties.health = 0;
@@ -212,16 +212,16 @@ function(bodyPriv, bodyPubl, collideWith){
 		else if(collideWith.t == 'portal')
 		{
 			if('properties' in collideWith &&
-				collideWith.properties != null &&
+				collideWith.properties !== null &&
 				'portalDestination' in collideWith.properties &&
-				collideWith.properties.portalDestination != null){
+				collideWith.properties.portalDestination !== null){
 					var a = collideWith.properties.portalDestination;
 					var d = collideWith.properties.portalDestination.d;
 				bodyPriv.k.x = a.x + (d%2) * (bodyPubl.info().width / 2 + 5) * ((d==3)?(-1):(1));
-				bodyPriv.k.y = a.y + ((d+1)%2) * (bodyPubl.info().height / 2 + 5)* ((d==0)?(-1):(1));
+				bodyPriv.k.y = a.y + ((d+1)%2) * (bodyPubl.info().height / 2 + 5)* ((d === 0)?(-1):(1));
 				bodyPriv.k.vx = 0;
 				bodyPriv.k.vy = 0;
-				return true
+				return true;
 			}
 			return false;
 		}
@@ -270,15 +270,15 @@ function(bodyPriv, bodyPubl, collideWith){
 		{
 			bodyPriv.k.y += collideWith.k.vy;
 			bodyPriv.k.x += collideWith.k.vx;
-			//bodyPriv.k.vx = null;
-			return 'skipX'
+			//bodyPriv.k.vx == null;
+			return 'skipX';
 		}
 		else if(collideWith.t == 'enemy')
 		{
 			if(isNaN(bodyPriv.properties.health)){
 				bodyPriv.properties.health = 100;
 			}
-			if(collideWith.obj.properties.dead == false){
+			if(collideWith.obj.properties.dead === false){
 				bodyPriv.properties.health -= 2;
 			}
 			return false;
