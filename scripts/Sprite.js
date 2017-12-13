@@ -96,7 +96,7 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 	prototype.rewind = function () {
 		__(this).tickCount = 0;
 		__(this).frameIndex = 0;
-	}
+	};
 
 	prototype.play = function () {
 		__(this).paused = false;
@@ -110,11 +110,11 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 
 	prototype.frame = function(){
 		return __(this).frameIndex;
-	}
+	};
 
 	prototype.lastframe = function(){
 		return __(this).numberOfFrames - 1;
-	}
+	};
 
 	__private.update = function () {
 		if(!__(this).visible){return;}
