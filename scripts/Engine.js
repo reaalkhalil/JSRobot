@@ -21,11 +21,13 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 	__private.exportWorld = function(){
 		var flag = [];
 		var coins = [];
+		var boxes = [];
 		var batteries = [];
 		var walls = [];
 		var sparkstrips = [];
 		var bullets = [];
 		var enemies = [];
+		var gunEnemies = [];
 		var lifts = [];
 		var turrets = [];
 		var portals = [];
@@ -39,14 +41,21 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 			var w = o.getDimensions().w;
 			var h = o.getDimensions().h;
 
-			obj = {x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay}
+			obj = {x: k.x, y: k.y, vx: k.vx, vy: k.vy, ax: k.ax, ay: k.ay};
 
 			if(t == "flag"){ flag.push(obj); }
 			if(t == "coin"){ coins.push(obj); }
+			if(t == "boxes"){ boxes.push(obj); }
 			if(t == "battery"){ batteries.push(obj); }
 			if(t == "wall"){ walls.push(obj); }
 			if(t == "sparkstrip"){ sparkstrips.push(obj); }
 			if(t == "bullet"){ bullets.push(obj); }
+			if(t == "gunEnemy"){
+				if('properties' in o){
+					obj.health = o.properties.health;
+				}
+				gunEnemies.push(obj);
+			}
 			if(t == "enemy"){
 				if('properties' in o){
 					obj.health = o.properties.health;
@@ -55,16 +64,30 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 			}
 			if(t == "lift"){ lifts.push(obj); }
 			if(t == "turret"){ turrets.push(obj); }
-			if(t == "portal"){ portals.push(obj); }
-			if(t == "spikes"){ spikes.push(obj); }
+			if(t == "portal"){
+				if('properties' in o){
+					obj.destination =
+						{x: o.properties.portalDestination.x,
+						y: o.properties.portalDestination.y};
+				}
+				portals.push(obj);
+			}
+			if(t == "spikes"){
+				if('properties' in o){
+					obj.spikesUp = o.properties.spikesUp;
+				}
+				spikes.push(obj);
+			}
 		}
 		Game.flag = flag;
 		Game.coins = coins;
+		Game.boxes = boxes;
 		Game.batteries = batteries;
 		Game.walls = walls;
 		Game.sparkstrips = sparkstrips;
 		Game.bullets = bullets;
 		Game.enemies = enemies;
+		Game.gunEnemies = gunEnemies;
 		Game.lifts = lifts;
 		Game.turrets = turrets;
 		Game.portals = portals;
