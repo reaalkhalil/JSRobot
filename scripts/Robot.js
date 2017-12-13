@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 define(['mozart', 'Body'], function (mozart, Body) {
 var Robot = Body.subclass(function(prototype, _, _protected, __, __private) {
 	prototype.init = function(options) {
@@ -34,12 +35,12 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 
 	prototype.on = function(eventName, callback){
 		var events = _protected.super.super.getProperties.call(this).events;
-		for(e of events){
+		for(var e of events){
 			if(e.event == eventName){
 				callback(e);
 			}
 		}
-	}
+	};
 
 	prototype.wait = function(){
 		_protected.super.super.setNextMove.call(this,null);
@@ -73,7 +74,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 			this.playerCode(robot);
 		}catch(err){
 			resetCode();
-			console.error(err.name + ": " + err.message)
+			console.error(err.name + ": " + err.message);
 		}
 		ac = 'wait';
 		if(robot.action){
