@@ -231,43 +231,40 @@ var bullet = new Behavior(
 
 		if(cWith.t == 'portal')
 		{
-			console.log(cWith);
 			if('properties' in cWith &&
 				cWith.properties !== null &&
 				'portalDestination' in cWith.properties &&
 				cWith.properties.portalDestination !== null){
+
 					if(bodyPriv.toBeDestroyed === true){return true;}
+
 					var a = cWith.properties.portalDestination;
 					var d = cWith.properties.portalDestination.d;
 
 					var oldDX = bodyPriv.k.x - cWith.k.x;
 
-					if(oldDX * ((d%2) * ((d==3)?(-1):(1))) > 0){
+					var rotation = (((d==3) ? 0 : 1) + Math.sign(bodyPriv.k.vx)) * Math.PI;
+
+					if(oldDX * ((d%2) * ((d==3)?(-1):(1))) >= 0){
 						builder = bodyPriv.engine.priv.builder;
 						builder.addToEngine(bodyPriv.engine.priv, "bullet",
 							{x: a.x + (d%2) * 15 * ((d==3)?(-1):(1)),
 								y: a.y,
-								vx: -bodyPriv.k.vx, t: engine.getTime()},[{r: (1-Math.sign(bodyPriv.k.vx))*Math.PI}]);
-
-						bodyPriv.lifetime = 1;
-						bodyPriv.toBeDestroyed = true;
-						bodyPriv.k.x = a.x + (d%2) *15* ((d==3)?(-1):(1));
-						bodyPriv.k.y = a.y;
-						bodyPriv.k.vy = 0;
-					}else if (oldDX * ((d%2) * ((d==3)?(-1):(1))) < 0){
+								vx: -bodyPriv.k.vx,
+								t: engine.getTime()},
+							[{r: rotation}]);
+					}else{
 						builder = bodyPriv.engine.priv.builder;
 						builder.addToEngine(bodyPriv.engine.priv, "bullet",
 							{x: a.x + (d%2) * 15 * ((d==3)?(-1):(1)),
 								y: a.y,
-								vx: bodyPriv.k.vx, t: engine.getTime()},[{r: (1-Math.sign(bodyPriv.k.vx)*2)*Math.PI}]);
-
-						bodyPriv.lifetime = 1;
-						bodyPriv.toBeDestroyed = true;
-						bodyPriv.k.x = a.x - (d%2) *15* ((d==3)?(-1):(1));
-						bodyPriv.k.y = a.y;
-						bodyPriv.k.vy = 0;
+								vx: bodyPriv.k.vx,
+								t: engine.getTime()},
+							[{r: rotation}]);
 					}
 
+					bodyPriv.lifetime = 1;
+					bodyPriv.k.vy = 0;
 					bodyPriv.toBeDestroyed = true;
 					return true;
 			}
