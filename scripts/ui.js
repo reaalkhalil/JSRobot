@@ -84,7 +84,7 @@ function startGame(level, code){
 		editor.on('focus',
 		function(){
 			setKeyboardControl(false);
-		})
+		});
     openCodeDiv();
   }
 	resetCode();
@@ -169,7 +169,7 @@ pauseScript = function(){
 		topBarpracticeMode.style.display="inline-block";
 		resetCode();
 	}
-}
+};
 
 pauseButton.onclick = function(){
 		pauseScript();
@@ -180,19 +180,19 @@ setKeyboardControl = function(a){
 	if(keyboardControl){
 		practiceMode = true;
 		topBarpracticeMode.style.display="inline-block";
-		toggleKeyboardControlButton.classList.add('on')
+		toggleKeyboardControlButton.classList.add('on');
 	}else{
-		toggleKeyboardControlButton.classList.remove('on')
+		toggleKeyboardControlButton.classList.remove('on');
 	}
-}
+};
 
 toggleKeyboardControlButton.onclick = function(){
 	if(codeRunning){
-		console.error("Error: Pause the running script to control the robot with your keyboard.")
+		console.error("Error: Pause the running script to control the robot with your keyboard.");
 		return;
 	}
 	setKeyboardControl(!keyboardControl);
-}
+};
 
 function runCode(){
 	setKeyboardControl(false);
@@ -230,7 +230,7 @@ command.onkeydown = function(e) {
   if(e.keyCode === 13) {
 
 		if(codeRunning){
-			console.error("Error: Pause the running script to run commands.")
+			console.error("Error: Pause the running script to run commands.");
 			return;
 		}
 		executeCommand(command.value);
@@ -443,11 +443,11 @@ function setConsoleError(a){
 
 command.onfocus = function(){
 	setKeyboardControl(false);
-}
+};
 
 document.onkeydown = function myFunction() {
 	if(keyboardControl){
 		key = event.keyCode || event.which;
-		executeCommand("robot.setAction({keyCode: " + key + "});")
+		executeCommand("robot.setAction({keyCode: " + key + "});");
 	}
 };
