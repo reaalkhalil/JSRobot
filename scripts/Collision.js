@@ -62,7 +62,7 @@ var Collision = Behavior.subclass(function(prototype, _, _protected, __, __priva
 			var b1a = [b1[0] + k1.vy, b1[1] + k1.vx, b1[2] + k1.vy, b1[3] + k1.vx];
 
 			for(var j =  0; j < world.length; j++){
-				if(i == j){continue}
+				if(i == j){continue;}
 				var obj2 = world[j];
 				if(["player"].indexOf(obj2.getType()) != -1){continue;}
 				var k2 = obj2.getK(), b2 = obj2.getBox(), m2 = obj2.getMass(), t2 = obj2.getType();
@@ -159,7 +159,7 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 
 		if(bodyPriv.type in gameObjectBehaviors && gameObjectBehaviors[bodyPriv.type].collideBehavior)
 		{
-			var skip = gameObjectBehaviors[bodyPriv.type].collideWith(bodyPriv, bodyPubl, col.obj2);
+			skip = gameObjectBehaviors[bodyPriv.type].collideWith(bodyPriv, bodyPubl, col.obj2);
 			if(typeof(skip) == 'string' && skip == 'skipX'){
 				skipX = true;
 			}
@@ -169,7 +169,7 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 		}
 
 		if(bodyPriv.type == 'player'){
-			var skip = player.collideWith(bodyPriv, bodyPubl, col.obj2);
+			skip = player.collideWith(bodyPriv, bodyPubl, col.obj2);
 			if(typeof(skip) == 'string' && skip == 'skipX'){
 				skipX = true;
 			}
