@@ -110,6 +110,23 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			};
 			return {init: init, loop: loop};`;
 
+	var requires = `
+		var __requires__ = {};
+		require = function(a){
+			if(a in __requires__){
+				return __requires__[a];
+			}
+			return {};
+		};
+		var __requirefiles__ = Files.files();
+		for(var i = 1; i < __requirefiles__.length; i++){
+			var mod = Files.file(i);
+			if(mod !== null && typeof(mod) == 'object' && 'text' in mod){
+				var __module__ = new Function('var module = {};' + mod.text + '\\nreturn module.exports;');
+				__requires__[__requirefiles__[i]] = __module__();
+			}
+		}
+	`;
 
 	if(typeof newcommand !== 'undefined' && newcommand !== ""){
 		var commandFn= new Function(logging + hideGlobals +
@@ -131,7 +148,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 
 	var g;
 	if(typeof newcode !== 'undefined' && newcode){
-		g = Function(logging + hideGlobals + editor.getValue() + scriptTail);
+		g = Function(logging + hideGlobals + requires + Files.file(0).text + scriptTail);
 		g().init(bodyPubl);
 		bodyPubl.playerCode = g().loop;
 		newcode = false;

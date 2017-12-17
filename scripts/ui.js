@@ -39,7 +39,7 @@ requirejs(['mozart', '../data/levels'],
 
 	var startingCode = 'function init(robot){\n' + 
 							 '  // your code goes here\n}\n\n' + 
-							 'function init(robot){\n' + 
+							 'function loop(robot){\n' + 
 							 '  // your code goes here\n}\n';
 
 
@@ -85,6 +85,8 @@ function startGame(level){
 	play.style.display = "inherit";
 	openInstructionsDiv();
 	startLevel(level);
+	Files.setLevel(level);
+	filesPopulate();
 	instructionsDiv.innerHTML = levels[level-1].instructions;
 	resetCode();
 	editor.on('focus', function(){ setKeyboardControl(false); });
@@ -537,9 +539,9 @@ filesDeleteBtn.onclick = function(){
 
 filesNewBtn.onclick = function(){
 	var number = 1;
-	var newFileName = 'new-file.js';
+	var newFileName = 'new-file';
 	while(!Files.add(newFileName)){
-		newFileName = 'new-file-' + (number++) + '.js';
+		newFileName = 'new-file-' + (number++);
 	}
 	selectedFile = null;
 	filesPopulate();
@@ -566,6 +568,4 @@ filesNameChange = function(n){
 	filesPopulate();
 	filesClick(Files.find(newName));
 };
-
-filesPopulate();
 

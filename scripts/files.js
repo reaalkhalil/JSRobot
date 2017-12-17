@@ -18,7 +18,7 @@ Files = {
 	files:
 	function(){
 		this._retrieve();
-		levelFile = 'level_' + this._level + '.js';
+		levelFile = 'level-' + this._level;
 		return [levelFile].concat(this._files);
 	},
 
