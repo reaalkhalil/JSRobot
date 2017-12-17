@@ -470,3 +470,186 @@ transition: background 0.1s, color 0.3s;
     top: -10px;
     left: 7px;
 	}
+
+#files{
+	display: block;
+	float: left;
+	margin: 0px 10px;
+	min-width: 250px;
+	border-radius: 5px;
+	border: 2px solid #373d48;
+	height: calc(100% - 59px);
+	font-size: 12px;
+	font-family: "Roboto Mono", menlo, monaco;
+	position: relative;
+}
+
+#files ul{
+	padding: 0;
+	margin: 0;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	overflow-y: scroll;
+	bottom: 30px;
+	list-style: none;
+	border-radius: 3px 3px 0 0;
+	border-bottom: 2px solid #373d48;
+}
+
+#files ul li a{
+	padding: 5px 20px;
+	padding-right: 0;
+	display: block;
+	opacity: 0.6;
+	cursor: pointer;
+	padding-left: 35px;
+	background-image: url('images/files-file.png');
+	background-size: 12px;
+	background-repeat: no-repeat;
+	background-position: 15px;
+	transition: background 0.2s;
+}
+
+#files ul li a:hover{
+	background-color: #21262c;
+}
+
+#files ul li a.selected{
+	opacity: 1;
+	background-color: #2c323a !important;
+}
+
+#files ul li a input{
+	font-size: 12px;
+	font-family: "Roboto Mono", menlo, monaco;
+	background: none;
+	color: white;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	pointer-events: none;
+	font-weight: 300;
+	width: 100%;
+	height: 26px;
+	line-height: 26px;
+	margin: -5px 0 -5px 0;
+	border-bottom: 2px transparent solid;
+	transition: border 0.1s;
+}
+
+#files ul li a input:focus{
+	cursor: text;
+	border-bottom: 2px rgb(82,139,255) solid;
+}
+
+#files ul li a.selected input{
+	pointer-events: auto;
+}
+
+#files a.add-file, 
+#files a.delete-file{
+	cursor: pointer;
+	position: absolute;
+	bottom: 0;
+	width: 50%;
+	height: 20px;
+	background-color: #21262c;
+	padding: 0;
+	height: 30px;
+	line-height: 30px;
+	color: #fff;
+	background-image: url('');
+	background-position: 12px;
+	background-size: 14px;
+	background-repeat: no-repeat;
+	opacity: 0.6;
+	text-align: center;
+	transition: opacity 0.3s, background-color 0.3s;
+}
+
+#files a.add-file img,
+#files a.delete-file img{
+	width: 14px;
+	margin-right: 6px;
+   margin-bottom: -2px;
+}
+
+#files a.delete-file{
+	right: 0;
+	left: auto;
+}
+
+
+#files a.add-file:hover, 
+#files a.delete-file:hover{
+	opacity: 1;
+	background-color: #2c323a !important;
+}
+
+#files a.close{
+	 z-index: 10000;
+    position: absolute;
+    width: 10px;
+    right: -12px;
+    top: calc(50% - 20px);
+    height: 40px;
+    display: block;
+    cursor: pointer;
+ }
+
+#files a.close:before{
+	 background: #2c323a;
+    display: block;
+    content: ' ';
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    position: absolute;
+	 z-index: -1;
+	 border: 2px solid #373d48;
+    left: -17px;
+    top: -2px;
+	 opacity: 0;
+	 pointer-events: none;
+	 transition: opacity 0.2s;
+}
+
+#files a.close.closed:before{
+    left: -22px;
+}
+
+#files a.close:hover:before{
+	 opacity: 1;
+	 pointer-events: auto;
+}
+
+#files a.close img{
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 10px;
+    width: 5px;
+    margin: 15px 2.5px;
+ }
+
+#files a.close.closed img{
+	-moz-transform: scaleX(-1);
+   -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+ #files.closed{
+    width: 0 !important;
+    min-width: 0;
+    border: 0;
+    margin: 0;
+    margin-right: 15px !important;
+ }
+ #files.closed a.add-file,
+ #files.closed a.delete-file{
+	 display: none;
+ }

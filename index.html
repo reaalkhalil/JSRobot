@@ -87,6 +87,17 @@
 						<a>_</a></li>
 				</ul>
 	<div id="codeDiv" style="display: none;">
+		<div id="files" class="closed">
+		<ul id="files-list">
+			<li><a class="selected"><input value="level1.js" spellcheck="false"></a></li>
+			<li><a><input value="events.js" spellcheck="false" autocomplete="false"></a></li>
+			<li><a><input value="jumps.js" spellcheck="false"></a></li>
+			<li><a><input value="utils.js" spellcheck="false"></a></li>
+		</ul>
+			<a class="close closed" id="files-close"><img src="images/files-close.png"></a>
+			<a class="add-file" id="files-new"><img src="images/files-add.png">New File</a>
+			<a class="delete-file" id="files-delete"><img src="images/files-delete.png">Delete</a>
+		</div>
 			<textarea id="code">
 function init(robot){
   // your code here
@@ -109,6 +120,7 @@ function loop(robot){
   </div>
 
 
+	<script src="scripts/files.js"></script>
 	<script src="scripts/ui.js"></script>
   <script>
 

@@ -16,21 +16,6 @@ lines = ['Beep boop!',
 			'Sleep is for humans..',
 			'We\'re stealing your jobs LOL'];
 
-var saveCode = function(level, code)
-{
-	if(!localStorage)
-	{
-		return false;
-	}
-	localStorage['js_robot_level_' + level] = code;
-};
-
-var getCode = function(level)
-{
-	var code = localStorage['js_robot_level_' + level];
-	return code?code:'';
-};
-
 speechbubble.innerHTML = lines[Math.floor(Math.random() * (lines.length))];
 
 var maxLevels = 1;
@@ -50,8 +35,30 @@ requirejs(['mozart', '../data/levels'],
 		if(!isNaN(location.hash.slice(7,8))){
 			level = Number(location.hash.slice(7,8));
 			if(level <= maxLevels){
-				code = getCode(level);
-				startGame(level, code);
+				Files.setLevel(level);
+
+	var startingCode = 'function init(robot){\n' + 
+							 '  // your code goes here\n}\n\n' + 
+							 'function init(robot){\n' + 
+							 '  // your code goes here\n}\n';
+
+
+	var content = Files.file(0);
+	if(content !== null && typeof(content) == 'object' && 'text' in content){
+		var savedDoc = CodeMirror.Doc(content.text, 'javascript');
+		editor.swapDoc(savedDoc);
+		if('history' in content){
+			editor.setHistory(content.history);
+		}
+	}else{
+		var newDoc = CodeMirror.Doc(startingCode, 'javascript');
+		editor.swapDoc(newDoc);
+	}
+
+				startGame(level);
+				if(content !== null){
+					openCodeDiv();
+				}
 				menu.style.display = "none";
 			}
 		}
@@ -73,21 +80,15 @@ levelButton.onclick = function(){
 	levelButton.innerHTML = "Level " + level;
 };
 
-function startGame(level, code){
+function startGame(level){
 	menu.style.display = "none";
 	play.style.display = "inherit";
 	openInstructionsDiv();
 	startLevel(level);
 	instructionsDiv.innerHTML = levels[level-1].instructions;
-  if(code !== undefined && code !== ''){
-    editor.setValue(code);
-		editor.on('focus',
-		function(){
-			setKeyboardControl(false);
-		});
-    openCodeDiv();
-  }
 	resetCode();
+	editor.on('focus', function(){ setKeyboardControl(false); });
+	editor.on('blur', function(){ filesSave(); });
 }
 
 startButton.onclick = function(){
@@ -156,7 +157,6 @@ skiplevel.onclick = nextlevel.onclick;
 
 restartlevel.onclick = function(){
 	location.hash = "level=" + level;
-	saveCode(level, editor.getValue());
 	location.reload();
 };
 
@@ -196,7 +196,6 @@ toggleKeyboardControlButton.onclick = function(){
 
 function runCode(){
 	setKeyboardControl(false);
-	saveCode(level, editor.getValue());
 	newcode = true;
 	codeRunning = true;
 	runCodeBtn.classList.add('running');
@@ -455,3 +454,118 @@ document.onkeydown = function myFunction() {
 		executeCommand("robot.setAction({keyCode: " + key + "});");
 	}
 };
+
+
+
+////////////// files sidebar
+
+
+var filesWindow = document.getElementById("files");
+var filesCloseBtn = document.getElementById("files-close");
+var filesNewBtn = document.getElementById("files-new");
+var filesDeleteBtn = document.getElementById("files-delete");
+var filesList = document.getElementById("files-list");
+
+var selectedFile = 0;
+
+filesCloseBtn.onclick = function(){
+	if(this.classList.contains('closed')){
+		filesWindow.classList.remove('closed');
+		this.classList.remove('closed');
+	}else{
+		filesWindow.classList.add('closed');
+		this.classList.add('closed');
+	}
+};
+
+filesPopulate = function(){
+	files = Files.files();
+	filesList.innerHTML = '';
+	for(var i in files){
+		var changeEvent = (i>0) ?
+			('onchange="filesNameChange(' + i + ')" onkeydown="filesNameKeyDown(' + i + ')"') :
+			'disabled="true"';
+		var selected = (i==selectedFile) ? 'class="selected"' : '';
+		filesList.innerHTML += ('<li><a id="file-' + i + '" onclick="filesClick(' +
+			i + ')" ' + selected + '><input value="' + files[i] +
+		'" spellcheck="false" autocomplete="false" ' + changeEvent + '></a></li>');
+	}
+};
+
+filesSave = function(){
+	Files.save(selectedFile,
+			{text: editor.getValue(), history: editor.getHistory()});
+};
+
+filesClick = function(n){
+	if(selectedFile == n){return;}
+	//if(selectedFile === 0 || selectedFile && selectedFile < Files.files().length){
+		//Files.save(selectedFile,
+			//{text: editor.getValue(), history: editor.getHistory()});
+	//}
+	while(selectedFile >= Files.files().length){
+		selectedFile--;
+	}
+
+	var content = Files.file(n);
+	var doc = editor.getDoc();
+	if(content === null){
+		var newDoc = CodeMirror.Doc('// New File', 'javascript');
+		editor.swapDoc(newDoc);
+	}else if(typeof(content) == 'object' && 'text' in content){
+		var savedDoc = CodeMirror.Doc(content.text, 'javascript');
+		editor.swapDoc(savedDoc);
+		if('history' in content){
+			editor.setHistory(content.history);
+		}
+	}else{
+		filesPopulate();
+		return;
+	}
+	selectedFile = n;
+	filesPopulate();
+};
+
+filesDeleteBtn.onclick = function(){
+	if(selectedFile === 0){ return; }
+	Files.erase(selectedFile);
+	var newSelection = selectedFile - 1;
+	selectedFile = null;
+	filesPopulate();
+	filesClick(newSelection);
+};
+
+filesNewBtn.onclick = function(){
+	var number = 1;
+	var newFileName = 'new-file.js';
+	while(!Files.add(newFileName)){
+		newFileName = 'new-file-' + (number++) + '.js';
+	}
+	selectedFile = null;
+	filesPopulate();
+	filesClick(Files.find(newFileName));
+	var textInput = document.getElementById('file-' + selectedFile)
+						 .getElementsByTagName('input')[0];
+	textInput.select();
+};
+
+filesNameKeyDown = function(n){
+	if(event.keyCode == 13){
+		var textInput = document.getElementById('file-' + n)
+							 .getElementsByTagName('input')[0];
+		textInput.blur();
+	}
+};
+
+filesNameChange = function(n){
+	var textInput = document.getElementById('file-' + n)
+						 .getElementsByTagName('input')[0];
+	newName = textInput.value;
+	Files.rename(n, newName);
+	selectedFile = null;
+	filesPopulate();
+	filesClick(Files.find(newName));
+};
+
+filesPopulate();
+
