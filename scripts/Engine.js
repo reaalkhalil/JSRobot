@@ -65,7 +65,10 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 			if(t == "lift"){ lifts.push(obj); }
 			if(t == "turret"){ turrets.push(obj); }
 			if(t == "portal"){
-				if('properties' in o){
+				if('properties' in o &&
+					o.properties !== null &&
+					'portalDestination' in o.properties &&
+					o.properties.portalDestination !== null){
 					obj.destination =
 						{x: o.properties.portalDestination.x,
 						y: o.properties.portalDestination.y};

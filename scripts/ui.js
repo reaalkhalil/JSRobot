@@ -412,20 +412,20 @@ onkeydown = function(e) {
 				return false;
 		}else if(e.keyCode == 49) {
 			openInstructionsDiv();
-      return false;
+			return false;
 		}else if(e.keyCode == 50) {
 			openCodeDiv();
-      return false;
-		}else if(e.keycode == 51) {
-			opencommanddiv();
-      return false;
+			return false;
+		}else if(e.keyCode == 51) {
+			openCommandDiv();
+			return false;
 		}else if(e.keyCode == 52) {
 			openPropertiesDiv();
-      return false;
+			return false;
 		}else if(e.keyCode == 53) {
 			openInstructionsDiv();
 			setKeyboardControl(true);
-      return false;
+			return false;
 		}
 	}
 };

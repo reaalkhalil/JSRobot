@@ -115,7 +115,11 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 				__(this).toBeDestroyed = true;
 			}
 		}
-		// make this into a behaviour?: nahhh
+		if('properties' in this && this.properties !== null){
+			this.properties.onGround = __(this).onGround;
+		}else{
+			this.properties = {onGround: __(this).onGround};
+		}
 		__(this).onGround = false;
 		gravitate.act(__(this), this);
 		collide.act(__(this), this);

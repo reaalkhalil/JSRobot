@@ -51,7 +51,7 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 		lift: {x: 0, y: 0, type: "lift", mass: -1},
 		enemy: {x: 0, y: 0, type: "enemy"},
 		gunEnemy: {x: 0, y: 0, type: "gunEnemy"},
-		bullet: {x: 0, y: 0, vx: 10, type: "bullet", mass: -1, lifetime: 500},
+		bullet: {x: 0, y: 0, vx: 10, type: "bullet", mass: 0, lifetime: 500},
 		flag: {x: 0, y: 0, fixed: true, type: "flag", mass: -1}
 		};
 

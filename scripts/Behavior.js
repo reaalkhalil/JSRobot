@@ -24,7 +24,7 @@ var Behavior = mozart(function(prototype, _, _protected, __, __private) {
 
 
 var gravitate = new Behavior(function(bodyPriv, bodyPubl){
-	if(!bodyPriv.fixed && bodyPriv.mass != -1){
+	if(!bodyPriv.fixed && bodyPriv.mass != -1 && bodyPriv.type != 'bullet'){
 		bodyPriv.k.ay += 1;
 	}
 });
@@ -208,6 +208,8 @@ var portal = new Behavior(
 		if(!("properties" in bodyPubl) || bodyPubl.properties === null){
 			bodyPubl.properties =
 					{portalDestination: bodyPriv.properties.portalDestination};
+		}else{
+			bodyPubl.properties.portalDestination = bodyPriv.properties.portalDestination;
 		}
 },
 // collision
@@ -441,7 +443,8 @@ var gunEnemy = new Behavior(
 			}
 			turned = bodyPriv.properties.turned;
 
-		if(bodyPriv.properties.tick++ == bodyPriv.properties.shootingRate){
+		if(bodyPriv.properties.tick++ == bodyPriv.properties.shootingRate &&
+				bodyPriv.properties.dead === false){
 				builder = bodyPriv.engine.priv.builder;
 				builder.addToEngine(bodyPriv.engine.priv, "bullet",
 					{x: bodyPriv.k.x + turned * 25,

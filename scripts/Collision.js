@@ -156,6 +156,8 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 		}
 
 		var skipX = false;
+		var skipY = false;
+		var groundCollision = false;
 
 		if(bodyPriv.type in gameObjectBehaviors && gameObjectBehaviors[bodyPriv.type].collideBehavior)
 		{
@@ -193,16 +195,42 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			overlap[1] += 0.25;
 		}
 
+		if('properties' in col.obj2 &&
+					col.obj2.properties !== null &&
+					'onGround' in col.obj2.properties &&
+					col.obj2.properties.onGround === true &&
+					bodyPriv.onGround === true &&
+					bodyPriv.k.vy <= 0 &&
+					bodyPubl.getBox()[0] < col.obj2.b[0]){
+			groundCollision = true;
+		}
+
+		if('properties' in bodyPubl &&
+					bodyPubl.properties !== null &&
+					'onGround' in bodyPubl.properties &&
+					bodyPubl.properties.onGround === true &&
+					bodyPubl.getBox()[0] > col.obj2.b[0]){
+			skipY = true;
+		}
+
 		if(col.obj2.m != -1){
 			var mratio = col.obj1.m / (col.obj1.m + col.obj2.m);
 			bodyPriv.k.x -= overlap[0] * mratio * 1;
-			bodyPriv.k.y -= overlap[1] * mratio * 1;
 			nx = -1;
-			ny = -1;
 			if(overlap[0] === 0){nx = 1.01;}
-			if(overlap[1] === 0){ny = 1.01;}
 			bodyPriv.k.vx  = nx * relvx * mratio;
-			bodyPriv.k.vy  = ny * relvy * mratio;
+
+			if(!skipY && !groundCollision){
+				bodyPriv.k.y -= overlap[1] * mratio * 1;
+				ny = -1;
+				if(overlap[1] === 0){ny = 1.01;}
+				bodyPriv.k.vy  = ny * relvy * mratio;
+			}else if(!skipY){
+				bodyPriv.k.y -= (overlap[1]);
+				ny = -0.4;
+				if(overlap[1] === 0){ny = 0.8;}
+				bodyPriv.k.vy  = ny * relvy;
+			}
 		}else{
 			if(!skipX){
 				bodyPriv.k.x -= (overlap[0]);
@@ -219,6 +247,22 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 				bodyPriv.k.vy*=0.75;
 				bodyPriv.k.vx*=0.75;
 			}
+
+
+		if('properties' in col.obj2 &&
+					col.obj2.properties !== null &&
+					'onGround' in col.obj2.properties &&
+					col.obj2.properties.onGround === true &&
+					bodyPriv.onGround === true &&
+					bodyPriv.k.vy <= 0){
+					//bodyPriv.b[0] < col.obj2.b[0]){
+			//  
+			//	if top object is current one move it so that its lying on top of
+			//	other object's box
+			//
+			//console.log(overlap);
+			//bodyPriv.k.vy = -bodyPriv.k.ay;
+		}
 	}
 });
 
