@@ -115,6 +115,8 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		require = function(a){
 			if(a in __requires__){
 				return __requires__[a];
+			}else{
+				console.error('Error: "' + a + '" not found in files.');
 			}
 			return {};
 		};
