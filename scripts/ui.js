@@ -24,36 +24,74 @@ requirejs.config({
     baseUrl: 'scripts',
 });
 
-requirejs(['mozart', '../data/levels'],
-  function (mozart, levelData) {
-		levels = (new levelData()).levels;
-    maxLevels = levels.length;
-
-	menu.style.display = "block";
+function parseURL(locationHash){
+	var loc = locationHash + '';
+	var level = null;
+	var language = 'en';
 
 	if(location.hash.length > 0){
-		if(!isNaN(location.hash.slice(7,8))){
-			level = Number(location.hash.slice(7,8));
-			if(level <= maxLevels){
-				Files.setLevel(level);
+		var indexLevel = location.hash.indexOf('level=');
 
-	var startingCode = 'function init(robot){\n' + 
-							 '  // your code goes here\n}\n\n' + 
-							 'function loop(robot){\n' + 
-							 '  // your code goes here\n}\n';
-
-
-	var content = Files.file(0);
-	if(content !== null && typeof(content) == 'object' && 'text' in content){
-		var savedDoc = CodeMirror.Doc(content.text, 'javascript');
-		editor.swapDoc(savedDoc);
-		if('history' in content){
-			editor.setHistory(content.history);
+		if(indexLevel != -1){
+			var levelString = loc.slice(indexLevel + 6);
+			var indexHash = levelString.indexOf('#');
+			if(indexHash != -1){
+				levelString = levelString.slice(0, indexHash);
+				loc = loc.slice(indexLevel + indexHash + 7);
+			}
+			if(!isNaN(levelString)){
+				level = Number(levelString);
+			}
 		}
-	}else{
-		var newDoc = CodeMirror.Doc(startingCode, 'javascript');
-		editor.swapDoc(newDoc);
+
+		var indexLang = location.hash.indexOf('language=');
+		if(indexLang != -1){
+			var indexHash2 = loc.indexOf('#');
+			if(indexHash2 != -1){
+				loc = loc.slice(indexHash2 + 1);
+			}
+			language = loc;
+		}
 	}
+
+	console.log(language);
+	return {level: level, language: language};
+}
+
+requirejs(['mozart', '../data/levels'],
+  function (mozart, levelData) {
+		var data = new levelData();
+		var levels = data.levels;
+		//var languages = data.languages;
+		maxLevels = levels.length;
+		menu.style.display = "block";
+
+		if(location.hash.length > 0){
+			if(!isNaN(location.hash.slice(7,8))){
+				parse = parseURL(location.hash);
+				level = parse.level;
+				language = parse.language;
+	
+				if(level <= maxLevels){
+					Files.setLevel(level);
+
+				var startingCode = 'function init(robot){\n' + 
+										'  // your code goes here\n}\n\n' + 
+										'function loop(robot){\n' + 
+										'  // your code goes here\n}\n';
+
+
+				var content = Files.file(0);
+				if(content !== null && typeof(content) == 'object' && 'text' in content){
+					var savedDoc = CodeMirror.Doc(content.text, 'javascript');
+					editor.swapDoc(savedDoc);
+					if('history' in content){
+						editor.setHistory(content.history);
+					}
+				}else{
+					var newDoc = CodeMirror.Doc(startingCode, 'javascript');
+					editor.swapDoc(newDoc);
+				}
 
 				startGame(level);
 				if(content !== null){
