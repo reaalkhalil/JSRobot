@@ -61,7 +61,7 @@ function parseURL(locationHash){
 requirejs(['mozart', '../data/levels'],
   function (mozart, levelData) {
 		var data = new levelData();
-		var levels = data.levels;
+		levels = data.levels;
 		//var languages = data.languages;
 		maxLevels = levels.length;
 		menu.style.display = "block";
