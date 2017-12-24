@@ -282,7 +282,8 @@ var bullet = new Behavior(
 			return true;
 			}
 		}
-		effects.play("bulletpop",{x: bodyPriv.k.x + 15 * Math.sign(bodyPriv.k.vx), y: bodyPriv.k.y});
+		effects.play("bulletpop", {x: bodyPriv.k.x, y: bodyPriv.k.y});
+		bodyPriv.k.vx = 0;
 		bodyPriv.toBeDestroyed = true;
 		return true;
 	}

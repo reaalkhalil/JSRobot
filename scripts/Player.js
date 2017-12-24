@@ -48,7 +48,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			robotSprite.hide();
 			builder = bodyPriv.engine.priv.builder;
 			builder.addToEngine(bodyPriv.engine.priv, "bullet",
-				{x: bodyPriv.k.x + turned * 35,
+				{x: bodyPriv.k.x + turned * 25,
 					y: bodyPriv.k.y,
 					vx: turned*10, t: engine.getTime()},[{r: Math.PI*(turned-1)/2}]);
 		}else if(options[0] == "turn"){
