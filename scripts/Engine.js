@@ -117,6 +117,9 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 				mousePosGame = {x: mousePosCanvas.x, y: mousePosCanvas.y};
 				mousePosGame.x += e.x;
 				mousePosGame.y += e.y;
+				document.getElementById('hud-mouse-coords').innerHTML = '{x: ' +
+					Math.round(mousePosGame.x) + ', y: ' + Math.round(mousePosGame.y) + '}';
+
 			}
 			if(o.toBeDestroyed()){
 				__(this).world.splice(j,1);

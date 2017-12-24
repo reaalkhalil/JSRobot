@@ -11,7 +11,7 @@ function getMousePos(canvas, evt) {
 }
 
 canvas.addEventListener('mousemove', function(evt) {
-      mousePos = getMousePos(canvas, evt);
+      mousePosCanvas = getMousePos(canvas, evt);
    }, false);
 
 var codearea = document.getElementById("codearea");
