@@ -1,5 +1,19 @@
 
 var canvas = document.getElementById("canvasID");
+mousePosCanvas = {x: 0, y: 0};
+mousePosGame = {x: 0, y: 0};
+function getMousePos(canvas, evt) {
+   var rect = canvas.getBoundingClientRect();
+   return {
+      x: evt.clientX - rect.left,
+		y: evt.clientY - rect.top
+	};
+}
+
+canvas.addEventListener('mousemove', function(evt) {
+      mousePos = getMousePos(canvas, evt);
+   }, false);
+
 var codearea = document.getElementById("codearea");
 var context = canvas.getContext("2d");
 var fps = 30;

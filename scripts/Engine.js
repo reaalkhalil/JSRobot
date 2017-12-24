@@ -114,6 +114,9 @@ var Engine = mozart(function(prototype, _, _protected, __, __private) {
 				}else if(r.y - e.y > e.height - 100){
 					e.y = r.y + 100 - e.height;
 				}
+				mousePosGame = {x: mousePosCanvas.x, y: mousePosCanvas.y};
+				mousePosGame.x += e.x;
+				mousePosGame.y += e.y;
 			}
 			if(o.toBeDestroyed()){
 				__(this).world.splice(j,1);
