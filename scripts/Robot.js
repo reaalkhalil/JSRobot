@@ -24,11 +24,11 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 	};
 
 	prototype.keyboardControlMap = {
-		68: {type: "move", amount: 10},
-		65: {type: "move", amount: -10},
+		68: {type: "move", amount: 20},
+		65: {type: "move", amount: -20},
 		87: {type: "jump"},
-		69: {type: "jump", amount: 10},
-		81: {type: "jump", amount: -10},
+		69: {type: "jump", amount: 5},
+		81: {type: "jump", amount: -5},
 		84: {type: "turn"},
 		71: {type: "shoot"},
 	};
@@ -77,7 +77,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 			console.error(err.name + ": " + err.message);
 		}
 		ac = 'wait';
-		if(robot.action){
+		if(robot.action && robot.action !== undefined){
 			ac = JSON.parse(JSON.stringify(robot.action));
 		}
 		this.setAction(ac);
@@ -96,7 +96,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 				ac = JSON.parse(action);
 				console.log("KEYBOARD INPUT: keyCode = " + _ac.keyCode, 'robot.setAction(' + action + ');');
 			}else{
-				ac = {action: 'wait'};
+				ac = {type: 'wait'};
 			  console.log("KEYBOARD INPUT: keyCode = " + _ac.keyCode, '');
 			}
 		}else if(typeof(_ac) == 'string'){
@@ -110,7 +110,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		}
 
 		if(ac.type == 'move'){
-			dx = ac.amount || 10;
+			dx = ac.amount || 20;
 			this.move(dx);
 		}else if(ac.type == 'jump'){
 			dx = ac.amount || 0;
@@ -119,8 +119,9 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 			this.turn();
 		}else if(ac.type == 'shoot'){
 			this.shoot();
+		}else if(ac.type != 'wait'){
+			console.error('Error: Invalid action ' + ac.type);
 		}
-
 		ac.type = 'wait';
 	};
 
