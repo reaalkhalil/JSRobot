@@ -54,7 +54,6 @@ function parseURL(locationHash){
 		}
 	}
 
-	console.log(language);
 	return {level: level, language: language};
 }
 
