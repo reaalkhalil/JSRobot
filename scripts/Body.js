@@ -127,20 +127,25 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 			gameObjectBehaviors[__(this).type].act(__(this), this);
 		}
 		// this works but needs the behaviours need to be in body's array
+
+		/* TODO check if this is needed
 		if(__(this).agent && __(this).onGround === false){
 			if(__(this).k.vx > 10){
 				__(this).k.vx *= 0.75;
 			}else{
 				__(this).k.vx *= 0.97;
 			}
-		}
-		if(__(this).agent && this.getK().t % 10 === 0){
-			try {
-				this.step(this);
-			}
-			catch(err) {
-				this.step = function(){};
-				console.error(err.name + " " + err.message);
+		}*/
+
+		if(__(this).agent){
+			if(this.getK().t % 10 === 0){
+				try {
+					this.step(this);
+				}
+				catch(err) {
+					this.step = function(){};
+					console.error(err.name + " " + err.message);
+				}
 			}
 			player.act(__(this), this);
 		}
