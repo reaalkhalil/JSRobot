@@ -243,25 +243,10 @@ var collide = new Collision(function(bodyPriv, bodyPubl){
 			if(overlap[1] === 0){ny = 0.8;}
 			bodyPriv.k.vy  = ny * relvy;
 		}
-			if(col.obj1.t == 'player'){
-				bodyPriv.k.vy*=0.75;
-				bodyPriv.k.vx*=0.75;
-			}
 
-
-		if('properties' in col.obj2 &&
-					col.obj2.properties !== null &&
-					'onGround' in col.obj2.properties &&
-					col.obj2.properties.onGround === true &&
-					bodyPriv.onGround === true &&
-					bodyPriv.k.vy <= 0){
-					//bodyPriv.b[0] < col.obj2.b[0]){
-			//  
-			//	if top object is current one move it so that its lying on top of
-			//	other object's box
-			//
-			//console.log(overlap);
-			//bodyPriv.k.vy = -bodyPriv.k.ay;
+		if(col.obj1.t == 'player'){
+			bodyPriv.k.vy*=0.75;
+			bodyPriv.k.vx*=0.75;
 		}
 	}
 });
