@@ -3,7 +3,18 @@ define(['mozart', 'Behavior', 'Builder', 'Body'], function (mozart, behavior, Bu
 Behavior = behavior.B;
 
 var player = new Behavior(function(bodyPriv, bodyPubl){
-	if(!bodyPubl.isAgent()){return;}
+
+	if('moveTo' in bodyPriv.properties){
+		if(Math.abs(bodyPriv.properties.moveTo.done - bodyPriv.properties.moveTo.total) > 1){
+			bodyPriv.k.x += bodyPriv.properties.moveTo.total / 10;
+			bodyPriv.properties.moveTo.done += bodyPriv.properties.moveTo.total / 10;
+		}
+	}
+
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	if(bodyPriv.k.t % 10 !== 0){ return; }
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 	robotSprite = bodyPriv.getSprite("robot");
 	gunSprite = bodyPriv.getSprite("gun");
 	deadSprite = bodyPriv.getSprite("dead");
@@ -27,7 +38,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		if(options[0] == "jump"){
 			if(bodyPubl.onGround()){
 				amount = Number(options[1]);
-				if(Math.abs(amount) > 20){amount = 20 * Math.sign(amount);}
+				if(Math.abs(amount) > 10){amount = 10 * Math.sign(amount);}
 				gunSprite.hide();
 				robotSprite.show();
 				bodyPriv.k.ax = amount/2;
@@ -37,11 +48,11 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		}else if(options[0] == "move"){
 			if(bodyPubl.onGround()){
 				amount = Number(options[1]);
-				if(Math.abs(amount) > 20){amount = 20 * Math.sign(amount);}
+				if(Math.abs(amount) > 40){amount = 40 * Math.sign(amount);}
 				gunSprite.hide();
 				robotSprite.show();
-				bodyPriv.k.ax = amount*2;
-				bodyPriv.properties.energy -= Math.abs(amount)/10;
+				bodyPriv.properties.moveTo = {total: amount, done: 0};
+				bodyPriv.properties.energy -= Math.abs(amount)/20;
 			}
 		}else if(options[0] == "shoot"){
 			gunSprite.show();
