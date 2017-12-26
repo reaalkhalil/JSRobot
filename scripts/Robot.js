@@ -17,7 +17,7 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		var p = _protected.super.super.getProperties.call(this);
 		var k =  prototype.super.super.getK.call(this);
 		var b =  prototype.super.super.getBox.call(this, "cached");
-		k.energy = p.energy; k.health = p.health; k.coins = p.coins; k.nextMove = p.nextMove;
+		k.energy = p.energy; k.health = p.health; k.coins = p.coins;
 		k.box = []; k.box[0] = b[0]; k.box[1] = b[1]; k.box[2] = b[2]; k.box[3] = b[3];
 		k.width = b[1] - b[3]; k.height = b[2] - b[0];
 		return k;
@@ -43,21 +43,21 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 	};
 
 	prototype.wait = function(){
-		_protected.super.super.setNextMove.call(this,null);
+		this.setAction({type: 'wait'});
 	};
 	prototype.turn = function(){
-		_protected.super.super.setNextMove.call(this,"turn");
+		this.setAction({type: 'turn'});
 	};
 	prototype.shoot = function(){
-		_protected.super.super.setNextMove.call(this,"shoot");
+		this.setAction({type: 'shoot'});
 	};
 	prototype.jump = function(dx){
 		if(dx != Number(dx)){dx = 0;}
-		_protected.super.super.setNextMove.call(this,"jump:" + dx);
+		this.setAction({type: 'jump', amount: dx});
 	};
 	prototype.move = function(dx){
-		if(dx != Number(dx)){dx = 10;}
-		_protected.super.super.setNextMove.call(this,"move:" + dx);
+		if(dx != Number(dx)){dx = 0;}
+		this.setAction({type: 'move', amount: dx});
 	};
 
 	prototype.command = function(commandFn){
@@ -78,10 +78,9 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 		}
 		ac = 'wait';
 		if(robot.action && robot.action !== undefined){
-			ac = JSON.parse(JSON.stringify(robot.action));
+			ac = robot.action;
 		}
 		this.setAction(ac);
-		//robot.action = 'wait';
 	};
 
 	prototype.setAction = function(_ac){
@@ -101,28 +100,24 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 			}
 		}else if(typeof(_ac) == 'string'){
 			ac = {type: _ac};
-		}else if(_ac.type === undefined || _ac.type === null){
-			return;
-		}else if(_ac.amount === undefined || _ac.amount === null){
-			ac = {type: _ac.type};
-		}else{
-			ac = {type: _ac.type, amount: _ac.amount};
+		}else if(typeof(_ac) == 'object' && 'type' in _ac && _ac.type){
+			if('amount' in _ac && _ac.amount){
+				ac = {type: _ac.type, amount: _ac.amount};
+			}else{
+				ac = {type: _ac.type};
+			}
 		}
 
-		if(ac.type == 'move'){
-			dx = ac.amount || 20;
-			this.move(dx);
-		}else if(ac.type == 'jump'){
-			dx = ac.amount || 0;
-			this.jump(dx);
-		}else if(ac.type == 'turn'){
-			this.turn();
-		}else if(ac.type == 'shoot'){
-			this.shoot();
-		}else if(ac.type != 'wait'){
+		if(ac.type == 'move' && !('amount' in ac)){
+			ac.amount = this.properties.facing * 20;
+		}
+
+		if(['move', 'jump', 'turn', 'shoot', 'wait'].indexOf(ac.type) != -1 ){
+			this.action = ac;
+		}else{
 			console.error('Error: Invalid action ' + ac.type);
 		}
-		ac.type = 'wait';
+
 	};
 
 	prototype.playerCode = function(robot){};
