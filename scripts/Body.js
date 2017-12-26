@@ -16,11 +16,9 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		__(this).onGround = false;
 		__(this).engine = null;
 		__(this).lifetime = opts.lifetime || -1;
-		// try to cache box here:
 		__(this).box = null;
 		for(var i=0; i < __(this).sprites.length; i++){
 			if(!__(this).sprites[i].hasContainer()){
-			//console.log(__(this).sprites[i].getInfo());
 				__(this).sprites[i].setParent(this);
 			}
 		}
@@ -75,25 +73,8 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 			}
 		}
 	};
-		/*
-	__private.hideSprite = function(name){
-		for(var i in __(this).sprites){
-			if(__(this).sprites[i].getInfo().n == name){
-				__(this).sprites[i].hide();
-			}
-		}
-	};
-	__private.animateSprite = function(name){
-		for(var i in __(this).sprites){
-			if(__(this).sprites[i].getInfo().n == name){
-				__(this).sprites[i].play();
-			}
-		}
-	};
-		*/
+
 	prototype.addSprite = function(sprite){
-	//should be private possibly defined in constructor
-	// should be an object and be able to animate
 		__(this).sprites.push(sprite);
 		sprite.setParent(this);
 	};
@@ -102,13 +83,9 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		return JSON.parse(JSON.stringify(__(this).properties));
 	};
 
-	_protected.setNextMove = function(move){
-		__(this).properties.nextMove = move;
-	};
-
 	prototype.update = function(){
 		if(this.getK().t + 1 != engine.getTime()){return;}
-		__(this).k.t += 1; // check if this is a good place to do this
+		__(this).k.t += 1;
 		if(__(this).lifetime != -1){
 			__(this).lifetime--;
 			if(__(this).lifetime === 0){
@@ -126,16 +103,6 @@ var Body = mozart(function(prototype, _, _protected, __, __private) {
 		if(__(this).type in gameObjectBehaviors){
 			gameObjectBehaviors[__(this).type].act(__(this), this);
 		}
-		// this works but needs the behaviours need to be in body's array
-
-		/* TODO check if this is needed
-		if(__(this).agent && __(this).onGround === false){
-			if(__(this).k.vx > 10){
-				__(this).k.vx *= 0.75;
-			}else{
-				__(this).k.vx *= 0.97;
-			}
-		}*/
 
 		if(__(this).agent){
 			if(this.getK().t % 10 === 0){
