@@ -5,9 +5,20 @@ Behavior = behavior.B;
 var player = new Behavior(function(bodyPriv, bodyPubl){
 
 	if('moveTo' in bodyPriv.properties){
-		if(Math.abs(bodyPriv.properties.moveTo.done - bodyPriv.properties.moveTo.total) > 1){
-			bodyPriv.k.x += bodyPriv.properties.moveTo.total / 10;
-			bodyPriv.properties.moveTo.done += bodyPriv.properties.moveTo.total / 10;
+		var diff = bodyPriv.properties.moveTo.done - bodyPriv.properties.moveTo.total;
+		if(Math.abs(diff) > 0.1){
+			if(Math.abs(bodyPriv.properties.moveTo.total) <= 10){
+				if(Math.abs(diff) < 1){
+					bodyPriv.k.x -= diff;
+					bodyPriv.properties.moveTo.done -= diff;
+				}else{
+					bodyPriv.k.x += Math.sign(bodyPriv.properties.moveTo.total);
+					bodyPriv.properties.moveTo.done += Math.sign(bodyPriv.properties.moveTo.total);
+				}
+			}else{
+				bodyPriv.k.x += bodyPriv.properties.moveTo.total / 10;
+				bodyPriv.properties.moveTo.done += bodyPriv.properties.moveTo.total / 10;
+			}
 		}
 	}
 
@@ -20,24 +31,36 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 	deadSprite = bodyPriv.getSprite("dead");
 	winSprite = bodyPriv.getSprite("win");
 
+	var turned = robotSprite.getInfo().fh?-1:1;// false: right, true: left
+
+	bodyPubl.properties.facing = turned;
 
 	document.getElementById('hud-coins').innerHTML = bodyPriv.properties.coins;
 	document.getElementById('hud-battery').innerHTML = Math.max(0,(Math.round(bodyPriv.properties.energy * 10) / 10));
 	document.getElementById('hud-health').innerHTML = Math.max(0,(Math.round(bodyPriv.properties.health * 10) / 10));
 
+	if(bodyPriv.properties.health <= 0 || bodyPriv.properties.energy <= 0){
+		robotSprite.hide();
+		gunSprite.hide();
+		winSprite.hide();
+		deadSprite.show();
+		return;
+	}
 
-	if(bodyPriv.properties.health < 1 || bodyPriv.properties.energy < 1){
-		robotSprite.hide(); gunSprite.hide();winSprite.hide(); deadSprite.show(); return;}
+	if(bodyPriv.properties.win){
+		robotSprite.hide();
+		gunSprite.hide();
+		deadSprite.hide();
+		winSprite.show();
+		return;
+	}
 
-	if(bodyPriv.properties.win){robotSprite.hide(); gunSprite.hide(); deadSprite.hide();winSprite.show(); return;}
+	if(bodyPubl.action){
+		var action = bodyPubl.action;
 
-	if(bodyPriv.properties.nextMove){
-		var options = bodyPriv.properties.nextMove.split(':');
-		var turned = robotSprite.getInfo().fh?-1:1;// false: right, true: left
-			if(turned<0){gunSprite.setPos(-5,0);}else{gunSprite.setPos(5,0);}
-		if(options[0] == "jump"){
+		if(action.type == "jump"){
 			if(bodyPubl.onGround()){
-				amount = Number(options[1]);
+				amount = Number(action.amount) || 0;
 				if(Math.abs(amount) > 10){amount = 10 * Math.sign(amount);}
 				gunSprite.hide();
 				robotSprite.show();
@@ -45,16 +68,16 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 				bodyPriv.k.ay = -15;
 				bodyPriv.properties.energy -= (2 + Math.abs(amount)/20);
 			}
-		}else if(options[0] == "move"){
+		}else if(action.type == "move"){
 			if(bodyPubl.onGround()){
-				amount = Number(options[1]);
+				amount = Number(action.amount);
 				if(Math.abs(amount) > 40){amount = 40 * Math.sign(amount);}
 				gunSprite.hide();
 				robotSprite.show();
 				bodyPriv.properties.moveTo = {total: amount, done: 0};
 				bodyPriv.properties.energy -= Math.abs(amount)/20;
 			}
-		}else if(options[0] == "shoot"){
+		}else if(action.type == "shoot"){
 			gunSprite.show();
 			robotSprite.hide();
 			builder = bodyPriv.engine.priv.builder;
@@ -63,13 +86,20 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 					y: bodyPriv.k.y,
 					vx: turned*10, t: engine.getTime()},[{r: Math.PI*(turned-1)/2}]);
 			bodyPriv.properties.energy -= 1;
-		}else if(options[0] == "turn"){
+		}else if(action.type == "turn"){
 			turned *= -1;
 			robotSprite.fliph();
 			deadSprite.fliph();
 			gunSprite.fliph();
-			if(turned<0){gunSprite.setPos(-5,0);}else{gunSprite.setPos(5,0);}
 		}
+
+		if(turned<0){
+			gunSprite.setPos(-5,0);
+		}else{
+			gunSprite.setPos(5,0);
+		}
+
+		bodyPubl.action = null;
 	}
 
 	bodyPriv.properties.events = [];
@@ -77,7 +107,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		bodyPriv.properties.events.push({event: 'ground'});
 	}
 
-	bodyPriv.properties.nextMove = null;
+	//bodyPriv.properties.action = null;
 	var hideGlobals = `var window=undefined;
 		var engine=undefined;
 		var effects=undefined;
