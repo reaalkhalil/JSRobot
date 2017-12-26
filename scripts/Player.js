@@ -62,6 +62,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 				{x: bodyPriv.k.x + turned * 25,
 					y: bodyPriv.k.y,
 					vx: turned*10, t: engine.getTime()},[{r: Math.PI*(turned-1)/2}]);
+			bodyPriv.properties.energy -= 1;
 		}else if(options[0] == "turn"){
 			turned *= -1;
 			robotSprite.fliph();
