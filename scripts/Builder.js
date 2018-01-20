@@ -28,10 +28,10 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 			   	destheight: 24, image: "turret" }],
 		lift: [{name: "lift", x: 0, y: 0, width: 40, height: 15, destwidth: 40,
 			   	destheight: 15, image: "lift" }],
-		enemy: [{name: "enemy", x: 0, y: 0, width: 82, height: 108, destwidth: 30.75,
-			   	destheight: 41, image: "enemy" }],
-		gunEnemy: [{name: "gunEnemy", x: 0, y: 0, width: 92, height: 108, destwidth: 34.5,
-			   	destheight: 41, image: "enemy-gun" }],
+		enemy: [{name: "enemy", x: 0, y: 0, width: 82, height: 108, destwidth: 30,
+			   	destheight: 40, image: "enemy" }],
+		gunEnemy: [{name: "gunEnemy", x: 0, y: 0, width: 92, height: 108, destwidth: 34,
+			   	destheight: 40, image: "enemy-gun" }],
 		box: [{name: "box", x: 0, y: 0, width: 50, height: 50, destwidth: 40,
 			   	destheight: 40, image: "box" }],
 		portal: [{x: 0, y: 0, width: 12, height: 47, destwidth: 4, destheight: 47, image: "portal", numberOfFrames: 3, loop: true, ticksPerFrame: 4 }],
@@ -158,7 +158,11 @@ var Builder = mozart(function(prototype, _, _protected, __, __private) {
 			__(this).engine.priv.add(box);
 		}
 		for(var p in data.portals){
-			var portal = new Body(__(this).prepareObject("portal", data.portals[p]));
+			var spriteProperties = null;
+			if ('spriteProperties' in data.portals[p]) {
+				spriteProperties = data.portals[p].spriteProperties;
+			}
+			var portal = new Body(__(this).prepareObject("portal", data.portals[p], spriteProperties));
 			__(this).engine.priv.add(portal);
 		}
 		for(var k in data.spikes){
