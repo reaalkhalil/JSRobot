@@ -4,7 +4,10 @@ Behavior = behavior.B;
 
 var player = new Behavior(function(bodyPriv, bodyPubl){
 
-	if('moveTo' in bodyPriv.properties){
+	if ('moveTo' in bodyPriv.properties) {
+		if (!bodyPriv.onGround) {
+			bodyPriv.properties.moveTo.done = bodyPriv.properties.moveTo.total;
+		}
 		var diff = bodyPriv.properties.moveTo.done - bodyPriv.properties.moveTo.total;
 		if(Math.abs(diff) > 0.1){
 			if(Math.abs(bodyPriv.properties.moveTo.total) <= 10){
