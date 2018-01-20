@@ -194,7 +194,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 	}
 
 	var g;
-	if(typeof newcode !== 'undefined' && newcode){
+	if(typeof newcode !== 'undefined' && newcode && bodyPriv.k.t > 10){
 		g = Function(logging + hideGlobals + requires + Files.file(0).text + scriptTail);
 		g().init(bodyPubl);
 		bodyPubl.playerCode = g().loop;
