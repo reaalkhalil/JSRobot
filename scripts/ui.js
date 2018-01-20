@@ -268,7 +268,7 @@ command.onkeydown = function(e) {
   if(e.keyCode === 13) {
 
 		if(codeRunning){
-			console.error("Error: Pause the running script to run commands.");
+			console.error("Error: Executing commands while a script is running pauses the script.");
 			return;
 		}
 		executeCommand(command.value);
@@ -310,7 +310,6 @@ function openInstructionsDiv(){
 }
 
 function openCommandDiv(){
-	setConsoleError(false);
 	commandDiv.style.display = "block";
 	propertiesDiv.style.display = "none";
 	codeDiv.style.display = "none";
