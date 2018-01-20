@@ -34,11 +34,17 @@ var Sprite = mozart(function(prototype, _, _protected, __, __private) {
 		var info = {};
 		info.x = __(this).x;
 		info.y = __(this).y;
+		info.r = __(this).r;
 		info.w = __(this).destwidth;
 		info.h = __(this).destheight;
+		if(info.r !== 0){
+			rw = Math.cos(info.r) * info.w + Math.sin(info.r) * info.h;
+			rh = Math.cos(info.r) * info.h - Math.sin(info.r) * info.w;
+			info.w = Math.abs(rw);
+			info.h = Math.abs(rh);
+		}
 		info.v = __(this).visible;
 		info.n = __(this).name;
-		info.r = __(this).r;
 		info.fh = __(this).fh;
 		info.fv = __(this).fv;
 		return info;
