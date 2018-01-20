@@ -4,6 +4,11 @@ Behavior = behavior.B;
 
 var player = new Behavior(function(bodyPriv, bodyPubl){
 
+	if(bodyPubl.onGround() &&
+		!bodyPriv.properties.events.find(function(a){return a.event=='ground';})){
+		bodyPriv.properties.events.push({event: 'ground'});
+	}
+
 	if ('moveTo' in bodyPriv.properties) {
 		if (!bodyPriv.onGround) {
 			bodyPriv.properties.moveTo.done = bodyPriv.properties.moveTo.total;
@@ -105,10 +110,6 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		bodyPubl.action = null;
 	}
 
-	bodyPriv.properties.events = [];
-	if(bodyPubl.onGround()){
-		bodyPriv.properties.events.push({event: 'ground'});
-	}
 
 	//bodyPriv.properties.action = null;
 	var hideGlobals = `var window=undefined;
@@ -247,21 +248,27 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		"</table><br>}";
 }
 
+	bodyPriv.properties.events = [];
 },
 // player collides with something
 function(bodyPriv, bodyPubl, collideWith){
-		collideExists = false;
+
 		if(!('events' in bodyPriv.properties)){
 			bodyPriv.properties.events = [];
 		}
-		for(var ev in bodyPriv.properties.events){
-			if(ev.event == 'collide'){
-				collideExists = true;
-			}
+
+		if(collideWith === null ||
+			collideWith === undefined ||
+		   bodyPriv.properties.events.find(
+				function(a){return ('with' in a &&
+										  'obj' in a.with &&
+										  a.with.obj === collideWith.obj);}
+			)){
+			return false;// or true?
 		}
-		if(!collideExists){
-			bodyPriv.properties.events.push({event: 'collide', with: collideWith});
-		}
+
+		bodyPriv.properties.events.push({event: 'collide', with: collideWith});
+
 		if(collideWith.t == 'spikes')
 		{
 			if('properties' in collideWith &&
