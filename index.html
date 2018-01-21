@@ -13,10 +13,10 @@
   <script src="codemirror/addon/edit/closebrackets.js"></script>
   <script src="codemirror/addon/display/autorefresh.js"></script>
 
-		<script data-main="scripts/main" src="scripts/require.js"></script>
+<script data-main="scripts/main" src="scripts/require.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:300,400,700|Roboto:300,400,700" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="style.css">
 
+<link rel="stylesheet" type="text/css" href="style.css">
 
 <link rel="apple-touch-icon" sizes="57x57" href="icon/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="icon/apple-icon-60x60.png">
@@ -129,6 +129,9 @@ function loop(robot){
     lineNumbers: true,
     styleActiveLine: true,
     matchBrackets: true,
+	 indentUnit: 4,
+	 indentWithTabs: true,
+	 showCursorWhenSelecting: true,
     autoCloseBrackets: true,
     autoRefresh: true,
     autofocus: true,
