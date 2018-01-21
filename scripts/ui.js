@@ -127,7 +127,6 @@ function startGame(level){
 	startLevel(level);
 	Files.setLevel(level);
 	filesPopulate();
-	// TODO
 	instructionsDiv.innerHTML = levels[level-1].instructions;
 
 	var codeBoxes = instructionsDiv.getElementsByClassName('code');
