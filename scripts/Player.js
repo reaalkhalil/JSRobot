@@ -253,19 +253,19 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 // player collides with something
 function(bodyPriv, bodyPubl, collideWith){
 
-		if(!('events' in bodyPriv.properties)){
-			bodyPriv.properties.events = [];
+		if (!('events' in bodyPriv.properties)){
+		 	 bodyPriv.properties.events = [];
 		}
 
-		if(collideWith === null ||
-			collideWith === undefined ||
-		   bodyPriv.properties.events.find(
-				function(a){return ('with' in a &&
-										  'obj' in a.with &&
-										  a.with.obj === collideWith.obj);}
-			)){
-			return false;// or true?
-		}
+		if (collideWith === null ||
+			 collideWith === undefined)
+			return true;
+ 
+		bodyPriv.properties.events = bodyPriv.properties.events.filter(function(a) {
+			return 'with' in a	  &&
+					 'obj' in a.with &&
+				    a.with.obj !== collideWith.obj;
+		});
 
 		bodyPriv.properties.events.push({event: 'collide', with: collideWith});
 
