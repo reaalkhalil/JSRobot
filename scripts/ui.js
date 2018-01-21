@@ -74,14 +74,17 @@ requirejs(['mozart', '../data/levels'],
 				if(level <= maxLevels){
 					Files.setLevel(level);
 
-				var startingCode = 'function init(robot){\n' + 
-										'  // your code goes here\n}\n\n' + 
-										'function loop(robot){\n' + 
-										'  // your code goes here\n}\n';
+				var startingCode = 'function init(robot) {\n' + 
+										 '\t// your code goes here\n}\n\n' + 
+										 'function loop(robot) {\n' + 
+										 '\t// your code goes here\n}\n';
 
 
 				var content = Files.file(0);
-				if(content !== null && typeof(content) == 'object' && 'text' in content){
+				if (content !== null			     &&
+					 typeof(content) == 'object' &&
+					 'text' in content			  &&
+					 content.text !== ''){
 					var savedDoc = CodeMirror.Doc(content.text, 'javascript');
 					editor.swapDoc(savedDoc);
 					if('history' in content){
