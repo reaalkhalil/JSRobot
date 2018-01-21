@@ -127,7 +127,27 @@ function startGame(level){
 	startLevel(level);
 	Files.setLevel(level);
 	filesPopulate();
+	// TODO
 	instructionsDiv.innerHTML = levels[level-1].instructions;
+
+	var codeBoxes = instructionsDiv.getElementsByClassName('code');
+	for (var i = 0; i < codeBoxes.length; i++) {
+		var code = codeBoxes[i].innerHTML;
+		codeBoxes[i].innerHTML = '';
+		var myCodeMirror = CodeMirror(codeBoxes[i], {
+        value: code,
+        mode: 'javascript',
+		  lineNumbers: true,
+		  indentUnit: 4,
+		  indentWithTabs: true,
+		  showCursorWhenSelecting: false,
+		  lineWrapping: true,
+        readOnly: true
+		});
+		myCodeMirror.setOption("theme", "dracula");
+		codeBoxes[i].classList.add('read-only-code');
+	}
+
 	resetCode();
 	editor.on('focus', function(){ setKeyboardControl(false); });
 	editor.on('blur', function(){ filesSave(); });

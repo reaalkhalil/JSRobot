@@ -111,7 +111,9 @@ body{
 }
 
 #instructionsDiv{
-	margin-top: 3px;
+	border-top: 3px solid #ccc;
+	background-color: white;
+	color: black !important;
 	padding: 30px;
 	font-size: 14px;
 	overflow: scroll;
@@ -123,26 +125,23 @@ body{
 	color: rgb(82,139,255);
 	text-decoration: none;
 }
+#instructionsDiv h1,
+#instructionsDiv h2,
+#instructionsDiv h3 {
+	font-weight: 400;
+}
 #instructionsDiv a:hover{
 	text-decoration: underline;
 }
-#instructionsDiv pre{
-	background-color: rgb(40,44,52);
-	padding: 10px;
-	border-radius: 5px;
-	font-family: "Roboto Mono", menlo, monaco;
-	border: 2px solid #434a57;
-	border-radius: 5px;
-	tab-size: 4;
-	font-size: 11px;
-}
 #instructionsDiv code{
 	background-color: rgb(40,44,52);
-	padding: 3px 5px;
+	padding: 4px 7px;
 	border-radius: 5px;
 	font-family: "Roboto Mono", menlo, monaco;
 	border-radius: 5px;
-	font-size: 11px;
+	font-size: 12px;
+	font-weight: 400;
+	color: #abb2bf;
 }
 #codearea{
 	background: rgb(20,24,32);
@@ -292,6 +291,18 @@ body{
 .CodeMirror-focused{
 	border: 2px solid rgb(82,139,255) !important;
 	opacity: 1;
+}
+
+.read-only-code {
+	width: auto !important;
+   display: -webkit-box;
+}
+
+.read-only-code .CodeMirror{
+	border: 2px solid rgba(0,0,0,0) !important;
+	height: fit-content !important;
+  margin: 10px 0;
+	opacity: 1 !important;
 }
 
 .CodeMirror.cm-s-dracula.execute{
