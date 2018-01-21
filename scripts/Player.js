@@ -4,17 +4,9 @@ Behavior = behavior.B;
 
 var player = new Behavior(function(bodyPriv, bodyPubl){
 
-	if(bodyPubl.onGround() &&
-		!bodyPriv.properties.events.find(function(a){return a.event=='ground';})){
-		bodyPriv.properties.events.push({event: 'ground'});
-	}
-
 	if ('moveTo' in bodyPriv.properties) {
-		if (!bodyPriv.onGround) {
-			bodyPriv.properties.moveTo.done = bodyPriv.properties.moveTo.total;
-		}
 		var diff = bodyPriv.properties.moveTo.done - bodyPriv.properties.moveTo.total;
-		if(Math.abs(diff) > 0.1){
+		if(bodyPriv.onGround && Math.abs(diff) > 0.1){
 			if(Math.abs(bodyPriv.properties.moveTo.total) <= 10){
 				if(Math.abs(diff) < 1){
 					bodyPriv.k.x -= diff;
@@ -33,6 +25,13 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	if(bodyPriv.k.t % 10 !== 0){ return; }
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	bodyPriv.properties.events = [];
+
+	if(bodyPubl.onGround()){
+		bodyPriv.properties.events.push({event: 'ground'});
+	}
+
 
 	robotSprite = bodyPriv.getSprite("robot");
 	gunSprite = bodyPriv.getSprite("gun");
@@ -248,7 +247,6 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		"</table><br>}";
 }
 
-	bodyPriv.properties.events = [];
 },
 // player collides with something
 function(bodyPriv, bodyPubl, collideWith){
@@ -262,9 +260,10 @@ function(bodyPriv, bodyPubl, collideWith){
 			return true;
  
 		bodyPriv.properties.events = bodyPriv.properties.events.filter(function(a) {
-			return 'with' in a	  &&
-					 'obj' in a.with &&
-				    a.with.obj !== collideWith.obj;
+			return (a.event !== 'collide' ||
+				     ('with' in a			&&
+					   'obj' in a.with	&&
+				      a.with.obj !== collideWith.obj));
 		});
 
 		bodyPriv.properties.events.push({event: 'collide', with: collideWith});
@@ -292,6 +291,8 @@ function(bodyPriv, bodyPubl, collideWith){
 				bodyPriv.k.y = a.y + ((d+1)%2) * (bodyPubl.info().height / 2 + 5)* ((d === 0)?(-1):(1));
 				bodyPriv.k.vx = 0;
 				bodyPriv.k.vy = 0;
+				// stop moving after going through portal
+				bodyPriv.properties.moveTo.done = bodyPriv.properties.moveTo.total;
 				return true;
 			}
 			return false;
