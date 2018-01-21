@@ -115,7 +115,7 @@ body{
 	background-color: white;
 	color: black !important;
 	padding: 30px;
-	font-size: 14px;
+	font-size: 16px;
 	overflow: scroll;
 	line-height: 20px;
 	letter-spacing: 0.4px;
@@ -129,6 +129,10 @@ body{
 #instructionsDiv h2,
 #instructionsDiv h3 {
 	font-weight: 400;
+}
+#instructionsDiv h1 {
+	font-size: 40px;
+	color: #d80147;
 }
 #instructionsDiv a:hover{
 	text-decoration: underline;
