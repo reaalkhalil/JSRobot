@@ -131,7 +131,7 @@ function startGame(level){
 
 	var codeBoxes = instructionsDiv.getElementsByClassName('code');
 	for (var i = 0; i < codeBoxes.length; i++) {
-		var code = codeBoxes[i].innerHTML;
+		var code = codeBoxes[i].textContent;
 		codeBoxes[i].innerHTML = '';
 		var myCodeMirror = CodeMirror(codeBoxes[i], {
         value: code,
