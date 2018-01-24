@@ -7,6 +7,7 @@ var levelButton = document.getElementById("level");
 var startButton = document.getElementById("start");
 
 var level = 1;
+var language = 'en';
 
 lines = ['Beep boop!',
 			'01101000 01101001',
@@ -20,6 +21,8 @@ speechbubble.innerHTML = lines[Math.floor(Math.random() * (lines.length))];
 
 var maxLevels = 1;
 var levels;
+var allInstructions;
+
 requirejs.config({
     baseUrl: 'scripts',
 });
@@ -27,29 +30,26 @@ requirejs.config({
 function parseURL(locationHash){
 	var loc = locationHash + '';
 	var level = null;
-	var language = 'en';
+	var language = null;
 
 	if(location.hash.length > 0){
 		var indexLevel = location.hash.indexOf('level=');
+		var indexLang = location.hash.indexOf('language=');
 
 		if(indexLevel != -1){
 			var levelString = loc.slice(indexLevel + 6);
-			var indexHash = levelString.indexOf('#');
-			if(indexHash != -1){
-				levelString = levelString.slice(0, indexHash);
-				loc = loc.slice(indexLevel + indexHash + 7);
+			var indexAmp = levelString.indexOf('&');
+			if(indexAmp != -1){
+				levelString = levelString.slice(0, indexAmp);
+				loc = loc.slice(indexLevel + indexAmp + 7);
 			}
 			if(!isNaN(levelString)){
 				level = Number(levelString);
 			}
 		}
 
-		var indexLang = location.hash.indexOf('language=');
 		if(indexLang != -1){
-			var indexHash2 = loc.indexOf('#');
-			if(indexHash2 != -1){
-				loc = loc.slice(indexHash2 + 1);
-			}
+			loc = loc.slice(9);
 			language = loc;
 		}
 	}
@@ -57,20 +57,24 @@ function parseURL(locationHash){
 	return {level: level, language: language};
 }
 
-requirejs(['mozart', '../data/levels'],
-  function (mozart, levelData) {
-		var data = new levelData();
-		levels = data.levels;
-		//var languages = data.languages;
+requirejs(['mozart', '../data/levels', '../data/instructions'],
+  function (mozart, levelData, instructionData) {
+		levels = (new levelData()).levels;
+		allInstructions = new instructionData();
+
 		maxLevels = levels.length;
 		menu.style.display = "block";
 
 		if(location.hash.length > 0){
 			if(!isNaN(location.hash.slice(7,8))){
-				parse = parseURL(location.hash);
+				var parse = parseURL(location.hash);
 				level = parse.level;
-				language = parse.language;
-	
+				language = parse.language || 'en';
+
+				if (!(language in allInstructions)) {
+					language = 'en';
+				}
+
 				if(level <= maxLevels){
 					Files.setLevel(level);
 
@@ -95,7 +99,7 @@ requirejs(['mozart', '../data/levels'],
 					editor.swapDoc(newDoc);
 				}
 
-				startGame(level);
+				startGame(level, language);
 				if(content !== null){
 					openCodeDiv();
 				}
@@ -120,14 +124,15 @@ levelButton.onclick = function(){
 	levelButton.innerHTML = "Level " + level;
 };
 
-function startGame(level){
+function startGame(level, language){
 	menu.style.display = "none";
 	play.style.display = "inherit";
 	openInstructionsDiv();
-	startLevel(level);
+	startLevel(level, language);
+	var instructions = allInstructions[language];
 	Files.setLevel(level);
 	filesPopulate();
-	instructionsDiv.innerHTML = levels[level-1].instructions;
+	instructionsDiv.innerHTML = instructions[level-1];
 
 	var codeBoxes = instructionsDiv.getElementsByClassName('code');
 	for (var i = 0; i < codeBoxes.length; i++) {
@@ -153,8 +158,8 @@ function startGame(level){
 }
 
 startButton.onclick = function(){
-	startGame(level, '');
-	location.hash = "level=" + level;
+	startGame(level, language);
+	location.hash = "level=" + level + "&language=" + language;
 };
 
 
@@ -210,14 +215,17 @@ function getFlag(){
 
 nextlevel.onclick = function(){
 	level = Math.min(maxLevels, level + 1);
-	location.hash = "level=" + level;
+	location.hash = "level=" + level + "&language=" + language;
+	if (language !== null) { 
+		location.hash += "&language=" + language;
+	}
 	location.reload();
 };
 
 skiplevel.onclick = nextlevel.onclick;
 
 restartlevel.onclick = function(){
-	location.hash = "level=" + level;
+	location.hash = "level=" + level + "&language=" + language;
 	location.reload();
 };
 
