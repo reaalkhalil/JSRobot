@@ -133,6 +133,32 @@ body{
 #instructionsDiv h1 {
 	font-size: 40px;
 	color: #d80147;
+	margin-left: -10px;
+}
+#instructionsDiv h2 {
+	font-size: 32px;
+	color: #7700ff;
+	margin-left: -8px;
+}
+#instructionsDiv h1::before,
+#instructionsDiv h2::before {
+	content: ' ';
+	display: inline-block;
+	position: relative;
+	width: 10px;
+	height: 10px;
+	left: -10px;
+	top: -8px;
+	border-radius: 100%;
+	background-color: #d80147;
+}
+#instructionsDiv h2::before {
+	width: 7px;
+	height: 7px;
+	left: -10px;
+	top: -8px;
+	border-radius: 100%;
+	background-color: #7700ff;
 }
 #instructionsDiv a:hover{
 	text-decoration: underline;
@@ -146,6 +172,12 @@ body{
 	font-size: 12px;
 	font-weight: 400;
 	color: #abb2bf;
+	display: inline-block;
+   margin-bottom: 2px;
+}
+#instructionsDiv code.console-out{
+	font-weight: bold;
+	color: #528bff;
 }
 #codearea{
 	background: rgb(20,24,32);
