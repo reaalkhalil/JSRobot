@@ -23,9 +23,10 @@ requirejs.config({
     baseUrl: 'scripts',
 });
 
-function startLevel(level){
+function startLevel(level, language){
   requirejs(['mozart',
   	   	'../data/levels',
+  	   	'../data/instructions',
   	   	'Behavior',
   	   	'Builder',
   	   	'Engine',
@@ -35,17 +36,15 @@ function startLevel(level){
   	   	'Effects',
   	   	'Player',
   	   	'Collision'],
-  function   (mozart, levelData, Behavior, builder, Engine, Body, robot, Sprite, Effects, Player, Collision) {
+  function   (mozart, levelData, instructionData, Behavior, builder, Engine, Body, robot, Sprite, Effects, Player, Collision) {
 
   	//Player = Player;
   	//Robot = robot.Robot;
   	//RobotOne = robot.RobotOne;
-    levels = (new levelData()).levels;
-    currentLevel = levels[level - 1];
+   currentLevel = levels[level - 1];
   	collide = Collision; // use as a static method
   	effects = new Effects();
   	engine = new Engine();
   	//engine.add(effects);
-
   });
 }
