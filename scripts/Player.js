@@ -189,6 +189,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			console.log(newcommand, a.output);
 		}else{
 			console.error(a.error.name + ': ' + a.error.message);
+			// TODO get error stack
 		}
 		newcommand = "";
 	}
@@ -196,7 +197,12 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 	var g;
 	if(typeof newcode !== 'undefined' && newcode && bodyPriv.k.t > 10){
 		g = Function(logging + hideGlobals + requires + Files.file(0).text + scriptTail);
-		g().init(bodyPubl);
+		try{
+			g().init(bodyPubl);
+		} catch (err) {
+			resetCode();
+			console.error(err.name + ': ' + err.message);
+		}
 		bodyPubl.playerCode = g().loop;
 		newcode = false;
 	}
@@ -212,6 +218,8 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			var keys = Object.keys(bodyPubl);
 			for(var key of keys){
 				if(key == 'step') continue;
+				if(key == 'properties') continue;
+				if(key == 'action') continue;
 				if(typeof(bodyPubl[key]) == 'function'){
 					customFunctions.push(key);
 				}else{
@@ -234,6 +242,9 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			"<tr><td>coins: </td><td>" + bodyPriv.properties.coins + "</td></tr>" +
 			"<tr><td>x: </td><td>" + (Math.round(bodyPriv.k.x * 10) / 10) + "</td></tr>" +
 			"<tr><td>y: </td><td>" + (Math.round(bodyPriv.k.y * 10) / 10) + "</td></tr>" +
+			"<tr><td>properties: </td><td>" + JSON.stringify(bodyPubl.properties) + "</td></tr>" +
+			"<tr><td>action: </td><td>" + JSON.stringify(bodyPubl.action) + "</td></tr>" +
+
 		  customPropertiesString +
 			"<tr><td>&nbsp;</td><td></td></tr>" +
 			"<tr><td>move: </td><td>[Function]</td></tr>" +
