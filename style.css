@@ -179,6 +179,55 @@ body{
 	font-weight: bold;
 	color: #528bff;
 }
+
+#instructionsDiv table {
+	color: #333;
+	border-collapse: collapse;
+	margin: 25px 0;
+}
+
+#instructionsDiv table tr td {
+	padding: 5px 30px 5px 5px;
+}
+
+#instructionsDiv table tr {
+	padding: 0;
+	border-bottom: 1px solid #cccccc;
+   border-top: 1px solid #cccccc;
+	transition: background-color 0.2s;
+}
+
+#instructionsDiv table tr:hover {
+	background-color: #eee;
+}
+
+#instructionsDiv table tr td:last-of-type {
+	padding-right: 5px;
+}
+
+#instructionsDiv a.learn-more {
+    display: inline-block;
+    padding: 10px;
+    color: white;
+    background-color: #00cc88;
+    font-weight: 100;
+    border-radius: 6px;
+    font-size: 20px;
+	 text-decoration: none !important;
+	 transition: 0.3s;
+ }
+
+#instructionsDiv a.learn-more:hover {
+	 margin-top: -1.5px;
+    margin-bottom: 1.5px;
+	 background-color: #00c281;
+    box-shadow: 0px 5px 30px rgba(0,0,0,0.3);
+}
+#instructionsDiv a.learn-more::after {
+	content: "\02192";
+	padding-left: 5px;
+}
+
 #codearea{
 	background: rgb(20,24,32);
 	position: absolute;
