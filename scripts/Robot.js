@@ -63,7 +63,6 @@ var RobotOne = Robot.subclass(function(prototype, _, _protected, __, __private) 
 	prototype.command = function(commandFn, a){
 		try{
 			var output = commandFn.call(this, a);
-			if(output === undefined){output = 'undefined';}
 			return {error: null, output: output};
 		}catch(err){
 			return {error: err, output: null};
