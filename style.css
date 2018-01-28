@@ -176,7 +176,6 @@ body{
    margin-bottom: 2px;
 }
 #instructionsDiv code.console-out{
-	font-weight: bold;
 	color: #528bff;
 }
 
@@ -223,9 +222,43 @@ body{
 	 background-color: #00c281;
     box-shadow: 0px 5px 30px rgba(0,0,0,0.3);
 }
+
+#instructionsDiv a.show-solution {
+	 cursor: pointer;
+    display: inline-block;
+    padding: 10px;
+    color: white;
+    background-color: #cc004e;
+    font-weight: 100;
+    border-radius: 6px;
+    font-size: 20px;
+	 text-decoration: none !important;
+	 transition: 0.3s;
+ }
+
+#instructionsDiv a.show-solution:not(.disabled):hover {
+	 margin-top: -1.5px;
+    margin-bottom: 1.5px;
+	 background-color: #bb0047;
+    box-shadow: 0px 5px 30px rgba(0,0,0,0.3);
+}
+#instructionsDiv a.show-solution.disabled {
+	opacity: 0.4;
+}
+
 #instructionsDiv a.learn-more::after {
 	content: "\02192";
 	padding-left: 5px;
+}
+
+#solution {
+	 overflow: hidden;
+    height: 0;
+    transition: height 0.4s;
+}
+
+#solution.shown{
+    height: auto !important;
 }
 
 #codearea{
@@ -234,6 +267,7 @@ body{
 	left: 0px;
 	right: 0px;
 	bottom: 0px;
+	max-height: 100%;
 }
 #buttonbar{
 	background: rgb(40,44,52);
@@ -349,15 +383,15 @@ body{
 }
 #output b{
 	color: #528bff;
+	font-weight: normal !important;
 }
 #output i{
 	font-style: normal;
-	font-weight: bold;
 	color: #ff2c72;
 }
 #output hr{
 		border-width: 1px 0 0 0;
-    border-top: 1px solid #3b3b3b !important;
+    border-top: 1px solid #292c34 !important;
     margin: 4px -20px;
 }
 
