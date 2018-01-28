@@ -120,27 +120,34 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 	// TODO TODO TODO: move logging stuff into its own class
 	var logging = `
 		outputDiv = document.getElementById('output');
-		function console_output(a){
-			if(outputDiv.innerHTML != ''){
+		function console_output(a, hr){
+			if (outputDiv.innerHTML != '' && hr !== true){
 				outputDiv.innerHTML += '<hr>';
+			} else if (hr === true) {
+				outputDiv.innerHTML += '<br>';
 			}
 				outputDiv.innerHTML += a;
 				outputDiv.scrollTop = outputDiv.scrollHeight;
 		}
 		console = {
-			log: function(a,b){
-				if(a === undefined){a = "undefined";}
-				if(typeof(a) == 'object'){a = JSON.stringify(a);}
-				if(typeof(a) == 'function'){a = '[Function]'}
-				if(b == null || b == undefined){
-					console_output('<b>&larr; ' + a + '</b>');
-				}else if(b == ''){
-					console_output('&rarr; ' + a);
-				}else{
-					if(typeof(b) == 'object'){b = JSON.stringify(b);}
-					if(typeof(b) == 'function'){b = '[Function]'}
-					console_output('&rarr; ' + a + '<br><b>&larr; ' + b + '</b>');
-				}
+			to_string: function(input, st) {
+				if(input === undefined){return "undefined";}
+				if(typeof(input) == 'object'){return JSON.stringify(input);}
+				if(typeof(input) == 'function'){return input.toString()}
+				if(st !== true && typeof(input) == 'string'){return '"' + input + '"';}
+				return input;
+			},
+			log_nohr: function(a){
+				console_output('&nbsp; ' + console.to_string(a), true);
+			},
+			log: function(a){
+				console_output('&nbsp; ' + console.to_string(a));
+			},
+			log_in: function(a) {
+				console_output('&rarr; ' + console.to_string(a, true));
+			},
+			log_out: function(a) {
+				console_output('<b>&larr; ' + console.to_string(a) + '</b>', true);
 			},
 			error: function(a){
 				setConsoleError(true);
@@ -187,9 +194,12 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		}
 		bodyPubl.command(new Function(logging));
 		try{
-			var commandFn= new Function('console_scope', hideGlobals +
+			console.log_in(newcommand);
+			var commandFn= new Function('console_scope', 
 			"var robot = this;\n" +
+			"console_scope.console = {}; console_scope.console.log = console.log_nohr; console_scope.console.error = console.error;\n" +
 			"return console_scope.eval(`" +
+				hideGlobals +
 				newcommand +
 			"`);");
 
@@ -198,7 +208,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 				newcommand = ""; return;
 			}
 			if(a.error === null){
-				console.log(newcommand, a.output);
+				console.log_out(a.output);
 			}else{
 				console.error(a.error.name + ': ' + a.error.message);
 			}
