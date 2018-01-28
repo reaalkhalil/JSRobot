@@ -223,6 +223,15 @@ body{
     box-shadow: 0px 5px 30px rgba(0,0,0,0.3);
 }
 
+#menu .twitter {
+	font-size: 26px;
+	right: calc(50% - 85px);
+	top: calc(30% + 130px);
+   position: absolute;
+	color: #528bff;
+	text-decoration: none;
+}
+
 #instructionsDiv a.show-solution {
 	 cursor: pointer;
     display: inline-block;
