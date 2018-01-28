@@ -124,6 +124,11 @@ levelButton.onclick = function(){
 	levelButton.innerHTML = "Level " + level;
 };
 
+function showLevelSolution(){
+	document.getElementById('solution').classList.add('shown');
+	document.getElementById('showSolution').classList.add('disabled');
+}
+
 function startGame(level, language){
 	menu.style.display = "none";
 	play.style.display = "inherit";
@@ -150,6 +155,11 @@ function startGame(level, language){
 		});
 		myCodeMirror.setOption("theme", "dracula");
 		codeBoxes[i].classList.add('read-only-code');
+	}
+
+	var showSolutionBtn = document.getElementById('showSolution');
+	if (showSolutionBtn) {
+		showSolutionBtn.onclick = showLevelSolution;
 	}
 
 	resetCode();
@@ -464,7 +474,7 @@ onmousemove = function(e){
 		var height = Number(codearea.style.height.replace("px",""));
 		var newheight = height + dragy - e.clientY;
 		if(newheight < 104){newheight = 104;}
-		codearea.style.height = newheight;
+		codearea.style.height = Math.min(newheight, window.innerHeight || Infinity);
 		dragy = e.clientY;
   }
 };
