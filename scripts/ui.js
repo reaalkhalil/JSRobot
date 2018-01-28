@@ -289,7 +289,7 @@ var commandIndex = 0;
 function executeCommand(commandText){
 		newcommand = commandText;
 		commandLog.push(commandText);
-		commandIndex = 0;
+		commandIndex = -1;
 		command.classList.add('execute');
 		setTimeout(function(){command.classList.remove('execute');}, 80);
 }
@@ -302,6 +302,7 @@ command.onkeydown = function(e) {
 			return;
 		}
 		executeCommand(command.value);
+		command.value = '';
 		practiceMode = true;
 		topBarpracticeMode.style.display="inline-block";
 
@@ -309,9 +310,11 @@ command.onkeydown = function(e) {
 	}else if(e.keyCode === 38 && commandLog.length -1 > commandIndex) {
 		commandIndex++;
 		command.value = commandLog[commandLog.length - 1 - commandIndex];
+		if(command.value === undefined){command.value = '';}
 		e.preventDefault();
-	}else if(e.keyCode === 40 && commandIndex > 0) {
+	}else if(e.keyCode === 40 && commandIndex > -1) {
 		commandIndex--;
+		if(commandIndex === -1){command.value = ''; e.preventDefault(); return;}
 		command.value = commandLog[commandLog.length - 1 - commandIndex];
 		e.preventDefault();
 	}
