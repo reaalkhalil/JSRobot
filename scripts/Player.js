@@ -89,7 +89,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			robotSprite.hide();
 			builder = bodyPriv.engine.priv.builder;
 			builder.addToEngine(bodyPriv.engine.priv, "bullet",
-				{x: bodyPriv.k.x + turned * 25,
+				{x: bodyPriv.k.x + turned * 35,
 					y: bodyPriv.k.y,
 					vx: turned*10, t: engine.getTime()},[{r: Math.PI*(turned-1)/2}]);
 			bodyPriv.properties.energy -= 1;
@@ -117,10 +117,12 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		var collide=undefined;
 		var context=undefined;`;
 
-	// TODO TODO TODO: move logging stuff into its own class
 	var logging = `
 		outputDiv = document.getElementById('output');
 		function console_output(a, hr){
+			if (outputDiv.innerHTML.split('<br>').length > 500) {
+				outputDiv.innerHTML = outputDiv.innerHTML.split('<br>').slice(250,-1).join('<br>');
+			}
 			if (outputDiv.innerHTML != '' && hr !== true){
 				outputDiv.innerHTML += '<hr>';
 			} else if (hr === true) {
@@ -138,10 +140,10 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 				return input;
 			},
 			log_nohr: function(a){
-				console_output('&nbsp; ' + console.to_string(a), true);
+				console_output(console.to_string(a), true);
 			},
 			log: function(a){
-				console_output('&nbsp; ' + console.to_string(a));
+				console_output(console.to_string(a));
 			},
 			log_in: function(a) {
 				console_output('&rarr; ' + console.to_string(a, true));
@@ -198,6 +200,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			var commandFn= new Function('console_scope', 
 			"var robot = this;\n" +
 			"console_scope.console = {}; console_scope.console.log = console.log_nohr; console_scope.console.error = console.error;\n" +
+			"console_scope.Game = Game;\n"+
 			"return console_scope.eval(`" +
 				hideGlobals +
 				newcommand +
