@@ -129,6 +129,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 		}
 		console = {
 			log: function(a,b){
+				if(a === undefined){a = "undefined";}
 				if(typeof(a) == 'object'){a = JSON.stringify(a);}
 				if(typeof(a) == 'function'){a = '[Function]'}
 				if(b == null || b == undefined){
@@ -176,21 +177,35 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 	`;
 
 	if(typeof newcommand !== 'undefined' && newcommand !== ""){
-		var commandFn= new Function(logging + hideGlobals +
-			"var robot = this; var return_output = " + newcommand +
-			"\n\nreturn return_output;");
+		if (undefined === bodyPriv._console_scope) {
+			var ifrm = document.createElement("iframe");
+			ifrm.style.width = "0px";
+			ifrm.style.height = "0px";
+			document.body.appendChild(ifrm);
+			bodyPriv._console_scope = ifrm.contentWindow;
+			bodyPriv._console_scope.robot = bodyPubl;
+		}
+		bodyPubl.command(new Function(logging));
+		try{
+			var commandFn= new Function('console_scope', hideGlobals +
+			"var robot = this;\n" +
+			"return console_scope.eval(`" +
+				newcommand +
+			"`);");
 
-		var a = bodyPubl.command(commandFn);
-		if(keyboardControl){
-			newcommand = ""; return;
+			var a = bodyPubl.command(commandFn, bodyPriv._console_scope);
+			if(keyboardControl){
+				newcommand = ""; return;
+			}
+			if(a.error === null){
+				console.log(newcommand, a.output);
+			}else{
+				console.error(a.error.name + ': ' + a.error.message);
+			}
+		} catch (err) {
+			console.error(err.name + ": " + err.message);
 		}
-		if(a.error === null){
-			a.output = a.output || '';
-			console.log(newcommand, a.output);
-		}else{
-			console.error(a.error.name + ': ' + a.error.message);
-			// TODO get error stack
-		}
+
 		newcommand = "";
 	}
 
