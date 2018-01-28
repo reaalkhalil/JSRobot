@@ -246,7 +246,7 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 				if(key == 'properties') continue;
 				if(key == 'action') continue;
 				if(typeof(bodyPubl[key]) == 'function'){
-					customFunctions.push(key);
+					customFunctions.push({key: key, value: bodyPubl[key]});
 				}else{
 					customProperties.push({key: key, value: bodyPubl[key]});
 				}
@@ -257,8 +257,8 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 			}
 			customFunctionsString = "";
 			for(prop of customFunctions){
-				if(prop == 'playerCode'){continue;}
-				customFunctionsString += "<tr><td><b>" + prop + ": </b></td><td><b>[Function]</b></td></tr>";
+				if(prop.key == 'playerCode'){continue;}
+				customFunctionsString += "<tr><td><b>" + prop.key + ": </b></td><td><b>" + prop.value.toString() + "</b></td></tr>";
 			}
 
 			propertiesDiv.innerHTML = "Robot = {<br><br><table>" +
@@ -272,13 +272,13 @@ var player = new Behavior(function(bodyPriv, bodyPubl){
 
 		  customPropertiesString +
 			"<tr><td>&nbsp;</td><td></td></tr>" +
-			"<tr><td>move: </td><td>[Function]</td></tr>" +
-			"<tr><td>shoot:  </td><td>[Function]</td></tr>" +
-			"<tr><td>jump: </td><td>[Function]</td></tr>" +
-			"<tr><td>info: </td><td>[Function]</td></tr>" +
-			"<tr><td>turn: </td><td>[Function]</td></tr>" +
-			"<tr><td>init: </td><td>[Function]</td></tr>" +
-			"<tr><td>loop: </td><td>[Function]</td></tr>" +
+			"<tr><td>move: </td><td>[Built-in Function]</td></tr>" +
+			"<tr><td>shoot:  </td><td>[Built-in Function]</td></tr>" +
+			"<tr><td>jump: </td><td>[Built-in Function]</td></tr>" +
+			"<tr><td>info: </td><td>[Built-in Function]</td></tr>" +
+			"<tr><td>turn: </td><td>[Built-in Function]</td></tr>" +
+			"<tr><td>init: </td><td>[Built-in Function]</td></tr>" +
+			"<tr><td>loop: </td><td>[Built-in Function]</td></tr>" +
 		  customFunctionsString +
 		"</table><br>}";
 }
