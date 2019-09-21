@@ -350,7 +350,7 @@ If you know that you have a string that contains a number, convert it to number 
 	<code class="console-out">&larr; 3</code>
 
 </td></tr><tr><td>
-	<code>Number.parseInt()</code>
+	<code>Number.parseFloat()</code>
 </td><td>
 	Converts a string representing a floating point number to a number, ignores any extra characters.<br>
 	Calling <code>Number.parseFloat()</code> on <code>"23"</code> <code>"7.25 litres"</code> <code>"1.995"</code> <code>"3 apples."</code><br>
